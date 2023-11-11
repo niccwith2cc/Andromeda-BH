@@ -52,11 +52,7 @@ class CelestialBody{
 
         double CalcForce(CelestialBody body2){
             vector<double> position2 = body2.getPosition();
-            vector<double> instantForce = {mass*body2.getMass()*G*position2[0]-position[0],mass*body2.getMass()*G*position2[1]-position[1],mass*body2.getMass()*G*position2[2]-position[2]);
-
-        
-
+            vector<double> instantForce = {mass*body2.getMass()*G*position2[0]-position[0],mass*body2.getMass()*G*position2[1]-position[1],mass*body2.getMass()*G*position2[2]-position[2]};
+            return sqrt(pow(instantForce[0],2)+pow(instantForce[1],2)+pow(instantForce[2],2));
         }
-
-
 };
