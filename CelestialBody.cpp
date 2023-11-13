@@ -65,4 +65,9 @@ class CelestialBody{
             vector<double> componentForce = {(position2[0]-position[0])*instantForce/CalcR(body2),(position2[1]-position[1])*instantForce/CalcR(body2),(position2[2]-position[2])*instantForce/CalcR(body2)};
             return instantForce;
         }
+
+        vector<double> CalcComp(CelestialBody body2){
+            vector<double> position2 = body2.getPosition();
+            return {(position2[0]-position[0])*CalcForce(body2)/CalcR(body2),(position2[1]-position[1])*CalcForce(body2)/CalcR(body2),(position2[2]-position[2])*CalcForce(body2)/CalcR(body2)};
+        }
 };
