@@ -51,9 +51,18 @@ class CelestialBody{
             return sqrt(pow(position2[0]-position[0],2)+pow(position2[1]-position[1],2)+pow(position2[2]-position[2],2));
         }
 
+        //note that whenever the planets are in the same plane as each other, 2 components will be 0 and cause the force to go to inf
+
+        // an alternative solution would be to take the absolute norm between the two planets and calculate the total force between them
+        // once the total force is calculated, the components can be extracted for use to calculate the summation force for all the bodies acting
+        // on the that body.
+
+        // just in case {mass*body2.getMass()*G*(position2[0]-position[0])/pow((position2[0]-position[0]),3),mass*body2.getMass()*G*(position2[1]-position[1])/pow((position2[1]-position[1]),3),mass*body2.getMass()*G*(position2[2]-position[2])/pow((position2[2]-position[2]),3)};
+
         double CalcForce(CelestialBody body2){
             vector<double> position2 = body2.getPosition();
-            vector<double> instantForce = {mass*body2.getMass()*G*(position2[0]-position[0]),mass*body2.getMass()*G*(position2[1]-position[1]),mass*body2.getMass()*G*(position2[2]-position[2])};
-            return sqrt(pow(instantForce[0],2)+pow(instantForce[1],2)+pow(instantForce[2],2));
+            double instantForce = G*mass*body2.getMass()/(pow(CalcR(body2),2));
+            vector<double> componentForce = {(position2[0]-position[0])*instantForce/CalcR(body2),(position2[1]-position[1])*instantForce/CalcR(body2),(position2[2]-position[2])*instantForce/CalcR(body2)};
+            return instantForce;
         }
 };
