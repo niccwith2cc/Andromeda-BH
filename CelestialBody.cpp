@@ -6,7 +6,7 @@ const double  G = 6.6740105e-11;
 
 class CelestialBody{
     private:
-        double mass;
+        int mass;
         vector<double> position = vector<double>(3);
         vector<double> accel = vector<double>(3);
         vector<double> velo = vector<double>(3);
@@ -14,7 +14,7 @@ class CelestialBody{
 
     public:
 
-        CelestialBody(double new_mass, vector<double> new_position, vector<double> new_accel, vector<double> new_velo, vector<double> new_force){
+        CelestialBody(int new_mass, vector<double> new_position, vector<double> new_accel, vector<double> new_velo, vector<double> new_force){
             mass = new_mass;
             position = new_position;
             accel = new_accel;
@@ -26,7 +26,7 @@ class CelestialBody{
             mass = new_mass;
         }
 
-        double getMass(){
+        int getMass(){
             return mass;
         }   
 

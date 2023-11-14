@@ -2,6 +2,7 @@
 #include <cmath>
 #include <iostream>
 #include <random>
+#include <experimental/random>
 #include "CelestialBody.cpp"
 using namespace std;
 
@@ -12,43 +13,38 @@ double generateRandomDouble(double min, double max) {
         return dis(gen);
     };
 
-int generateRandomInt(int min, int max) {
-        random_device rd;
-        mt19937 gen(rd());
-        uniform_real_distribution<int> dis(min, max);
-        return dis(gen);
-    };
+// int generateRandomInt(int min, int max) {
+//         random_device rd;
+//         mt19937 gen(rd());
+//         uniform_real_distribution<int> dis(min, max);
+//         return dis(gen);
+//     };
+
+vector<double> generateRandomPosition(){
+    vector<double> position(3);
+    for (int i = 0; i < 3; i++){
+            position[i] = generateRandomDouble(-1000000.0,1000000.0);
+        }   
+    return position;
+}
 
 int main(){
 
     //rand position could be of any value R^3 [-1,000,000:1,000,000]
     //rand mass of Z [1*10^10:1*10^30]
 
-    int n = generateRandomInt(2,10);
+    int bodynumber =  6;
 
-    for (int i=0; i < n; i++){
-        
+    int mass;
+    vector<double> position(3);
+    vector<CelestialBody> bodies;
+
+    for (int i = 0; i < bodynumber; i++){
+        mass = experimental::randint(50000,100000);
+        position = generateRandomPosition(); //check it out later
+        CelestialBody body = CelestialBody(mass, position, vector<double>(3), vector<double>(3), vector<double>(3));
+        bodies.push_back(body);
     }
-    double mass = generateRandomInt(1e10,1e15);
-    // vector<double> position1 = {0.0, 2.0, 0.0};
-    // vector<double> accel1 = {0.0, 0.0, 0.0};
-    // vector<double> force1 = {0.0, 0.0, 0.0};
-    // vector<double> velo1 = {0.0, 0.0, 0.0};
-
-    // vector<double> position2 = {0.0, 0.0, 0.0};
-    // vector<double> accel2 = {0.0, 0.0, 0.0};
-    // vector<double> force2 = {0.0, 0.0, 0.0};
-    // vector<double> velo2 = {0.0, 0.0, 0.0};
-
-    // vector<double> position3 = {2.0, 0.0, 0.0};
-    // vector<double> accel3 = {0.0, 0.0, 0.0};
-    // vector<double> force3 = {0.0, 0.0, 0.0};
-    // vector<double> velo3 = {0.0, 0.0, 0.0};
-
-    // CelestialBody body1 = CelestialBody(10000, position1, accel1, velo1, force1);
-    // CelestialBody body2 = CelestialBody(20000, position2, accel2, velo2, force2);
-    // CelestialBody body3 = CelestialBody(50000, position3, accel3, velo3, force3);
-    // vector<CelestialBody> bodies = {body1, body2, body3};
 
     // cout << body1.CalcForce(body2) << endl;
     // cout << body2.CalcForce(body3) << endl; 
@@ -84,12 +80,16 @@ int main(){
                 Fsum[i][0] += comp[0];
                 Fsum[i][1] += comp[1];
                 Fsum[i][2] += comp[2];
-                cout << "the components of Fx" << i << ": " << Fsum[i][0] << '\t' << endl;
-                cout << "the componenets of Fy" << i << ": " << Fsum[i][1] << '\t' << endl ;
-                cout << "the componenets of Fz" << i << ": " << Fsum[i][2] << '\t' << endl;
                 
             }
         }
+
+        cout << "the mass of the " << i+1 << " body: " << bodies[i].getMass() << endl;
+        // cout << "the components of Fx" << i << ": " << Fsum[i][0] << '\t';
+        // cout << "the componenets of Fy" << i << ": " << Fsum[i][1] << '\t';
+        // cout << "the componenets of Fz" << i << ": " << Fsum[i][2] << '\t';
+
+        
     }
 
 }
