@@ -3,6 +3,7 @@
 
 using namespace std;
 const double  G = 6.6740105e-11;
+const double DIMENSIONAL_LIMIT = 1000000;
 
 class CelestialBody{
     private:
