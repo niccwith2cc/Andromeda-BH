@@ -72,6 +72,7 @@ int main(){
     // cout << endl;
 
     vector<vector<double>> Fsum (bodies.size(), vector<double> (3,0));
+    cout << "the mass of the bodies:" << endl;
 
     for (int i = 0; i < bodies.size(); i++){
         for (int j = 0; j < bodies.size(); j++){
@@ -80,16 +81,21 @@ int main(){
                 Fsum[i][0] += comp[0];
                 Fsum[i][1] += comp[1];
                 Fsum[i][2] += comp[2];
-                
             }
         }
+        cout << bodies[i].getMass() << " ";        
+    }
+    cout << endl;
+    cout <<"The Forces:" << endl ;
 
-        cout << "the mass of the " << i+1 << " body: " << bodies[i].getMass() << endl;
-        // cout << "the components of Fx" << i << ": " << Fsum[i][0] << '\t';
-        // cout << "the componenets of Fy" << i << ": " << Fsum[i][1] << '\t';
-        // cout << "the componenets of Fz" << i << ": " << Fsum[i][2] << '\t';
-
-        
+    for (int i = 0; i < bodies.size(); i++){
+        for (int j = 0; j < 3; j++){
+            cout << Fsum[i][j] << " ";
+        }
+            cout << endl;
     }
 
+        cout << "check" << Fsum[0][0] << endl;
+        cout << "check" << Fsum[0][1] << endl;
+        cout << "check" << Fsum[0][2] << endl;
 }
