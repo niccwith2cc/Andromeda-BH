@@ -9,7 +9,7 @@ template <typename T>
 std::vector<T> operator/(const std::vector<T>& vec, const double& s) {
     std::vector<T> res(vec.size());
     for(int i=0;i<vec.size();++i)
-        res[i] = vec[i] / a;
+        res[i] = vec[i] / s;
     return res;
 }
 

@@ -8,7 +8,7 @@ class BarnesHut{
 
     public:
         BarnesHut(TreeNode node){
-            root = node
+            root = node;
         }
 
         void insert(TreeNode node){
