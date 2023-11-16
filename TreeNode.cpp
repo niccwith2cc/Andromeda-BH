@@ -9,13 +9,14 @@ class TreeNode{
         vector<double> centerOfMass = vector<double>(3);
         vector<TreeNode*> internal;
         CelestialBody* external;
+        int depth;
 
     public:
 
         //get octant
         int getOctant(CelestialBody* body){
             vector<double> pos = body->getPosition();
-            
+
             //replace center
             vector<double> center = vector<double>(3);
 
@@ -49,7 +50,12 @@ class TreeNode{
                 external = NULL;
             }
             else if (internal.size()){
-                internal[getOctant(node->external)] = node;
+                int octant = getOctant(node->external);
+                if (internal[octant]){
+                    internal[octant]->insertBody(internal[octant]);
+                    internal[octant]->insertBody(node);
+                }
+
                 updateCenterOfMass(*node->external);
                 totalMass += *node->external.getMass();
             }
