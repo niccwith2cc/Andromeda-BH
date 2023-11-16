@@ -72,6 +72,7 @@ int main(){
     // cout << endl;
 
     vector<vector<double>> Fsum (bodies.size(), vector<double> (3,0));
+    vector<vector<double>> Asum (bodies.size(), vector<double> (3,0));
     cout << "the mass of the bodies:" << endl;
 
     for (int i = 0; i < bodies.size(); i++){
@@ -85,6 +86,18 @@ int main(){
         }
         cout << bodies[i].getMass() << " ";        
     }
+
+    for (int i = 0; i < bodies.size(); i++){
+        for (int j = 0; j < bodies.size(); j++){
+            if (&bodies[i] != &bodies[j]){
+                vector<double> acomp =  bodies[i].CalcCompA(bodies[j]);
+                Asum[i][0] += acomp[0]; //the x components
+                Asum[i][1] += acomp[1]; //the y components
+                Asum[i][2] += acomp[2]; //the z components
+            }
+        }
+    }
+
     cout << endl;
     cout << endl;
     cout <<"The Forces:" << endl ;
@@ -95,10 +108,21 @@ int main(){
         }
             cout << endl;
     }
+    
+    cout << endl;
+    cout <<"The Acceleration:" << endl ;
+
+    for (int i = 0; i < bodies.size(); i++){
+        for (int j = 0; j < 3; j++){
+            cout << Asum[i][j] << " \t";
+        }
+            cout << endl;
+    }
 
     cout << endl;
     cout << "the positions: " << endl;
     for (int i = 0; i < bodies.size(); i++){
+        cout << "for body " << i << ": ";
         for (int j = 0; j < 3; j++){
             cout << bodies[i].getPosition().at(j)<< " ";
         }

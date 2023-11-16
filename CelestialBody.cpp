@@ -4,7 +4,6 @@
 
 using namespace std;
 const double  G = 6.6740105e-11;
-const double DIMENSIONAL_LIMIT = 1000000;
 
 class CelestialBody{
     private:
@@ -72,14 +71,17 @@ class CelestialBody{
             return {(position2[0]-position[0])*CalcForce(body2)/CalcR(body2),(position2[1]-position[1])*CalcForce(body2)/CalcR(body2),(position2[2]-position[2])*CalcForce(body2)/CalcR(body2)};
         }
 
-        vector<double> DivideVectorByScalar(vector<double> v, int k){ //&
-            transform(v.begin(), v.end(), v.begin(), [k](double &c){ return c/k; });
-            return v; 
+        vector<double> DivideVectorByScalar(const vector<double>& v, int k) {
+            vector<double> result;
+            result.reserve(v.size());
+            for (const auto& element : v) {
+                result.push_back(element / k);
+            }
+            return result;
         }
         
         vector<double> CalcCompA(CelestialBody const body2){
             vector<double> instantAcc = DivideVectorByScalar(CalcCompF(body2),mass);
             return instantAcc;
-
         }
 };
