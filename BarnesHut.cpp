@@ -1,6 +1,6 @@
 #include <vector>
 #include <cmath>
-#include <TreeNode>
+#include "TreeNode.cpp"
 
 class BarnesHut{
     private:

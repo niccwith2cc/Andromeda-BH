@@ -40,7 +40,7 @@ int main(){
     vector<CelestialBody> bodies;
 
     for (int i = 0; i < bodynumber; i++){
-        mass = experimental::randint(50000,100000);
+        mass = experimental::randint(500000,1000000);
         position = generateRandomPosition(); //check it out later
         CelestialBody body = CelestialBody(mass, position, vector<double>(3), vector<double>(3), vector<double>(3));
         bodies.push_back(body);
@@ -77,25 +77,46 @@ int main(){
     for (int i = 0; i < bodies.size(); i++){
         for (int j = 0; j < bodies.size(); j++){
             if (&bodies[i] != &bodies[j]){
-                vector<double> comp =  bodies[i].CalcComp(bodies[j]);
-                Fsum[i][0] += comp[0];
-                Fsum[i][1] += comp[1];
-                Fsum[i][2] += comp[2];
+                vector<double> comp =  bodies[i].CalcCompF(bodies[j]);
+                Fsum[i][0] += comp[0]; //the x components
+                Fsum[i][1] += comp[1]; //the y components
+                Fsum[i][2] += comp[2]; //the z components
             }
         }
         cout << bodies[i].getMass() << " ";        
     }
     cout << endl;
+    cout << endl;
     cout <<"The Forces:" << endl ;
 
     for (int i = 0; i < bodies.size(); i++){
         for (int j = 0; j < 3; j++){
-            cout << Fsum[i][j] << " ";
+            cout << Fsum[i][j] << " \t";
         }
             cout << endl;
     }
 
-        cout << "check" << Fsum[0][0] << endl;
-        cout << "check" << Fsum[0][1] << endl;
-        cout << "check" << Fsum[0][2] << endl;
+    cout << endl;
+    cout << "the positions: " << endl;
+    for (int i = 0; i < bodies.size(); i++){
+        for (int j = 0; j < 3; j++){
+            cout << bodies[i].getPosition().at(j)<< " ";
+        }
+            cout << endl;
+    }
+
+    cout << endl;
+    cout << "the position vectors: " << endl;
+    for (int i = 0; i < bodies.size(); i++){
+        for (int j = 0; j < bodies.size(); j++){
+            if (&bodies[i] != &bodies[j]){
+            cout << bodies[i].CalcR(bodies[j])<< " ";
+            }
+            cout << endl;
+        }
+    }
+
+        // cout << "check " << Fsum[0][0] << endl;
+        // cout << "check " << Fsum[0][1] << endl;
+        // cout << "check " << Fsum[0][2] << endl;
 }

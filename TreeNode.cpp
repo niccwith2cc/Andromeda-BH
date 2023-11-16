@@ -1,5 +1,5 @@
 #include<vector>
-#include<CelestialBody.cpp>
+#include "CelestialBody.cpp"
 
 using namespace std;
 
@@ -8,7 +8,7 @@ class TreeNode{
         int totalMass;
         vector<double> centerOfMass = vector<double>(3);
         vector<TreeNode*> internal;
-        CelectialBody* external;
+        CelestialBody* external;
 
     public:
 

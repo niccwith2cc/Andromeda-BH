@@ -1,5 +1,6 @@
 #include <vector>
 #include <cmath>
+#include<algorithm>
 
 using namespace std;
 const double  G = 6.6740105e-11;
@@ -22,7 +23,7 @@ class CelestialBody{
             force = new_force;
         }
 
-        void setMass(double new_mass){
+        void setMass(int new_mass){
             mass = new_mass;
         }
 
@@ -65,8 +66,19 @@ class CelestialBody{
             return instantForce;
         }
 
-        vector<double> CalcComp(CelestialBody body2){
+        vector<double> CalcCompF(CelestialBody body2){
             vector<double> position2 = body2.getPosition();
             return {(position2[0]-position[0])*CalcForce(body2)/CalcR(body2),(position2[1]-position[1])*CalcForce(body2)/CalcR(body2),(position2[2]-position[2])*CalcForce(body2)/CalcR(body2)};
+        }
+
+        vector<double> DivideVectorByScalar(vector<double> v, int k){ //&
+            transform(v.begin(), v.end(), v.begin(), [k](double &c){ return c/k; });
+            return v; 
+        }
+        
+        vector<double> CalcCompA(CelestialBody const body2){
+            vector<double> instantAcc = DivideVectorByScalar(CalcCompF(body2),mass);
+            return instantAcc;
+
         }
 };
