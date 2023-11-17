@@ -30,8 +30,8 @@ class TreeNode{
             
         }
 
-        TreeNode(CelestialBody ext){
-            external = &ext;
+        TreeNode(CelestialBody* ext){
+            external = ext;
         }
 
         void updateCenterOfMass(CelestialBody body){
@@ -46,14 +46,15 @@ class TreeNode{
 
         void insertBody(TreeNode node){
             if (external){
+                std::cout << "external" << std::endl;
                 internal = vector<TreeNode*>(8);
-                TreeNode new_node = TreeNode(*external);
+                TreeNode new_node = TreeNode(external);
                 internal[getOctant(external)] = &new_node;
                 internal[getOctant(node.external)] = &node;
                 external = NULL;
             }
             else if (internal.size()){
-                int octant = getOctant(node.external);
+                int octant = 0; getOctant(node.external);
                 if (internal[octant]){
                     internal[octant]->insertBody(*internal[octant]);
                     internal[octant]->insertBody(node);

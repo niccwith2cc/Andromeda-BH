@@ -110,10 +110,9 @@ int main(){
         // cout << "check " << Fsum[0][1] << endl;
         // cout << "check " << Fsum[0][2] << endl;
 
-        TreeNode root = TreeNode(bodies[0]);
-        cout << "here";
-        root.insertBody(bodies[1]);
-        root.insertBody(bodies[2]);
+        TreeNode root = TreeNode(&bodies[0]);
+        root.insertBody(&bodies[1]);
+        root.insertBody(&bodies[2]);
         
         //root.traverseTree(&root);
 }
