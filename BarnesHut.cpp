@@ -12,6 +12,6 @@ class BarnesHut{
         }
 
         void insert(TreeNode node){
-            root.insertBody(node);
+            root.insertNode(node);
         }
 }

@@ -26,7 +26,7 @@ vector<double> generateRandomPosition(){
 
 int main(){
 
-    int bodynumber =  2;
+    int bodynumber =  4;
     int mass;
     vector<double> position(3);
     vector<CelestialBody> bodies;
@@ -111,8 +111,13 @@ int main(){
         // cout << "check " << Fsum[0][2] << endl;
 
         TreeNode root = TreeNode(&bodies[0]);
-        root.insertBody(&bodies[1]);
-        root.insertBody(&bodies[2]);
-        
-        //root.traverseTree(&root);
+        //cout << root.external << endl;
+        //cout << root.internal.size() << endl;
+        root.insertNode(TreeNode(&bodies[1]));
+    
+        //cout << root.external << endl;
+        //cout << root.internal.size() << endl;
+        //root.insertNode(&bodies[2]);
+        cout << "Tree" << endl;
+        root.traverseTree(&root);
 }
