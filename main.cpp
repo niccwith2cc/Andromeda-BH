@@ -105,7 +105,33 @@ int main(){
         }
     }
 
-        // cout << "check " << Fsum[0][0] << endl;
-        // cout << "check " << Fsum[0][1] << endl;
-        // cout << "check " << Fsum[0][2] << endl;
+        //Calculating speed and distance from acceleration
+        //it is just taking the acceleration given and integrating over a specified time period, with additional intial velocity considered
+        //for now we assume vo and so are 0.  
+        // v = a*t + vo where t is the instant at which the acceleration is calculated.
+        // s = a*t^2/2 + vo*t + s0 
+
+        std::vector<double> time;
+        double timeStep = 5.0 / 99.0; // Calculate the time step size
+        
+        for (int i = 0; i < 100; i++) {
+            double currentTime = i * timeStep;
+            time.push_back(currentTime);
+        }
+
+        // Assuming you have a time vector named 'time'
+        // vector<vector<double>> velo(bodies.size(), std::vector<double>(3, 0.0));
+        
+        // for (int i = 0; i < bodies.size(); i++) {
+        //     for (int j = 0; j < time.size(); j++) {
+        //         vector<vector<double>> acceleration[i][j] = Asum[i][j];
+        //         double timeStep = time[j];
+        
+        //         for (int k = 0; k < 3; k++) {
+        //             velo[i][k] += acceleration[k] * timeStep;
+        //         }
+        //     }
+        // }
+
+
 }
