@@ -5,6 +5,14 @@
 using namespace std;
 const double  G = 6.6740105e-11;
 
+template <typename T>
+std::vector<T> operator/(const std::vector<T>& vec, const double& s) {
+    std::vector<T> res(vec.size());
+    for(int i=0;i<vec.size();++i)
+        res[i] = vec[i] / s;
+    return res;
+}
+
 class CelestialBody{
     private:
         int mass;
@@ -71,17 +79,17 @@ class CelestialBody{
             return {(position2[0]-position[0])*CalcForce(body2)/CalcR(body2),(position2[1]-position[1])*CalcForce(body2)/CalcR(body2),(position2[2]-position[2])*CalcForce(body2)/CalcR(body2)};
         }
 
-        vector<double> DivideVectorByScalar(const vector<double>& v, int k) {
-            vector<double> result;
-            result.reserve(v.size());
-            for (const auto& element : v) {
-                result.push_back(element / k);
-            }
-            return result;
-        }
+        // vector<double> DivideVectorByScalar(const vector<double>& v, int k) {
+        //     vector<double> result;
+        //     result.reserve(v.size());
+        //     for (const auto& element : v) {
+        //         result.push_back(element / k);
+        //     }
+        //     return result;
+        // }
         
         vector<double> CalcCompA(CelestialBody const body2){
-            vector<double> instantAcc = DivideVectorByScalar(CalcCompF(body2),mass);
+            vector<double> instantAcc = CalcCompF(body2)/mass; //DivideVectorByScalar(CalcCompF(body2),mass);
             return instantAcc;
         }
 };

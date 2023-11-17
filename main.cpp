@@ -4,6 +4,7 @@
 #include <random>
 #include <experimental/random>
 #include "CelestialBody.cpp"
+#include "TreeNode.cpp"
 using namespace std;
 
 // Hardcoding the Galaxy by taking a fixed number of bodies and generating their random positions and masses
