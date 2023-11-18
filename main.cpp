@@ -61,50 +61,50 @@ int main(){
     }
 
     //visualization and printing
-    cout << "The masses of the bodies: " << endl;
-    for (int i = 0 ; i <bodies.size(); i++){
-        cout << bodies[i].getMass() << " \t";
-    }
-        cout << endl;
-        cout << endl;
-        cout << "The Forces:" << endl ;
-    for (int i = 0; i < bodies.size(); i++){
-        for (int j = 0; j < 3; j++){
-            cout << Fsum[i][j] << " \t";
-        }
-            cout << endl;
-    }
+    // cout << "The masses of the bodies: " << endl;
+    // for (int i = 0 ; i <bodies.size(); i++){
+    //     cout << bodies[i].getMass() << " \t";
+    // }
+    //     cout << endl;
+    //     cout << endl;
+    //     cout << "The Forces:" << endl ;
+    // for (int i = 0; i < bodies.size(); i++){
+    //     for (int j = 0; j < 3; j++){
+    //         cout << Fsum[i][j] << " \t";
+    //     }
+    //         cout << endl;
+    // }
     
-        cout << endl;
-        cout <<"The Acceleration:" << endl ;
+    //     cout << endl;
+    //     cout <<"The Acceleration:" << endl ;
 
-    for (int i = 0; i < bodies.size(); i++){
-        for (int j = 0; j < 3; j++){
-            cout << Asum[i][j] << " \t";
-        }
-            cout << endl;
-    }
+    // for (int i = 0; i < bodies.size(); i++){
+    //     for (int j = 0; j < 3; j++){
+    //         cout << Asum[i][j] << " \t";
+    //     }
+    //         cout << endl;
+    // }
 
-        cout << endl;
-        cout << "the positions: " << endl;
-    for (int i = 0; i < bodies.size(); i++){
-        cout << "for body " << i << ": ";
-        for (int j = 0; j < 3; j++){
-            cout << bodies[i].getPosition().at(j)<< " ";
-        }
-            cout << endl;
-    }
+    //     cout << endl;
+    //     cout << "the positions: " << endl;
+    // for (int i = 0; i < bodies.size(); i++){
+    //     cout << "for body " << i << ": ";
+    //     for (int j = 0; j < 3; j++){
+    //         cout << bodies[i].getPosition().at(j)<< " ";
+    //     }
+    //         cout << endl;
+    // }
 
-        cout << endl;
-        cout << "the position vectors: " ;;
-    for (int i = 0; i < bodies.size(); i++){
-        for (int j = 0; j < bodies.size(); j++){
-            if (&bodies[i] != &bodies[j]){
-            cout << bodies[i].CalcR(bodies[j])<< " ";
-            }
-            cout << endl;
-        }
-    }
+    //     cout << endl;
+    //     cout << "the position vectors: " ;;
+    // for (int i = 0; i < bodies.size(); i++){
+    //     for (int j = 0; j < bodies.size(); j++){
+    //         if (&bodies[i] != &bodies[j]){
+    //         cout << bodies[i].CalcR(bodies[j])<< " ";
+    //         }
+    //         cout << endl;
+    //     }
+    // }
 
         // cout << "check " << Fsum[0][0] << endl;
         // cout << "check " << Fsum[0][1] << endl;
@@ -113,11 +113,12 @@ int main(){
         TreeNode root = TreeNode(&bodies[0]);
         //cout << root.external << endl;
         //cout << root.internal.size() << endl;
-        root.insertNode(TreeNode(&bodies[1]));
+        root.insertBody(&bodies[1]);
     
         //cout << root.external << endl;
         //cout << root.internal.size() << endl;
-        //root.insertNode(&bodies[2]);
+        root.insertBody(&bodies[2]);
+        root.insertBody(&bodies[3]);
         cout << "Tree" << endl;
         root.traverseTree(&root);
 }
