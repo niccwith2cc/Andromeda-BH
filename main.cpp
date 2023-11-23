@@ -5,7 +5,8 @@
 #include <experimental/random>
 #include "CelestialBody.cpp"
 #include "TreeNode.cpp"
-using namespace std;
+using std::vector;
+using std::cout;
 
 // Hardcoding the Galaxy by taking a fixed number of bodies and generating their random positions and masses
 
@@ -112,10 +113,10 @@ int main(){
         // v = a*t + vo where t is the instant at which the acceleration is calculated.
         // s = a*t^2/2 + vo*t + s0 
 
-        std::vector<double> time;
-        double timeStep = 5.0 / 99.0; // Calculate the time step size
+        vector<double> time;
+        const double timeStep = 10.0 / 100.0; // Calculate the time step size
         
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 101; i++) {
             double currentTime = i * timeStep;
             time.push_back(currentTime);
         }
