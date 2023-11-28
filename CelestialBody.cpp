@@ -3,7 +3,8 @@
 #include<algorithm>
 
 using namespace std;
-const double  G = 6.6740105e-11;
+// const double  G = 6.6740105e-11;
+const double  G = 90000000;
 
 template <typename T>
 std::vector<T> operator/(const std::vector<T>& vec, const double& s) {
