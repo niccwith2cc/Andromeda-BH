@@ -19,7 +19,7 @@ double generateRandomDouble(double min, double max) {
 vector<double> generateRandomPosition(){
     vector<double> position(3);
     for (int i = 0; i < 3; i++){
-            position[i] = generateRandomDouble(-1000000.0,1000000.0);
+            position[i] = generateRandomDouble(-BOUNDARY, BOUNDARY);
         }   
     return position;
 }
@@ -110,7 +110,8 @@ int main(){
         // cout << "check " << Fsum[0][1] << endl;
         // cout << "check " << Fsum[0][2] << endl;
 
-        TreeNode root = TreeNode(&bodies[0]);
+        vector<double> origin  = vector<double>(3);
+        TreeNode root = TreeNode(&bodies[0], origin);
         //cout << root.external << endl;
         //cout << root.internal.size() << endl;
         root.insertBody(&bodies[1]);
