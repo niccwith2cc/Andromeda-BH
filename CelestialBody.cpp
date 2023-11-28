@@ -55,6 +55,14 @@ class CelestialBody{
             return position;
         }
 
+        vector<double> getAccel(){
+            return accel;
+        }
+
+        void setAccel(vector<double> new_accel){
+                accel = new_accel;
+        }
+
         double CalcR(CelestialBody body2){
             vector<double> position2 = body2.getPosition();
             return sqrt(pow(position2[0]-position[0],2)+pow(position2[1]-position[1],2)+pow(position2[2]-position[2],2));

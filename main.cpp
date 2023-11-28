@@ -27,7 +27,7 @@ vector<double> generateRandomPosition(){
 
 int main(){
 
-    int bodynumber =  2;
+    int bodynumber =  3;
     int mass;
     vector<double> position(3);
     vector<CelestialBody> bodies;
@@ -121,9 +121,23 @@ int main(){
             time.push_back(currentTime);
         }
 
-        // Assuming you have a time vector named 'time'
-        // vector<vector<double>> velo(bodies.size(), std::vector<double>(3, 0.0));
-        
+        cout << "get accel" << "\n";
+
+        // for (int i = 0; i < 3; i++){
+        // cout << bodies[i].setAccel(acomp[0], acomp[1], acomp[2]) << " ";
+        // }
+        // cout << "\n";
+
+        // The way we can complete the calculations:
+        // take an infinitesimally small time increment to integrate over, dt.
+        // to calculate the velocity of each body. v = int[bounded](a* dt) + v_0 if there exists any previous velocity
+        // to calculate the position of each body. p = int[bounded](v * dt) + p_0 = int[bounded](a * t * dt) + p_0
+
+        // hence the pseudo code would be:
+        // for all bodies {
+        //      for each time step{
+            //      use setters to set the acceleration??
+
         // for (int i = 0; i < bodies.size(); i++) {
         //     for (int j = 0; j < time.size(); j++) {
         //         vector<vector<double>> acceleration[i][j] = Asum[i][j];
