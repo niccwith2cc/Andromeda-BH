@@ -37,9 +37,11 @@ class TreeNode{
             depth = d;
             int octant = oct;
             for (int i = 0; i < 3; i++){
-                centerOfOctant[i] = (1/d) * BOUNDARY * pow(-1, octant % 2); //parentCenter[i] + (1/d) * BOUNDARY * pow(-1, octant % 2);
+                centerOfOctant[i] = parentCenter[i]/1.0 + pow(0.5, d) * BOUNDARY * pow(-1, !(octant % 2)); 
                 octant /= 2;
+                //cout << centerOfOctant[i] << '\t';
             }
+            //cout << endl;
         }
 
         void updateCenterOfMass(CelestialBody* body){
