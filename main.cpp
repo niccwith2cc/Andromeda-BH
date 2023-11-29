@@ -110,16 +110,23 @@ int main(){
         // cout << "check " << Fsum[0][1] << endl;
         // cout << "check " << Fsum[0][2] << endl;
 
+
+        vector<double> pos1  = vector<double>{ 500.0, 20.0, 30.0 };
+        vector<double> pos2  = vector<double>{ 480.1, 20.0, 30.0 };
+        vector<double> pos3  = vector<double>{ 900.0, -200.0, 30.0 };
+        vector<double> pos4  = vector<double>{ -8490.0, -500.0, 30.0  };
+        CelestialBody body1 = CelestialBody(1, pos1, vector<double>(3), vector<double>(3), vector<double>(3));
+        CelestialBody body2 = CelestialBody(2, pos2, vector<double>(3), vector<double>(3), vector<double>(3));
+        CelestialBody body3 = CelestialBody(3, pos3, vector<double>(3), vector<double>(3), vector<double>(3));
+        CelestialBody body4 = CelestialBody(4, pos4, vector<double>(3), vector<double>(3), vector<double>(3));
+
         vector<double> origin  = vector<double>(3);
-        TreeNode root = TreeNode(&bodies[0], origin);
-        //cout << root.external << endl;
-        //cout << root.internal.size() << endl;
-        root.insertBody(&bodies[1]);
-    
-        //cout << root.external << endl;
-        //cout << root.internal.size() << endl;
-        root.insertBody(&bodies[2]);
-        root.insertBody(&bodies[3]);
+        TreeNode root = TreeNode(&body1);
+        root.insertBody(&body2);
+        root.insertBody(&body3);
+        root.insertBody(&body4);
+        //root.insertBody(&bodies[2]);
+        //root.insertBody(&bodies[3]);
         cout << "Tree" << endl;
         root.traverseTree(&root);
 }
