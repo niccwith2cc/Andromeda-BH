@@ -2,7 +2,7 @@
 #include <cmath>
 #include<algorithm>
 
-using namespace std;
+using std::vector;
 // const double  G = 6.6740105e-11;
 const double  G = 90000000;
 
