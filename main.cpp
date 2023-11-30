@@ -137,69 +137,71 @@ int main(){
         // for all bodies {
         //      for each time step{
             //      use setters to set the acceleration??
-        vector<vector<vector<double>>> Aint (bodies.size(), vector<vector<double>> (3, vector<double> (2,0.0)));
-        vector<vector<vector<double>>> Vint (bodies.size(), vector<vector<double>> (3, vector<double> (2,0.0)));
-        vector<vector<vector<double>>> Pint (bodies.size(), vector<vector<double>> (3, vector<double> (2,0.0)));
+        vector<vector<double>> Aint (bodies.size(), vector<double> (3));
+        vector<vector<double>> Vint (bodies.size(), vector<double> (3));
+        vector<vector<double>> Pint (bodies.size(), vector<double> (3));
 
-        for (int i = 0; i < bodies.size(); i++){
-            bodies[i].setAccel(Asum[i]);
-            for (int j = 0; j < 3; j++){
-                Aint[i][j][0] = Asum[i][j];
-                for (int k = 1; k < 2; k++){
-                    if (abs(Aint[i][j][k-1] - bodies[i].getAccel().at(j)) < 0.00001){
-                        Vint[i][j][k] = Aint[i][j][k]*timeStep + Vint[i][j][k-1];
-                        Pint[i][j][k] = 0.5*Aint[i][j][k]*timeStep*timeStep + Pint[i][j][k-1];
-                    }
+
+        for (int t = 0; t < time.size(); t++){
+            for (int i = 0; i < bodies.size(); i++){
+                Aint[i] = Asum[i];
+                bodies[i].setAccel(Asum[i]);
+                for (int j = 0; j < 3; j++){
+                    Vint[i][j] = Aint[i][j]*timeStep + Vint[i][j];
+                    Pint[i][j] = 0.5*Aint[i][j]*timeStep*timeStep + Pint[i][j];
                 }
+                
+                cout << "V " << Vint[i][0] << "\t" << Vint[i][1] << "\t" << Vint[i][2] << endl;	
+                cout << "P " <<Pint[i][0] << "\t" << Pint[i][1] << "\t" << Pint[i][2] << endl;
             }
         }
 
         //visualization and printing
-        cout << "get Accel" << '\n';
+        //cout << "get Accel" << '\n';
         // for (int i = 0; i < bodies.size(); i++){
         //     for (int j = 0; j < 3; j++){
-                    cout << Aint[0][0][0] - bodies[0].getAccel().at(0) << " ";
+                    //cout << Aint[0][0][0] - bodies[0].getAccel().at(0) << " ";
         //     }
         //         cout << '\n';
         // }
 
-        cout << '\n';
-        cout << '\n';
+        // cout << '\n';
+        // cout << '\n';
 
         //visualization and printing
-        cout << "A" << '\n';
-        for (int i = 0; i < bodies.size(); i++){
-            for (int j = 0; j < 3; j++){
-                for (int k = 0; k < 2; k++){
-                    cout << Aint[i][j][k] << " ";
-                }
-                cout << '\n';
-            }
-            cout << '\n';
-        }
+        // cout << "A" << '\n';
+        // for (int i = 0; i < bodies.size(); i++){
+        //     for (int j = 0; j < 3; j++){
+        //         for (int k = 0; k < 2; k++){
+        //             cout << Aint[i][j][k] << " ";
+        //         }
+        //         cout << '\n';
+        //     }
+        //     cout << '\n';
+        // }
 
-        cout << "V" << '\n';
-        for (int i = 0; i < bodies.size(); i++){
-            for (int j = 0; j < 3; j++){
-                for (int k = 0; k < 2; k++){
-                    cout << Vint[i][j][k] << " ";
-                }
-                cout << '\n';
-            }
-            cout << '\n';
-        }
+        // cout << "V" << '\n';
+        // for (int i = 0; i < bodies.size(); i++){
+        //     for (int j = 0; j < 3; j++){
+        //         for (int k = 0; k < 2; k++){
+        //             cout << Vint[i][j][k] << " ";
+        //         }
+        //         cout << '\n';
+        //     }
+        //     cout << '\n';
+        // }
 
 
-        cout << "P" << '\n';
-        for (int i = 0; i < bodies.size(); i++){
-            for (int j = 0; j < 3; j++){
-                for (int k = 0; k < 2; k++){
-                    cout << Pint[i][j][k] << " ";
-                }
-                cout << '\n';
-            }
-            cout << '\n';
-        }
+        // cout << "P" << '\n';
+        // for (int i = 0; i < bodies.size(); i++){
+        //     for (int j = 0; j < 3; j++){
+        //         for (int k = 0; k < 2; k++){
+        //             cout << Pint[i][j][k] << " ";
+        //         }
+        //         cout << '\n';
+        //     }
+        //     cout << '\n';
+        // }
         
         //         for (int k = 0; k < 3; k++) {
         //             velo[i][k] += acceleration[k] * timeStep;
