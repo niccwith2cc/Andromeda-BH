@@ -8,15 +8,21 @@ const double BOUNDARY = 1000000.0;
 class TreeNode{
     private:
         int totalMass;
-        vector<double> centerOfMass = vector<double>(3);
         int depth;
 
 
     public:
         CelestialBody* external;
         vector<TreeNode*> internal;
+        vector<double> centerOfMass = vector<double>(3);
         vector<double> centerOfOctant = vector<double>(3);
 
+        TreeNode(CelestialBody* ext, int d = 1){
+            external = ext;
+            depth = d;
+            centerOfMass = ext->getPosition();
+            totalMass = ext->getMass();
+        }
 
         //get octant
         int getOctant(CelestialBody* body){
@@ -40,19 +46,15 @@ class TreeNode{
             return centerOfChild;
         }
 
-        TreeNode(CelestialBody* ext, int d = 1){
-            external = ext;
-            depth = d;
-        }
-
         void updateCenterOfMass(CelestialBody* body){
             vector<double> newCenterOfMass(3);
             vector<double> bodyPosition = body->getPosition();
             int bodyMass = body->getMass();
             for (int i = 0; i < 3; i++){
-                newCenterOfMass[i] = (centerOfMass[i]*totalMass + bodyPosition[i]*bodyMass) / (totalMass + bodyMass); 
+                newCenterOfMass[i] = (centerOfMass[i]*totalMass + bodyPosition[i]*bodyMass) / (double)(totalMass + bodyMass); 
             }
             centerOfMass = newCenterOfMass;
+
         }
 
         void insertBody(CelestialBody* body){
@@ -65,16 +67,21 @@ class TreeNode{
                 internal[octant] = newNode;
 
                 octant = getOctant(body);
-                if (internal[octant]) { internal[octant]->insertBody(body); }
+                if (internal[octant]) { 
+                    internal[octant]->insertBody(body); 
+                    }
                 else {
                     newNode = new TreeNode(body, depth + 1);
                     newNode->centerOfOctant = calculateCenterOfOctant(octant);
                     internal[octant] = newNode;
                 } 
+                
+                updateCenterOfMass(body);
+                totalMass += body->getMass();
 
                 external = NULL;  
             }
-            else if (internal.size()){
+            else {
                 int octant = getOctant(body);
                 TreeNode* octantNode = internal[octant];
                 if (octantNode) octantNode->insertBody(body);
@@ -86,9 +93,6 @@ class TreeNode{
                 updateCenterOfMass(body);
                 totalMass += body->getMass();
             }
-            else {
-                external = body;
-            }
         }
 
 
@@ -97,6 +101,7 @@ class TreeNode{
             else if (root->internal.size()) {
                 for (int i = 0; i < root->internal.size(); i++){
                     if (root->internal[i]) {
+                        //cout << centerOfMass[0] << " " << centerOfMass[1] << " " << centerOfMass[2] << " depth " << depth << endl;
                         traverseTree(root->internal[i]);
                     }
                 }
