@@ -149,12 +149,17 @@ int main(){
                 for (int j = 0; j < 3; j++){
                     Vint[i][j] = Aint[i][j]*timeStep + Vint[i][j];
                     Pint[i][j] = 0.5*Aint[i][j]*timeStep*timeStep + Pint[i][j];
+                    vector<double> pos = bodies[i].getPosition();
+                    bodies[i].setPosition(pos[i] + Pint[j])
                 }
                 
+                cout << "A " << Aint[i][0] << "\t" << Aint[i][1] << "\t" << Aint[i][2] << endl;
                 cout << "V " << Vint[i][0] << "\t" << Vint[i][1] << "\t" << Vint[i][2] << endl;	
-                cout << "P " <<Pint[i][0] << "\t" << Pint[i][1] << "\t" << Pint[i][2] << endl;
+                cout << "P " << Pint[i][0] << "\t" << Pint[i][1] << "\t" << Pint[i][2] << endl;
             }
         }
+
+
 
         //visualization and printing
         //cout << "get Accel" << '\n';
