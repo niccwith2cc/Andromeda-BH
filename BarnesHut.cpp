@@ -1,17 +1,26 @@
 #include <vector>
 #include <cmath>
 #include "TreeNode.cpp"
+#include "CelestialBody.cpp"
 
 class BarnesHut{
     private:
-        TreeNode* root;
+        static TreeNode root;
 
     public:
-        BarnesHut(TreeNode node){
-            root = node;
+        BarnesHut(CelestialBody *body){
+            root = TreeNode(body);
         }
 
-        void insert(TreeNode node){
-            root.insertNode(node);
+        void insert(CelestialBody *body){
+            root.insertBody(body);
+        }
+
+        vector<double> calculateForce(CelestialBody body, TreeNode node = root){ 
+            if (root.external) return body.CalcCompF(*root.external);
+            for (auto node: root.internal){
+                
+            }
+
         }
 }

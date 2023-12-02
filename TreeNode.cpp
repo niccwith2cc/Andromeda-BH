@@ -24,6 +24,10 @@ class TreeNode{
             totalMass = ext->getMass();
         }
 
+        int getDepth(){
+            return depth;
+        }
+
         //get octant
         int getOctant(CelestialBody* body){
             vector<double> pos = body->getPosition();
@@ -94,7 +98,6 @@ class TreeNode{
                 totalMass += body->getMass();
             }
         }
-
 
         void traverseTree(TreeNode* root){
             if (root->external) std::cout << root->external->getMass() << " " << root->depth << std::endl;
