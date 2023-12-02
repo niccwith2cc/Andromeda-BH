@@ -16,12 +16,13 @@ std::vector<T> operator/(const std::vector<T>& vec, const double& s) {
 
 template <typename T>
 std::vector<T> operator+(const std::vector<T>& vec1, const std::vector<T>& vec2) {
-    if(vec1.size() == vec2.size){
+    if(vec1.size() == vec2.size()){
         std::vector<T> res(vec1.size());
         for(int i=0;i<vec1.size();++i)
             res[i] = vec1[i] + vec2[i];
         return res;
     }
+    return vector<double>(3);
     // add exception
 }
 
@@ -96,8 +97,10 @@ class CelestialBody{
 
         vector<double> CalcCompF(CelestialBody body2){
             vector<double> position2 = body2.getPosition();
-            double FR = CalcForce(body2)/CalcR(body2);
-            return {(position[0]-position2[0])*FR,(position[1]-position2[1])*FR,(position[2]-position2[2])*CalcForce(body2)/CalcR(body2)};
+            double r = CalcR(body2);
+            if (r == 0) return vector<double>(3);
+            double FR = CalcForce(body2)/r;
+            return {(position[0]-position2[0])*FR,(position[1]-position2[1])*FR,(position[2]-position2[2])*FR};
         }
 
         // vector<double> DivideVectorByScalar(const vector<double>& v, int k) {

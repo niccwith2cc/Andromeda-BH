@@ -17,6 +17,8 @@ class TreeNode{
         vector<double> centerOfMass = vector<double>(3);
         vector<double> centerOfOctant = vector<double>(3);
 
+        TreeNode(){}
+
         TreeNode(CelestialBody* ext, int d = 1){
             external = ext;
             depth = d;

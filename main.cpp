@@ -3,8 +3,8 @@
 #include <iostream>
 #include <random>
 #include <experimental/random>
-#include "CelestialBody.cpp"
-#include "TreeNode.cpp"
+#include <fstream>
+#include "BarnesHut.cpp"
 using std::vector;
 using std::cout;
 using std::endl;
@@ -29,7 +29,7 @@ vector<double> generateRandomPosition(){
 
 int main(){
 
-    int bodynumber =  4;
+    int bodynumber =  2;
     int mass;
     vector<double> position(3);
     vector<CelestialBody> bodies;
@@ -70,23 +70,23 @@ int main(){
     }
         cout << endl;
         cout << endl;
-        cout << "The Forces:" << endl ;
-    for (int i = 0; i < bodies.size(); i++){
-        for (int j = 0; j < 3; j++){
-            cout << Fsum[i][j] << " \t";
-        }
-            cout << endl;
-    }
+    //     cout << "The Forces:" << endl ;
+    // for (int i = 0; i < bodies.size(); i++){
+    //     for (int j = 0; j < 3; j++){
+    //         cout << Fsum[i][j] << " \t";
+    //     }
+    //         cout << endl;
+    // }
     
-        cout << endl;
-        cout <<"The Acceleration:" << endl ;
+    //     cout << endl;
+    //     cout <<"The Acceleration:" << endl ;
 
-    for (int i = 0; i < bodies.size(); i++){
-        for (int j = 0; j < 3; j++){
-            cout << Asum[i][j] << " \t";
-        }
-            cout << endl;
-    }
+    // for (int i = 0; i < bodies.size(); i++){
+    //     for (int j = 0; j < 3; j++){
+    //         cout << Asum[i][j] << " \t";
+    //     }
+    //         cout << endl;
+    // }
 
         cout << endl;
         cout << "the positions: " << endl;
@@ -98,20 +98,20 @@ int main(){
             cout << endl;
     }
 
-        cout << endl;
-        cout << "the position vectors: " ;;
-    for (int i = 0; i < bodies.size(); i++){
-        for (int j = 0; j < bodies.size(); j++){
-            if (&bodies[i] != &bodies[j]){
-            cout << bodies[i].CalcR(bodies[j])<< " ";
-            }
-            cout << endl;
-        }
-    }
+    //     cout << endl;
+    //     cout << "the position vectors: " ;;
+    // for (int i = 0; i < bodies.size(); i++){
+    //     for (int j = 0; j < bodies.size(); j++){
+    //         if (&bodies[i] != &bodies[j]){
+    //         cout << bodies[i].CalcR(bodies[j])<< " ";
+    //         }
+    //         cout << endl;
+    //     }
+    // }
 
-        cout << "check " << Fsum[0][0] << endl;
-        cout << "check " << Fsum[0][1] << endl;
-        cout << "check " << Fsum[0][2] << endl;
+    //     cout << "check " << Fsum[0][0] << endl;
+    //     cout << "check " << Fsum[0][1] << endl;
+    //     cout << "check " << Fsum[0][2] << endl;
 
 
         vector<double> pos1  = vector<double>{ 10.0, 10.0, 10.0 };
@@ -120,19 +120,34 @@ int main(){
         vector<double> pos4  = vector<double>{ -8490.0, -500.0, 30.0  };
         CelestialBody body1 = CelestialBody(500000, pos1, vector<double>(3), vector<double>(3), vector<double>(3));
         CelestialBody body2 = CelestialBody(500000, pos2, vector<double>(3), vector<double>(3), vector<double>(3));
-        CelestialBody body3 = CelestialBody(3, pos3, vector<double>(3), vector<double>(3), vector<double>(3));
+        CelestialBody body3 = CelestialBody(555555, pos3, vector<double>(3), vector<double>(3), vector<double>(3));
         CelestialBody body4 = CelestialBody(4, pos4, vector<double>(3), vector<double>(3), vector<double>(3));
 
-        vector<double> origin  = vector<double>(3);
-        TreeNode root = TreeNode(&body1);
-        root.insertBody(&body2);
+        // vector<double> origin  = vector<double>(3);
+        // TreeNode root = TreeNode(&body1);
+        // root.insertBody(&body2);
+
+        BarnesHut tree = BarnesHut(&bodies[0]);
+        for (int i = 1; i < bodynumber; i++) tree.insert(&bodies[i]);
+        // tree.insert(&body2);
+        // tree.insert(&body3);
+        vector<double> force = tree.calculateForce(bodies[0], tree.root); 
+        cout << force[0] << " " << force[1] << " " << force[2] << endl;
+        cout << Fsum[0][0] << " " << Fsum[0][1] << " " << Fsum[0][2] << endl;
+
+
+        // vector<double> brute_force = body1.CalcCompF(body2); 
+        // cout << brute_force[0] << " " << brute_force[1] << " " << brute_force[2] << endl;
+
+
+
         //root.insertBody(&body3);
         //root.insertBody(&body4);
         //root.insertBody(&bodies[2]);
         //root.insertBody(&bodies[3]);
         cout << "Tree" << endl;
-        root.traverseTree(&root);
-        cout << root.centerOfMass[0] << " " << root.centerOfMass[1] << " " << root.centerOfMass[2] << endl;
+        //root.traverseTree(&root);
+        //cout << root.centerOfMass[0] << " " << root.centerOfMass[1] << " " << root.centerOfMass[2] << endl;
 
         //Calculating speed and distance from acceleration
         //it is just taking the acceleration given and integrating over a specified time period, with additional intial velocity considered
@@ -168,6 +183,7 @@ int main(){
         vector<vector<double>> Vint (bodies.size(), vector<double> (3));
         vector<vector<double>> Pint (bodies.size(), vector<double> (3));
 
+        std::ofstream pos ("pos.csv"); 
 
         for (int t = 0; t < time.size(); t++){
             for (int i = 0; i < bodies.size(); i++){
@@ -175,15 +191,19 @@ int main(){
                 bodies[i].setAccel(Asum[i]);
                 for (int j = 0; j < 3; j++){
                     Vint[i][j] = Aint[i][j]*timeStep + Vint[i][j];
-                    Pint[i][j] = 0.5*Aint[i][j]*timeStep*timeStep + Pint[i][j];
+                    Pint[i][j] = 0.5*Aint[i][j]*0.1 + Pint[i][j];
                     vector<double> pos = bodies[i].getPosition();
+                    //bodies[i].setPosition(pos + Pint[i]);
+                    //deltaP..
                     //bodies[i].setPosition(pos[i] + Pint[j]);
                 }
+
                 cout << "A " << Aint[i][0] << "\t" << Aint[i][1] << "\t" << Aint[i][2] << endl;
                 cout << "V " << Vint[i][0] << "\t" << Vint[i][1] << "\t" << Vint[i][2] << endl;	
                 cout << "P " << Pint[i][0] << "\t" << Pint[i][1] << "\t" << Pint[i][2] << endl;
             }
             cout << "\n";
+            pos << Pint[0][0] << ", ";          //Headings for file
         }
 
         //visualization and printing

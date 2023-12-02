@@ -1,43 +1,44 @@
 #include <vector>
 #include <cmath>
-#include "TreeNode.cpp"
+#include<iostream>
 #include "CelestialBody.cpp"
+#include "TreeNode.cpp"
+
+using std::cout;
+using std::endl;
 
 class BarnesHut{
     private:
-        static TreeNode root;
         double theta = 0.5;
 
     public:
-        BarnesHut(CelestialBody *body){
+
+        TreeNode root;
+
+        BarnesHut(CelestialBody* body){
             root = TreeNode(body);
         }
 
-        void insert(CelestialBody *body){
+        void insert(CelestialBody* body){
             root.insertBody(body);
         }
 
-        vector<double> calculateForce(CelestialBody body, TreeNode node = root){ 
-            if (root.external) return body.CalcCompF(*root.external);
+        vector<double> calculateForce(CelestialBody body, TreeNode node){ 
+            if (node.external) return body.CalcCompF(*node.external);
 
             double s = 2*BOUNDARY*pow(0.5, node.getDepth()-1);
             CelestialBody tempBody = CelestialBody(node.getTotalMass(), node.centerOfMass, vector<double>(3), vector<double>(3), vector<double>(3));
             double d = body.CalcR(tempBody);
-            
+            //cout << s/d << endl;
             if (s/d < theta){  //the body is sufficiently far away from the center of mass.
                 return body.CalcCompF(tempBody);
             }
-            else{
-                vector<double> force = vector<double>(3);
-                for (auto child: node.internal){
+            vector<double> force = vector<double>(3);
+            for (auto child: node.internal){
+                if(child){
                     force = force + calculateForce(body, *child);
-                }
-                return force;
+                } //check if child is null
             }
-
-            for (auto node: root.internal){
-
-            }
-
+            return force;
         }
 };
