@@ -152,7 +152,6 @@ int main(){
                     vector<double> pos = bodies[i].getPosition();
                     bodies[i].setPosition(pos[i] + Pint[j]);
                 }
-                cout << "A " << Aint[i][0] << "\t" << Aint[i][1] << "\t" << Aint[i][2] << endl;
                 cout << "V " << Vint[i][0] << "\t" << Vint[i][1] << "\t" << Vint[i][2] << endl;	
                 cout << "P " << Pint[i][0] << "\t" << Pint[i][1] << "\t" << Pint[i][2] << endl;
             }
