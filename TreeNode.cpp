@@ -28,6 +28,10 @@ class TreeNode{
             return depth;
         }
 
+        int getTotalMass(){
+            return totalMass;
+        }
+
         //get octant
         int getOctant(CelestialBody* body){
             vector<double> pos = body->getPosition();
