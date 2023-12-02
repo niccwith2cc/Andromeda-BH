@@ -1,6 +1,6 @@
 #include <vector>
 #include <cmath>
-#include<algorithm>
+#include <algorithm>
 
 using std::vector;
 // const double  G = 6.6740105e-11;
@@ -12,6 +12,17 @@ std::vector<T> operator/(const std::vector<T>& vec, const double& s) {
     for(int i=0;i<vec.size();++i)
         res[i] = vec[i] / s;
     return res;
+}
+
+template <typename T>
+std::vector<T> operator+(const std::vector<T>& vec1, const std::vector<T>& vec2) {
+    if(vec1.size() == vec2.size){
+        std::vector<T> res(vec1.size());
+        for(int i=0;i<vec1.size();++i)
+            res[i] = vec1[i] + vec2[i];
+        return res;
+    }
+    // add exception
 }
 
 class CelestialBody{
@@ -84,7 +95,6 @@ class CelestialBody{
         }
 
         vector<double> CalcCompF(CelestialBody body2){
-            
             vector<double> position2 = body2.getPosition();
             double FR = CalcForce(body2)/CalcR(body2);
             return {(position[0]-position2[0])*FR,(position[1]-position2[1])*FR,(position[2]-position2[2])*CalcForce(body2)/CalcR(body2)};

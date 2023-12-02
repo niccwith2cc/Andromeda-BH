@@ -19,11 +19,20 @@ class BarnesHut{
 
         vector<double> calculateForce(CelestialBody body, TreeNode node = root){ 
             if (root.external) return body.CalcCompF(*root.external);
+
             double s = 2*BOUNDARY*pow(0.5, node.getDepth()-1);
             CelestialBody tempBody = CelestialBody(node.getTotalMass(), node.centerOfMass, vector<double>(3), vector<double>(3), vector<double>(3));
             double d = body.CalcR(tempBody);
-            if (s/d < theta){
-                
+            
+            if (s/d < theta){  //the body is sufficiently far away from the center of mass.
+                return body.CalcCompF(tempBody);
+            }
+            else{
+                vector<double> force = vector<double>(3);
+                for (auto child: node.internal){
+                    force = force + calculateForce(body, *child);
+                }
+                return force;
             }
 
             for (auto node: root.internal){

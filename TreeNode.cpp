@@ -1,7 +1,7 @@
 #include<vector>
 #include<iostream> //remove later?
 
-using namespace std;
+using std::vector;
 
 const double BOUNDARY = 1000000.0;
 
