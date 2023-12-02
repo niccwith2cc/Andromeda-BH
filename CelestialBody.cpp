@@ -78,14 +78,15 @@ class CelestialBody{
         // just in case {mass*body2.getMass()*G*(position2[0]-position[0])/pow((position2[0]-position[0]),3),mass*body2.getMass()*G*(position2[1]-position[1])/pow((position2[1]-position[1]),3),mass*body2.getMass()*G*(position2[2]-position[2])/pow((position2[2]-position[2]),3)};
 
         double CalcForce(CelestialBody body2){
-            vector<double> position2 = body2.getPosition();
+            //vector<double> position2 = body2.getPosition();
             double instantForce = -G*mass*body2.getMass()/(pow(CalcR(body2),2));
             return instantForce;
         }
 
         vector<double> CalcCompF(CelestialBody body2){
             vector<double> position2 = body2.getPosition();
-            return {(position2[0]-position[0])*CalcForce(body2)/CalcR(body2),(position2[1]-position[1])*CalcForce(body2)/CalcR(body2),(position2[2]-position[2])*CalcForce(body2)/CalcR(body2)};
+            double FR = CalcForce(body2)/CalcR(body2);
+            return {(position[0]-position2[0])*FR,(position[1]-position2[1])*FR,(position[2]-position2[2])*CalcForce(body2)/CalcR(body2)};
         }
 
         // vector<double> DivideVectorByScalar(const vector<double>& v, int k) {
