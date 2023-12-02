@@ -135,7 +135,7 @@ int main(){
 
         // hence the pseudo code would be:
         // for all bodies {
-        //      for each time step{
+        //      for each time step{s
             //      use setters to set the acceleration??
         vector<vector<double>> Aint (bodies.size(), vector<double> (3));
         vector<vector<double>> Vint (bodies.size(), vector<double> (3));
@@ -148,13 +148,15 @@ int main(){
                 bodies[i].setAccel(Asum[i]);
                 for (int j = 0; j < 3; j++){
                     Vint[i][j] = Aint[i][j]*timeStep + Vint[i][j];
-                    Pint[i][j] = 0.5*Aint[i][j]*timeStep*timeStep + Pint[i][j];
+                    Pint[i][j] = 0.5*Aint[i][j]*timeStep*timeStep + Vint[i][j]*timeStep + Pint[i][j];
                 }
-                
+                cout << "A " << Aint[i][0] << "\t" << Aint[i][1] << "\t" << Aint[i][2] << endl;
                 cout << "V " << Vint[i][0] << "\t" << Vint[i][1] << "\t" << Vint[i][2] << endl;	
-                cout << "P " <<Pint[i][0] << "\t" << Pint[i][1] << "\t" << Pint[i][2] << endl;
+                cout << "P " << Pint[i][0] << "\t" << Pint[i][1] << "\t" << Pint[i][2] << endl;
             }
+            cout << "\n";
         }
+
 
         //visualization and printing
         //cout << "get Accel" << '\n';
