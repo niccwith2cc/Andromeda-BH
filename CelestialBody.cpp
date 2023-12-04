@@ -4,6 +4,7 @@
 
 using std::vector;
 // const double  G = 6.6740105e-11;
+// increasing the gravitational constant so observable change is done over a smaller time period
 const double  G = 90000000;
 
 template <typename T>
@@ -87,14 +88,14 @@ class CelestialBody{
         // once the total force is calculated, the components can be extracted for use to calculate the summation force for all the bodies acting
         // on the that body.
 
-        // just in case {mass*body2.getMass()*G*(position2[0]-position[0])/pow((position2[0]-position[0]),3),mass*body2.getMass()*G*(position2[1]-position[1])/pow((position2[1]-position[1]),3),mass*body2.getMass()*G*(position2[2]-position[2])/pow((position2[2]-position[2]),3)};
-
+        // Calculating the force between two bodies F = -G M1 M2 / (r^2) with r being the second norm of a 3D position vector between M1 and M2 
         double CalcForce(CelestialBody body2){
             //vector<double> position2 = body2.getPosition();
             double instantForce = -G*mass*body2.getMass()/(pow(CalcR(body2),2));
             return instantForce;
         }
 
+        // Calculating the components of the force given by CalcForce, by taking the vector dot product. F12*r21/|r21|.
         vector<double> CalcCompF(CelestialBody body2){
             vector<double> position2 = body2.getPosition();
             double r = CalcR(body2);
@@ -103,15 +104,7 @@ class CelestialBody{
             return {(position[0]-position2[0])*FR,(position[1]-position2[1])*FR,(position[2]-position2[2])*FR};
         }
 
-        // vector<double> DivideVectorByScalar(const vector<double>& v, int k) {
-        //     vector<double> result;
-        //     result.reserve(v.size());
-        //     for (const auto& element : v) {
-        //         result.push_back(element / k);
-        //     }
-        //     return result;
-        // }
-        
+        // Calculating the components of the acceleration given by CalcCompF, by dividing by the mass of each body.
         vector<double> CalcCompA(CelestialBody const body2){
             vector<double> instantAcc = CalcCompF(body2)/mass; //DivideVectorByScalar(CalcCompF(body2),mass);
             return instantAcc;

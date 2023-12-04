@@ -1,8 +1,7 @@
 #include<vector>
-#include<iostream> //remove later?
-
 using std::vector;
 
+// Creating an Octree to place all the celestial bodies in them.
 const double BOUNDARY = 1000000.0;
 
 class TreeNode{

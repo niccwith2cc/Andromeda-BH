@@ -12,6 +12,7 @@ using std::experimental::randint;
 
 // Hardcoding the Galaxy by taking a fixed number of bodies and generating their random positions and masses
 
+// Random number generation to use for the position of the bodies
 double generateRandomDouble(double min, double max) {
         std::random_device rd;
         std::mt19937 gen(rd());
@@ -34,7 +35,7 @@ int main(){
     vector<double> position(3);
     vector<CelestialBody> bodies;
 
-    //generating the bodies using the CelestialBody class and giving them random masses and positions
+    //Generating the bodies using the CelestialBody class and giving them random masses and positions
     for (int i = 0; i < bodynumber; i++){
         mass = std::experimental::randint(500000,1000000);
         position = generateRandomPosition(); //check it out later
@@ -46,7 +47,7 @@ int main(){
     vector<vector<double>> Fsum (bodies.size(), vector<double> (3,0));
     vector<vector<double>> Asum (bodies.size(), vector<double> (3,0));
 
-    //for loop to calculate
+    //for loop to calculate the Forces and Accelerations of each body for each axis given. x y and z.
     for (int i = 0; i < bodies.size(); i++){
         for (int j = 0; j < bodies.size(); j++){
             if (&bodies[i] != &bodies[j]){
@@ -62,57 +63,7 @@ int main(){
             }
         }     
     }
-
-    //visualization and printing
-    cout << "The masses of the bodies: " << endl;
-    for (int i = 0 ; i <bodies.size(); i++){
-        cout << bodies[i].getMass() << " \t";
-    }
-        cout << endl;
-        cout << endl;
-    //     cout << "The Forces:" << endl ;
-    // for (int i = 0; i < bodies.size(); i++){
-    //     for (int j = 0; j < 3; j++){
-    //         cout << Fsum[i][j] << " \t";
-    //     }
-    //         cout << endl;
-    // }
-    
-    //     cout << endl;
-    //     cout <<"The Acceleration:" << endl ;
-
-    // for (int i = 0; i < bodies.size(); i++){
-    //     for (int j = 0; j < 3; j++){
-    //         cout << Asum[i][j] << " \t";
-    //     }
-    //         cout << endl;
-    // }
-
-        cout << endl;
-        cout << "the positions: " << endl;
-    for (int i = 0; i < bodies.size(); i++){
-        cout << "for body " << i << ": ";
-        for (int j = 0; j < 3; j++){
-            cout << bodies[i].getPosition().at(j)<< " ";
-        }
-            cout << endl;
-    }
-
-    //     cout << endl;
-    //     cout << "the position vectors: " ;;
-    // for (int i = 0; i < bodies.size(); i++){
-    //     for (int j = 0; j < bodies.size(); j++){
-    //         if (&bodies[i] != &bodies[j]){
-    //         cout << bodies[i].CalcR(bodies[j])<< " ";
-    //         }
-    //         cout << endl;
-    //     }
-    // }
-
-    //     cout << "check " << Fsum[0][0] << endl;
-    //     cout << "check " << Fsum[0][1] << endl;
-    //     cout << "check " << Fsum[0][2] << endl;
-
+        //creating bodies for testing the algorithm
 
         vector<double> pos1  = vector<double>{ 10.0, 10.0, 10.0 };
         vector<double> pos2  = vector<double>{ 100000.0, 100000.0, 100000.0 };
@@ -149,6 +100,7 @@ int main(){
         //root.traverseTree(&root);
         //cout << root.centerOfMass[0] << " " << root.centerOfMass[1] << " " << root.centerOfMass[2] << endl;
 
+
         //Calculating speed and distance from acceleration
         //it is just taking the acceleration given and integrating over a specified time period, with additional intial velocity considered
         //for now we assume vo and so are 0.  
@@ -165,22 +117,10 @@ int main(){
 
         cout << "\n";
 
-        // for (int i = 0; i < 3; i++){
-        // cout << bodies[i].setAccel(acomp[0], acomp[1], acomp[2]) << " ";
-        // }
-        // cout << "\n";
-
         // The way we can complete the calculations:
         // take an infinitesimally small time increment to integrate over, dt.
         // to calculate the velocity of each body. v = int[bounded](a* dt) + v_0 if there exists any previous velocity
         // to calculate the position of each body. p = int[bounded](v * dt) + p_0 = int[bounded](a * t * dt) + p_0
-
-        // hence the pseudo code would be:
-        // for all bodies {
-        //      for each time step{s
-            //      use setters to set the acceleration??
-
-        // trying out the integration
 
         vector<vector<double>> Aint (bodies.size(), vector<double> (3));
         vector<vector<double>> Vint (bodies.size(), vector<double> (3));
@@ -202,9 +142,9 @@ int main(){
                     bodies[i].setPosition(pos + Pint[j]);
                 }
 
-                cout << "A " << Aint[i][0] << "\t" << Aint[i][1] << "\t" << Aint[i][2] << endl;
-                cout << "V " << Vint[i][0] << "\t" << Vint[i][1] << "\t" << Vint[i][2] << endl;	
-                cout << "P " << Pint[i][0] << "\t" << Pint[i][1] << "\t" << Pint[i][2] << endl;
+                //cout << "A " << Aint[i][0] << "\t" << Aint[i][1] << "\t" << Aint[i][2] << endl;
+                //cout << "V " << Vint[i][0] << "\t" << Vint[i][1] << "\t" << Vint[i][2] << endl;	
+                //cout << "P " << Pint[i][0] << "\t" << Pint[i][1] << "\t" << Pint[i][2] << endl;
             }
             cout << "\n";
             for (int i = 0; i < bodies.size(); i++){
@@ -212,15 +152,4 @@ int main(){
             }
             cout << '\n';
         }
-
-        //visualization and printing
-        
-        
-        //         for (int k = 0; k < 3; k++) {
-        //             velo[i][k] += acceleration[k] * timeStep;
-        //         }
-        //     }
-        // }
-
-
 }
