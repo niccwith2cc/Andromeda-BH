@@ -76,7 +76,7 @@ vector<CelestialBody> generateBodies(int bodynumber){
 
 int main(){
 
-    int bodynumber =  2;
+    int bodynumber =  6;
     int mass;
     vector<double> position(3);
     vector<CelestialBody> bodies = generateBodies(bodynumber);
@@ -134,6 +134,12 @@ int main(){
 
         std::ofstream filestream ("pos.csv"); 
 
+        for (int i = 0; i < bodies.size(); i++){
+            vector<double> pos = bodies[i].getPosition();
+            filestream << pos[0] << ", " << pos[1] << ", " << pos[2] << ", ";
+        }
+        filestream << '\n';
+
         for (int t = 0; t < time.size(); t++){
             for (int i = 0; i < bodies.size(); i++){
                 Aint[i] = Asum[i];
@@ -150,7 +156,7 @@ int main(){
                 //cout << "V " << Vint[i][0] << "\t" << Vint[i][1] << "\t" << Vint[i][2] << endl;	
                 //cout << "P " << Pint[i][0] << "\t" << Pint[i][1] << "\t" << Pint[i][2] << endl;
             }
-            cout << "\n";
+            //cout << "\n";
             for (int i = 0; i < bodies.size(); i++){
                 filestream << Pint[i][0] << ", " << Pint[i][1] << ", " << Pint[i][2] << ", ";
             }
