@@ -22,6 +22,7 @@ Alexandra Apostolidou, Nicolas Hanna.
 
 Acknowledgment to: 
 http://arborjs.org/docs/barnes-hut
+
 https://en.wikipedia.org/wiki/Barnes%E2%80%93Hut_simulation
 
 ## Gitlab reminders
