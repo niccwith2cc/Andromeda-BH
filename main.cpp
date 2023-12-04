@@ -80,8 +80,14 @@ int main(){
     int mass;
     vector<double> position(3);
     vector<CelestialBody> bodies = generateBodies(bodynumber);
-    vector<vector<double>> Fsum = calculateForce(bodies);
+    vector<vector<double>> Fsum = calculateForce(bodies); //brute force
     vector<vector<double>> Asum = calculateAcceleration(bodies);
+
+    BarnesHut tree = BarnesHut(&bodies[0]);
+    for (int i = 1; i < bodies.size(); i++) tree.insert(&bodies[i]);
+    vector<vector<double>> F (bodies.size(), vector<double> (3,0));
+    for (int i = 0; i < bodies.size(); i++) F[i] = tree.calculateForce(bodies[i], tree.root);
+
 
     vector<double> time;
     const double timeStep = 1.0 / 100.0; // Calculate the time step size    
