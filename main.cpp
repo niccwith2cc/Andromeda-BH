@@ -90,8 +90,6 @@ int main(){
         // vector<double> brute_force = body1.CalcCompF(body2); 
         // cout << brute_force[0] << " " << brute_force[1] << " " << brute_force[2] << endl;
 
-
-
         //root.insertBody(&body3);
         //root.insertBody(&body4);
         //root.insertBody(&bodies[2]);
