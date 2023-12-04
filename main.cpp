@@ -156,9 +156,9 @@ int main(){
         // s = a*t^2/2 + vo*t + s0 
 
         vector<double> time;
-        const double timeStep = 10.0 / 100.0; // Calculate the time step size
+        const double timeStep = 1.0 / 100.0; // Calculate the time step size
         
-        for (int i = 0; i < 101; i++) {
+        for (int i = 0; i < 1001; i++) {
             double currentTime = i * timeStep;
             time.push_back(currentTime);
         }
@@ -191,11 +191,11 @@ int main(){
                 bodies[i].setAccel(Asum[i]);
                 for (int j = 0; j < 3; j++){
                     Vint[i][j] = Aint[i][j]*timeStep + Vint[i][j];
-                    Pint[i][j] = 0.5*Aint[i][j]*0.1 + Pint[i][j];
+                    Pint[i][j] = 0.5*Aint[i][j]*timeStep*timeStep + Vint[i][j]*timeStep + Pint[i][j];
                     vector<double> pos = bodies[i].getPosition();
                     //bodies[i].setPosition(pos + Pint[i]);
                     //deltaP..
-                    //bodies[i].setPosition(pos[i] + Pint[j]);
+                    bodies[i].setPosition(pos + Pint[j]);
                 }
 
                 cout << "A " << Aint[i][0] << "\t" << Aint[i][1] << "\t" << Aint[i][2] << endl;
@@ -203,55 +203,14 @@ int main(){
                 cout << "P " << Pint[i][0] << "\t" << Pint[i][1] << "\t" << Pint[i][2] << endl;
             }
             cout << "\n";
-            pos << Pint[0][0] << ", ";          //Headings for file
+            for (int i = 0; i < bodies.size(); i++){
+                pos << Pint[i][0] << ", " << Pint[i][1] << ", " << Pint[i][2] << ", ";
+            }
+            cout << '\n';
         }
 
         //visualization and printing
-        //cout << "get Accel" << '\n';
-        // for (int i = 0; i < bodies.size(); i++){
-        //     for (int j = 0; j < 3; j++){
-                    //cout << Aint[0][0][0] - bodies[0].getAccel().at(0) << " ";
-        //     }
-        //         cout << '\n';
-        // }
-
-        // cout << '\n';
-        // cout << '\n';
-
-        //visualization and printing
-        // cout << "A" << '\n';
-        // for (int i = 0; i < bodies.size(); i++){
-        //     for (int j = 0; j < 3; j++){
-        //         for (int k = 0; k < 2; k++){
-        //             cout << Aint[i][j][k] << " ";
-        //         }
-        //         cout << '\n';
-        //     }
-        //     cout << '\n';
-        // }
-
-        // cout << "V" << '\n';
-        // for (int i = 0; i < bodies.size(); i++){
-        //     for (int j = 0; j < 3; j++){
-        //         for (int k = 0; k < 2; k++){
-        //             cout << Vint[i][j][k] << " ";
-        //         }
-        //         cout << '\n';
-        //     }
-        //     cout << '\n';
-        // }
-
-
-        // cout << "P" << '\n';
-        // for (int i = 0; i < bodies.size(); i++){
-        //     for (int j = 0; j < 3; j++){
-        //         for (int k = 0; k < 2; k++){
-        //             cout << Pint[i][j][k] << " ";
-        //         }
-        //         cout << '\n';
-        //     }
-        //     cout << '\n';
-        // }
+        
         
         //         for (int k = 0; k < 3; k++) {
         //             velo[i][k] += acceleration[k] * timeStep;
