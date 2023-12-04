@@ -61,6 +61,23 @@ vector<vector<double>> calculateAcceleration(vector<CelestialBody> bodies){
     return Asum;
 }
 
+TEST_CASE("testing the calculateForce function") {
+    vector<CelestialBody> bodies;
+
+    bodies.push_back(CelestialBody(50000, vector<double>{1000.0, 1000.0, 1000.0}, vector<double>(3), vector<double>(3), vector<double>(3)));
+    bodies.push_back(CelestialBody(80000, vector<double>{-5000.0, -3000.0, 6000.0}, vector<double>(3), vector<double>(3), vector<double>(3)));
+
+    vector<vector<double>> forces = calculateForce(bodies);
+
+    BarnesHut tree = BarnesHut(&bodies[0]);
+    tree.insert(&bodies[1]);
+
+
+    for (int i = 0; i < bodies.size(); i++){
+        CHECK(forces[i] == tree.calculateForce(bodies[i], tree.root));
+    }
+}
+
 int main(){
 
     int bodynumber =  2;
@@ -133,26 +150,26 @@ int main(){
     //     cout << "check " << Fsum[0][2] << endl;
 
 
-        vector<double> pos1  = vector<double>{ 10.0, 10.0, 10.0 };
-        vector<double> pos2  = vector<double>{ 100000.0, 100000.0, 100000.0 };
-        vector<double> pos3  = vector<double>{ 900.0, -200.0, 30.0 };
-        vector<double> pos4  = vector<double>{ -8490.0, -500.0, 30.0  };
-        CelestialBody body1 = CelestialBody(500000, pos1, vector<double>(3), vector<double>(3), vector<double>(3));
-        CelestialBody body2 = CelestialBody(500000, pos2, vector<double>(3), vector<double>(3), vector<double>(3));
-        CelestialBody body3 = CelestialBody(555555, pos3, vector<double>(3), vector<double>(3), vector<double>(3));
-        CelestialBody body4 = CelestialBody(4, pos4, vector<double>(3), vector<double>(3), vector<double>(3));
+        // vector<double> pos1  = vector<double>{ 10.0, 10.0, 10.0 };
+        // vector<double> pos2  = vector<double>{ 100000.0, 100000.0, 100000.0 };
+        // vector<double> pos3  = vector<double>{ 900.0, -200.0, 30.0 };
+        // vector<double> pos4  = vector<double>{ -8490.0, -500.0, 30.0  };
+        // CelestialBody body1 = CelestialBody(500000, pos1, vector<double>(3), vector<double>(3), vector<double>(3));
+        // CelestialBody body2 = CelestialBody(500000, pos2, vector<double>(3), vector<double>(3), vector<double>(3));
+        // CelestialBody body3 = CelestialBody(555555, pos3, vector<double>(3), vector<double>(3), vector<double>(3));
+        // CelestialBody body4 = CelestialBody(4, pos4, vector<double>(3), vector<double>(3), vector<double>(3));
 
-        // vector<double> origin  = vector<double>(3);
-        // TreeNode root = TreeNode(&body1);
-        // root.insertBody(&body2);
+        // // vector<double> origin  = vector<double>(3);
+        // // TreeNode root = TreeNode(&body1);
+        // // root.insertBody(&body2);
 
-        BarnesHut tree = BarnesHut(&bodies[0]);
-        for (int i = 1; i < bodynumber; i++) tree.insert(&bodies[i]);
-        // tree.insert(&body2);
-        // tree.insert(&body3);
-        vector<double> force = tree.calculateForce(bodies[0], tree.root); 
-        cout << force[0] << " " << force[1] << " " << force[2] << endl;
-        cout << Fsum[0][0] << " " << Fsum[0][1] << " " << Fsum[0][2] << endl;
+        // BarnesHut tree = BarnesHut(&bodies[0]);
+        // for (int i = 1; i < bodynumber; i++) tree.insert(&bodies[i]);
+        // // tree.insert(&body2);
+        // // tree.insert(&body3);
+        // vector<double> force = tree.calculateForce(bodies[0], tree.root); 
+        // cout << force[0] << " " << force[1] << " " << force[2] << endl;
+        // cout << Fsum[0][0] << " " << Fsum[0][1] << " " << Fsum[0][2] << endl;
 
 
         // vector<double> brute_force = body1.CalcCompF(body2); 
@@ -164,7 +181,7 @@ int main(){
         //root.insertBody(&body4);
         //root.insertBody(&bodies[2]);
         //root.insertBody(&bodies[3]);
-        cout << "Tree" << endl;
+        //cout << "Tree" << endl;
         //root.traverseTree(&root);
         //cout << root.centerOfMass[0] << " " << root.centerOfMass[1] << " " << root.centerOfMass[2] << endl;
 
