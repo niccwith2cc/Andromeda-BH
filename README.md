@@ -21,6 +21,7 @@ a calculated ratio of s/d will be considered. S is the length of the octant of t
 Alexandra Apostolidou, Nicolas Hanna.
 
 Acknowledgment to: 
+
 http://arborjs.org/docs/barnes-hut
 
 https://en.wikipedia.org/wiki/Barnes%E2%80%93Hut_simulation

@@ -127,7 +127,7 @@ int main(){
         vector<vector<double>> Vint (bodies.size(), vector<double> (3));
         vector<vector<double>> Pint (bodies.size(), vector<double> (3));
 
-        std::ofstream pos ("pos.csv"); 
+        std::ofstream filestream ("filestream.csv"); 
 
         for (int t = 0; t < time.size(); t++){
             for (int i = 0; i < bodies.size(); i++){
@@ -137,20 +137,18 @@ int main(){
                     double Vprev = Vint[i][j];
                     Vint[i][j] = Aint[i][j]*timeStep + Vint[i][j];
                     Pint[i][j] = 0.5*(Vint[i][j]+Vprev)*timeStep + Pint[i][j];
-                    vector<double> pos = bodies[i].getPosition();
-                    //bodies[i].setPosition(pos + Pint[i]);
-                    //deltaP..
-                    bodies[i].setPosition(pos + Pint[j]);
                 }
-
+                vector<double> pos = bodies[i].getPosition();
+                bodies[i].setPosition(pos + Pint[i]);
+                
                 //cout << "A " << Aint[i][0] << "\t" << Aint[i][1] << "\t" << Aint[i][2] << endl;
                 //cout << "V " << Vint[i][0] << "\t" << Vint[i][1] << "\t" << Vint[i][2] << endl;	
                 //cout << "P " << Pint[i][0] << "\t" << Pint[i][1] << "\t" << Pint[i][2] << endl;
             }
             cout << "\n";
             for (int i = 0; i < bodies.size(); i++){
-                pos << Pint[i][0] << ", " << Pint[i][1] << ", " << Pint[i][2] << ", ";
+                filestream << Pint[i][0] << ", " << Pint[i][1] << ", " << Pint[i][2] << ", ";
             }
-            cout << '\n';
+            filestream << '\n';
         }
 }
