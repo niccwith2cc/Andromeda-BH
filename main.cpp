@@ -25,7 +25,7 @@ vector<double> generateRandomPosition(){
             position[i] = generateRandomDouble(-BOUNDARY, BOUNDARY);
         }   
     return position;
-}
+};
 
 int main(){
 
@@ -156,9 +156,9 @@ int main(){
         // s = a*t^2/2 + vo*t + s0 
 
         vector<double> time;
-        const double timeStep = 10.0 / 100.0; // Calculate the time step size
+        const double timeStep = 1.0 / 100.0; // Calculate the time step size
         
-        for (int i = 0; i < 101; i++) {
+        for (int i = 0; i < 1001; i++) {
             double currentTime = i * timeStep;
             time.push_back(currentTime);
         }
@@ -179,6 +179,9 @@ int main(){
         // for all bodies {
         //      for each time step{s
             //      use setters to set the acceleration??
+
+        // trying out the integration
+
         vector<vector<double>> Aint (bodies.size(), vector<double> (3));
         vector<vector<double>> Vint (bodies.size(), vector<double> (3));
         vector<vector<double>> Pint (bodies.size(), vector<double> (3));
@@ -190,12 +193,13 @@ int main(){
                 Aint[i] = Asum[i];
                 bodies[i].setAccel(Asum[i]);
                 for (int j = 0; j < 3; j++){
+                    double Vprev = Vint[i][j];
                     Vint[i][j] = Aint[i][j]*timeStep + Vint[i][j];
-                    Pint[i][j] = 0.5*Aint[i][j]*0.1 + Pint[i][j];
+                    Pint[i][j] = 0.5*(Vint[i][j]+Vprev)*timeStep + Pint[i][j];
                     vector<double> pos = bodies[i].getPosition();
                     //bodies[i].setPosition(pos + Pint[i]);
                     //deltaP..
-                    //bodies[i].setPosition(pos[i] + Pint[j]);
+                    bodies[i].setPosition(pos + Pint[j]);
                 }
 
                 cout << "A " << Aint[i][0] << "\t" << Aint[i][1] << "\t" << Aint[i][2] << endl;
