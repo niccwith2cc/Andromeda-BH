@@ -1,6 +1,6 @@
 #include <vector>
 #include <cmath>
-#include<iostream>
+#include <iostream>
 #include "CelestialBody.cpp"
 #include "TreeNode.cpp"
 

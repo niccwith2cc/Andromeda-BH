@@ -75,62 +75,8 @@ int main(){
         bodies.push_back(body);
     }
 
-    //visualization and printing
-    cout << "The masses of the bodies: " << endl;
-    for (int i = 0 ; i <bodies.size(); i++){
-        cout << bodies[i].getMass() << " \t";
-    }
-    cout << endl;
-
-
     vector<vector<double>> Fsum = calculateForce(bodies);
     vector<vector<double>> Asum = calculateAcceleration(bodies);
-
-            cout << "The Forces:" << endl ;
-    for (int i = 0; i < bodies.size(); i++){
-        for (int j = 0; j < 3; j++){
-            cout << Fsum[i][j] << " \t";
-        }
-            cout << endl;
-    }
-    
-    //     cout << endl;
-    //     cout <<"The Acceleration:" << endl ;
-
-    for (int i = 0; i < bodies.size(); i++){
-        for (int j = 0; j < 3; j++){
-            cout << Asum[i][j] << " \t";
-        }
-            cout << endl;
-    }
-
-
-
-    //     cout << endl;
-    //     cout << "the positions: " << endl;
-    // for (int i = 0; i < bodies.size(); i++){
-    //     cout << "for body " << i << ": ";
-    //     for (int j = 0; j < 3; j++){
-    //         cout << bodies[i].getPosition().at(j)<< " ";
-    //     }
-    //         cout << endl;
-    // }
-
-    //     cout << endl;
-    //     cout << "the position vectors: " ;;
-    // for (int i = 0; i < bodies.size(); i++){
-    //     for (int j = 0; j < bodies.size(); j++){
-    //         if (&bodies[i] != &bodies[j]){
-    //         cout << bodies[i].CalcR(bodies[j])<< " ";
-    //         }
-    //         cout << endl;
-    //     }
-    // }
-
-    //     cout << "check " << Fsum[0][0] << endl;
-    //     cout << "check " << Fsum[0][1] << endl;
-    //     cout << "check " << Fsum[0][2] << endl;
-
 
         // vector<double> pos1  = vector<double>{ 10.0, 10.0, 10.0 };
         // vector<double> pos2  = vector<double>{ 100000.0, 100000.0, 100000.0 };
@@ -141,18 +87,11 @@ int main(){
         // CelestialBody body3 = CelestialBody(555555, pos3, vector<double>(3), vector<double>(3), vector<double>(3));
         // CelestialBody body4 = CelestialBody(4, pos4, vector<double>(3), vector<double>(3), vector<double>(3));
 
-        // // vector<double> origin  = vector<double>(3);
-        // // TreeNode root = TreeNode(&body1);
-        // // root.insertBody(&body2);
-
         // BarnesHut tree = BarnesHut(&bodies[0]);
         // for (int i = 1; i < bodynumber; i++) tree.insert(&bodies[i]);
-        // // tree.insert(&body2);
-        // // tree.insert(&body3);
         // vector<double> force = tree.calculateForce(bodies[0], tree.root); 
         // cout << force[0] << " " << force[1] << " " << force[2] << endl;
         // cout << Fsum[0][0] << " " << Fsum[0][1] << " " << Fsum[0][2] << endl;
-
 
         // vector<double> brute_force = body1.CalcCompF(body2); 
         // cout << brute_force[0] << " " << brute_force[1] << " " << brute_force[2] << endl;
@@ -172,15 +111,12 @@ int main(){
         // v = a*t + vo where t is the instant at which the acceleration is calculated.
         // s = a*t^2/2 + vo*t + s0 
 
-        vector<double> time;
-        const double timeStep = 1.0 / 100.0; // Calculate the time step size
-        
+    vector<double> time;
+    const double timeStep = 1.0 / 100.0; // Calculate the time step size    
         for (int i = 0; i < 1001; i++) {
             double currentTime = i * timeStep;
             time.push_back(currentTime);
         }
-
-        cout << "\n";
 
         // The way we can complete the calculations:
         // take an infinitesimally small time increment to integrate over, dt.
@@ -191,7 +127,7 @@ int main(){
         vector<vector<double>> Vint (bodies.size(), vector<double> (3));
         vector<vector<double>> Pint (bodies.size(), vector<double> (3));
 
-        // std::ofstream pos ("pos.csv"); 
+        std::ofstream pos ("pos.csv"); 
 
         for (int t = 0; t < time.size(); t++){
             for (int i = 0; i < bodies.size(); i++){
