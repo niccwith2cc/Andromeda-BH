@@ -9,14 +9,15 @@ using std::endl;
 
 class BarnesHut{
     private:
-        double theta = 0.5;
+        double theta;
 
     public:
 
         TreeNode root;
 
-        BarnesHut(CelestialBody* body){
+        BarnesHut(CelestialBody* body, double th = 0.5){
             root = TreeNode(body);
+            theta = th;
         }
 
         void insert(CelestialBody* body){
@@ -35,9 +36,9 @@ class BarnesHut{
             }
             vector<double> force = vector<double>(3);
             for (auto child: node.internal){
-                if(child){
+                if(child){ //check if child is null
                     force = force + calculateForce(body, *child);
-                } //check if child is null
+                } 
             }
             return force;
         }
