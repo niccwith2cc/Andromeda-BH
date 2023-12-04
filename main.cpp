@@ -207,55 +207,14 @@ int main(){
                 cout << "P " << Pint[i][0] << "\t" << Pint[i][1] << "\t" << Pint[i][2] << endl;
             }
             cout << "\n";
-            pos << Pint[0][0] << ", ";          //Headings for file
+            for (int i = 0; i < bodies.size(); i++){
+                pos << Pint[i][0] << ", " << Pint[i][1] << ", " << Pint[i][2] << ", ";
+            }
+            cout << '\n';
         }
 
         //visualization and printing
-        //cout << "get Accel" << '\n';
-        // for (int i = 0; i < bodies.size(); i++){
-        //     for (int j = 0; j < 3; j++){
-                    //cout << Aint[0][0][0] - bodies[0].getAccel().at(0) << " ";
-        //     }
-        //         cout << '\n';
-        // }
-
-        // cout << '\n';
-        // cout << '\n';
-
-        //visualization and printing
-        // cout << "A" << '\n';
-        // for (int i = 0; i < bodies.size(); i++){
-        //     for (int j = 0; j < 3; j++){
-        //         for (int k = 0; k < 2; k++){
-        //             cout << Aint[i][j][k] << " ";
-        //         }
-        //         cout << '\n';
-        //     }
-        //     cout << '\n';
-        // }
-
-        // cout << "V" << '\n';
-        // for (int i = 0; i < bodies.size(); i++){
-        //     for (int j = 0; j < 3; j++){
-        //         for (int k = 0; k < 2; k++){
-        //             cout << Vint[i][j][k] << " ";
-        //         }
-        //         cout << '\n';
-        //     }
-        //     cout << '\n';
-        // }
-
-
-        // cout << "P" << '\n';
-        // for (int i = 0; i < bodies.size(); i++){
-        //     for (int j = 0; j < 3; j++){
-        //         for (int k = 0; k < 2; k++){
-        //             cout << Pint[i][j][k] << " ";
-        //         }
-        //         cout << '\n';
-        //     }
-        //     cout << '\n';
-        // }
+        
         
         //         for (int k = 0; k < 3; k++) {
         //             velo[i][k] += acceleration[k] * timeStep;
