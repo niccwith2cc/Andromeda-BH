@@ -1,10 +1,14 @@
+#define DOCTEST_CONFIG_IMPLEMENT
+
 #include <vector>
 #include <cmath>
 #include <iostream>
 #include <random>
 #include <experimental/random>
 #include <fstream>
+#include "doctest.h"
 #include "BarnesHut.cpp"
+
 using std::vector;
 using std::cout;
 using std::endl;
@@ -27,6 +31,36 @@ vector<double> generateRandomPosition(){
     return position;
 }
 
+vector<vector<double>> calculateForce(vector<CelestialBody> bodies){
+    //Initializing the forces total sum being a nx3 matrix
+    vector<vector<double>> Fsum (bodies.size(), vector<double> (3,0));
+
+    for (int i = 0; i < bodies.size(); i++){
+        for (int j = 0; j < bodies.size(); j++){
+            if (&bodies[i] != &bodies[j]){
+                vector<double> comp =  bodies[i].CalcCompF(bodies[j]);
+                Fsum[i] = Fsum[i] + comp; 
+            }
+        }     
+    }
+    return Fsum;
+}
+
+vector<vector<double>> calculateAcceleration(vector<CelestialBody> bodies){
+    //Initializing the acceleration total sum being a nx3 matrix
+    vector<vector<double>> Asum (bodies.size(), vector<double> (3,0));
+
+    for (int i = 0; i < bodies.size(); i++){
+        for (int j = 0; j < bodies.size(); j++){
+            if (&bodies[i] != &bodies[j]){
+                vector<double> comp =  bodies[i].CalcCompA(bodies[j]);
+                Asum[i] = Asum[i] + comp; 
+            }
+        }     
+    }
+    return Asum;
+}
+
 int main(){
 
     int bodynumber =  2;
@@ -42,61 +76,46 @@ int main(){
         bodies.push_back(body);
     }
 
-    //Initializing the forces and acceleration total sum being a nx3 matrix
-    vector<vector<double>> Fsum (bodies.size(), vector<double> (3,0));
-    vector<vector<double>> Asum (bodies.size(), vector<double> (3,0));
-
-    //for loop to calculate
-    for (int i = 0; i < bodies.size(); i++){
-        for (int j = 0; j < bodies.size(); j++){
-            if (&bodies[i] != &bodies[j]){
-                vector<double> comp =  bodies[i].CalcCompF(bodies[j]);
-                vector<double> acomp =  bodies[i].CalcCompA(bodies[j]);
-                Fsum[i][0] += comp[0]; //the x components
-                Fsum[i][1] += comp[1]; //the y components
-                Fsum[i][2] += comp[2]; //the z components
-
-                Asum[i][0] += acomp[0]; //the x components
-                Asum[i][1] += acomp[1]; //the y components
-                Asum[i][2] += acomp[2]; //the z components
-            }
-        }     
-    }
-
     //visualization and printing
     cout << "The masses of the bodies: " << endl;
     for (int i = 0 ; i <bodies.size(); i++){
         cout << bodies[i].getMass() << " \t";
     }
-        cout << endl;
-        cout << endl;
-    //     cout << "The Forces:" << endl ;
-    // for (int i = 0; i < bodies.size(); i++){
-    //     for (int j = 0; j < 3; j++){
-    //         cout << Fsum[i][j] << " \t";
-    //     }
-    //         cout << endl;
-    // }
+    cout << endl;
+
+
+    vector<vector<double>> Fsum = calculateForce(bodies);
+    vector<vector<double>> Asum = calculateAcceleration(bodies);
+
+            cout << "The Forces:" << endl ;
+    for (int i = 0; i < bodies.size(); i++){
+        for (int j = 0; j < 3; j++){
+            cout << Fsum[i][j] << " \t";
+        }
+            cout << endl;
+    }
     
     //     cout << endl;
     //     cout <<"The Acceleration:" << endl ;
 
-    // for (int i = 0; i < bodies.size(); i++){
-    //     for (int j = 0; j < 3; j++){
-    //         cout << Asum[i][j] << " \t";
-    //     }
-    //         cout << endl;
-    // }
-
-        cout << endl;
-        cout << "the positions: " << endl;
     for (int i = 0; i < bodies.size(); i++){
-        cout << "for body " << i << ": ";
         for (int j = 0; j < 3; j++){
-            cout << bodies[i].getPosition().at(j)<< " ";
+            cout << Asum[i][j] << " \t";
         }
             cout << endl;
     }
+
+
+
+    //     cout << endl;
+    //     cout << "the positions: " << endl;
+    // for (int i = 0; i < bodies.size(); i++){
+    //     cout << "for body " << i << ": ";
+    //     for (int j = 0; j < 3; j++){
+    //         cout << bodies[i].getPosition().at(j)<< " ";
+    //     }
+    //         cout << endl;
+    // }
 
     //     cout << endl;
     //     cout << "the position vectors: " ;;
@@ -179,35 +198,35 @@ int main(){
         // for all bodies {
         //      for each time step{s
             //      use setters to set the acceleration??
-        vector<vector<double>> Aint (bodies.size(), vector<double> (3));
-        vector<vector<double>> Vint (bodies.size(), vector<double> (3));
-        vector<vector<double>> Pint (bodies.size(), vector<double> (3));
+        // vector<vector<double>> Aint (bodies.size(), vector<double> (3));
+        // vector<vector<double>> Vint (bodies.size(), vector<double> (3));
+        // vector<vector<double>> Pint (bodies.size(), vector<double> (3));
 
-        std::ofstream pos ("pos.csv"); 
+        // std::ofstream pos ("pos.csv"); 
 
-        for (int t = 0; t < time.size(); t++){
-            for (int i = 0; i < bodies.size(); i++){
-                Aint[i] = Asum[i];
-                bodies[i].setAccel(Asum[i]);
-                for (int j = 0; j < 3; j++){
-                    Vint[i][j] = Aint[i][j]*timeStep + Vint[i][j];
-                    Pint[i][j] = 0.5*Aint[i][j]*timeStep*timeStep + Vint[i][j]*timeStep + Pint[i][j];
-                    vector<double> pos = bodies[i].getPosition();
-                    //bodies[i].setPosition(pos + Pint[i]);
-                    //deltaP..
-                    bodies[i].setPosition(pos + Pint[j]);
-                }
+        // for (int t = 0; t < time.size(); t++){
+        //     for (int i = 0; i < bodies.size(); i++){
+        //         Aint[i] = Asum[i];
+        //         bodies[i].setAccel(Asum[i]);
+        //         for (int j = 0; j < 3; j++){
+        //             Vint[i][j] = Aint[i][j]*timeStep + Vint[i][j];
+        //             Pint[i][j] = 0.5*Aint[i][j]*timeStep*timeStep + Vint[i][j]*timeStep + Pint[i][j];
+        //             vector<double> pos = bodies[i].getPosition();
+        //             //bodies[i].setPosition(pos + Pint[i]);
+        //             //deltaP..
+        //             bodies[i].setPosition(pos + Pint[j]);
+        //         }
 
-                cout << "A " << Aint[i][0] << "\t" << Aint[i][1] << "\t" << Aint[i][2] << endl;
-                cout << "V " << Vint[i][0] << "\t" << Vint[i][1] << "\t" << Vint[i][2] << endl;	
-                cout << "P " << Pint[i][0] << "\t" << Pint[i][1] << "\t" << Pint[i][2] << endl;
-            }
-            cout << "\n";
-            for (int i = 0; i < bodies.size(); i++){
-                pos << Pint[i][0] << ", " << Pint[i][1] << ", " << Pint[i][2] << ", ";
-            }
-            cout << '\n';
-        }
+        //         cout << "A " << Aint[i][0] << "\t" << Aint[i][1] << "\t" << Aint[i][2] << endl;
+        //         cout << "V " << Vint[i][0] << "\t" << Vint[i][1] << "\t" << Vint[i][2] << endl;	
+        //         cout << "P " << Pint[i][0] << "\t" << Pint[i][1] << "\t" << Pint[i][2] << endl;
+        //     }
+        //     cout << "\n";
+        //     for (int i = 0; i < bodies.size(); i++){
+        //         pos << Pint[i][0] << ", " << Pint[i][1] << ", " << Pint[i][2] << ", ";
+        //     }
+        //     cout << '\n';
+        // }
 
         //visualization and printing
         
