@@ -60,21 +60,26 @@ vector<vector<double>> calculateAcceleration(vector<CelestialBody> bodies){
 }
 
 
+    //Generating the bodies using the CelestialBody class and giving them random masses and positions
+vector<CelestialBody> generateBodies(int bodynumber){
+    vector<CelestialBody> bodies; 
+    for (int i = 0; i < bodynumber; i++){
+        int mass = std::experimental::randint(500000,1000000);
+        vector<double> position = generateRandomPosition(); //check it out later
+        CelestialBody body = CelestialBody(mass, position, vector<double>(3), vector<double>(3), vector<double>(3));
+        bodies.push_back(body);
+    }
+    return bodies;
+}   
+    
+
+
 int main(){
 
     int bodynumber =  2;
     int mass;
     vector<double> position(3);
-    vector<CelestialBody> bodies;
-
-    //Generating the bodies using the CelestialBody class and giving them random masses and positions
-    for (int i = 0; i < bodynumber; i++){
-        mass = std::experimental::randint(500000,1000000);
-        position = generateRandomPosition(); //check it out later
-        CelestialBody body = CelestialBody(mass, position, vector<double>(3), vector<double>(3), vector<double>(3));
-        bodies.push_back(body);
-    }
-
+    vector<CelestialBody> bodies = generateBodies(bodynumber);
     vector<vector<double>> Fsum = calculateForce(bodies);
     vector<vector<double>> Asum = calculateAcceleration(bodies);
 
@@ -127,7 +132,7 @@ int main(){
         vector<vector<double>> Vint (bodies.size(), vector<double> (3));
         vector<vector<double>> Pint (bodies.size(), vector<double> (3));
 
-        std::ofstream filestream ("filestream.csv"); 
+        std::ofstream filestream ("pos.csv"); 
 
         for (int t = 0; t < time.size(); t++){
             for (int i = 0; i < bodies.size(); i++){
