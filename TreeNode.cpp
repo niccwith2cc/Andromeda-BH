@@ -88,7 +88,7 @@ class TreeNode{
                 updateCenterOfMass(body);
                 totalMass += body->getMass();
 
-                external = NULL;  
+                external = nullptr;  
             }
             else {
                 int octant = getOctant(body);
