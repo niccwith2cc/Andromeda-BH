@@ -3,7 +3,6 @@
 #include <algorithm>
 
 using std::vector;
-using std::cout;
 // const double  G = 6.6740105e-11;
 // increasing the gravitational constant so observable change is done over a smaller time period
 const double  G = 90000000;
