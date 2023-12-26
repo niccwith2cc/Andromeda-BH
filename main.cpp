@@ -29,7 +29,7 @@ vector<double> generateRandomPosition(){
     return position;
 };
 
-vector<vector<double>> calculateForce(vector<CelestialBody> bodies){
+vector<vector<double>> calculateForce(vector<CelestialBody>& bodies){
     //Initializing the forces total sum being a nx3 matrix
     vector<vector<double>> Fsum (bodies.size(), vector<double> (3,0));
 
@@ -39,12 +39,12 @@ vector<vector<double>> calculateForce(vector<CelestialBody> bodies){
                 vector<double> comp =  bodies[i].CalcCompF(bodies[j]);
                 Fsum[i] = Fsum[i] + comp; 
             }
-        }     
+        }    
     }
     return Fsum;
 }
 
-vector<vector<double>> calculateAcceleration(vector<CelestialBody> bodies){
+vector<vector<double>> calculateAcceleration(vector<CelestialBody>& bodies){
     //Initializing the acceleration total sum being a nx3 matrix
     vector<vector<double>> Asum (bodies.size(), vector<double> (3,0));
 
@@ -70,13 +70,27 @@ vector<CelestialBody> generateBodies(int bodynumber){
         bodies.push_back(body);
     }
     return bodies;
-}   
+}
+
+template <typename T> std::ostream& operator<<(std::ostream& os, const vector<T>& v) {
+    for (auto& elem: v){
+        os << elem << " ";
+    }
+    return os;
+} 
+
+// void printV (vector<double> &v){
+//     for (auto &elem : v){
+//         cout << elem << '\t';
+//     }
+//     cout << '\n';
+// }
     
 
 
 int main(){
 
-    int bodynumber =  6;
+    int bodynumber =  2;
     int mass;
     vector<double> position(3);
     vector<CelestialBody> bodies = generateBodies(bodynumber);
@@ -88,10 +102,17 @@ int main(){
     vector<vector<double>> F (bodies.size(), vector<double> (3,0));
     for (int i = 0; i < bodies.size(); i++) F[i] = tree.calculateForce(bodies[i], tree.root);
 
+    for (int i = 0; i < bodies.size(); i++){
+        cout << "Force Vector: " << '\n';
+        cout << "body number " << i+1 << '\n';
+        cout << F[i] << '\n';
+        cout << Asum[i] << '\n';
+        cout << '\n';
+    }
 
     vector<double> time;
     const double timeStep = 1.0 / 100.0; // Calculate the time step size    
-        for (int i = 0; i < 1001; i++) {
+        for (int i = 0; i < 1000; i++) {
             double currentTime = i * timeStep;
             time.push_back(currentTime);
         }
@@ -124,6 +145,8 @@ int main(){
                 }
                 vector<double> pos = bodies[i].getPosition();
                 bodies[i].setPosition(pos + Pint[i]);
+                cout << bodies[i].getPosition();
+                cout << '\n';
                 
             }
             //cout << "\n";
