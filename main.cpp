@@ -60,7 +60,7 @@ vector<vector<double>> calculateAcceleration(vector<CelestialBody>& bodies){
 }
 
 
-    //Generating the bodies using the CelestialBody class and giving them random masses and positions
+//Generating the bodies using the CelestialBody class and giving them random masses and positions
 vector<CelestialBody> generateBodies(int bodynumber){
     vector<CelestialBody> bodies; 
     for (int i = 0; i < bodynumber; i++){
@@ -148,9 +148,6 @@ int main(){
                 cout << bodies[i].getPosition();
                 cout << '\n';
                 
-                //cout << "A " << Aint[i][0] << "\t" << Aint[i][1] << "\t" << Aint[i][2] << endl;
-                //cout << "V " << Vint[i][0] << "\t" << Vint[i][1] << "\t" << Vint[i][2] << endl;	
-                //cout << "P " << Pint[i][0] << "\t" << Pint[i][1] << "\t" << Pint[i][2] << endl;
             }
             //cout << "\n";
             for (int i = 0; i < bodies.size(); i++){
