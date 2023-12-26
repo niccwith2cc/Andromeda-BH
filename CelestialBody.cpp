@@ -107,7 +107,8 @@ class CelestialBody{
         vector<double> CalcCompF(CelestialBody body2){
             vector<double> position2 = body2.getPosition();
             double r = CalcR(body2);
-            if (r == 0) return vector<double>(3);
+            double tol = 1e-4;
+            if (r < tol) return vector<double>(3);
             double FR = CalcForce(body2)/r;
             return {(position[0]-position2[0])*FR,(position[1]-position2[1])*FR,(position[2]-position2[2])*FR};
         }

@@ -29,22 +29,23 @@ vector<double> generateRandomPosition(){
     return position;
 };
 
-vector<vector<double>> calculateForce(vector<CelestialBody> bodies){
+void calculateForce(vector<CelestialBody> bodies){
     //Initializing the forces total sum being a nx3 matrix
-    vector<vector<double>> Fsum (bodies.size(), vector<double> (3,0));
+    vector<double> Fsum (3,0);
 
     for (int i = 0; i < bodies.size(); i++){
+        Fsum = {0,0,0};
         for (int j = 0; j < bodies.size(); j++){
             if (&bodies[i] != &bodies[j]){
                 vector<double> comp =  bodies[i].CalcCompF(bodies[j]);
-                Fsum[i] = Fsum[i] + comp; 
+                Fsum = Fsum + comp;
             }
-        }     
+        }
+        bodies[i].setForce(Fsum);      
     }
-    return Fsum;
 }
 
-vector<vector<double>> calculateAcceleration(vector<CelestialBody> bodies){
+vector<vector<double>> calculateAcceleration(vector<CelestialBody>& bodies){
     //Initializing the acceleration total sum being a nx3 matrix
     vector<vector<double>> Asum (bodies.size(), vector<double> (3,0));
 
@@ -63,8 +64,10 @@ vector<vector<double>> calculateAcceleration(vector<CelestialBody> bodies){
 //Generating the bodies using the CelestialBody class and giving them random masses and positions
 vector<CelestialBody> generateBodies(int bodynumber){
     vector<CelestialBody> bodies; 
+    constexpr int l_range = 500000;
+    constexpr int h_range = 1000000; 
     for (int i = 0; i < bodynumber; i++){
-        int mass = std::experimental::randint(500000,1000000);
+        int mass = std::experimental::randint(l_range,h_range);
         vector<double> position = generateRandomPosition(); //check it out later
         CelestialBody body = CelestialBody(mass, position, vector<double>(3), vector<double>(3), vector<double>(3));
         bodies.push_back(body);
@@ -72,15 +75,20 @@ vector<CelestialBody> generateBodies(int bodynumber){
     return bodies;
 }   
     
-
+template < class T > inline std::ostream& operator << (std::ostream& os, const std::vector<T>& v) {
+    for (auto &elem: v){
+        os << elem << " ";
+    }
+    return os;
+}
 
 int main(){
 
-    int bodynumber =  6;
+    int bodynumber =  2;
     int mass;
     vector<double> position(3);
     vector<CelestialBody> bodies = generateBodies(bodynumber);
-    vector<vector<double>> Fsum = calculateForce(bodies); //brute force
+    calculateForce(bodies); //brute force
     vector<vector<double>> Asum = calculateAcceleration(bodies);
 
     BarnesHut tree = BarnesHut(&bodies[0]);
@@ -91,7 +99,7 @@ int main(){
 
     vector<double> time;
     const double timeStep = 1.0 / 100.0; // Calculate the time step size    
-        for (int i = 0; i < 1001; i++) {
+        for (int i = 0; i < 10000; i++) {
             double currentTime = i * timeStep;
             time.push_back(currentTime);
         }
@@ -124,8 +132,9 @@ int main(){
                 }
                 vector<double> pos = bodies[i].getPosition();
                 bodies[i].setPosition(pos + Pint[i]);
-                
             }
+            calculateForce(bodies);
+            
             //cout << "\n";
             for (int i = 0; i < bodies.size(); i++){
                 filestream << Pint[i][0] << ", " << Pint[i][1] << ", " << Pint[i][2] << ", ";
