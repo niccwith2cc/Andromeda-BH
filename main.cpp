@@ -84,8 +84,8 @@ template < class T > inline std::ostream& operator << (std::ostream& os, const s
 
 int main(){
 
-    int bodynumber =  2;
-    int mass;
+    constexpr int bodynumber =  2;
+    int mass; //should mass be also constexpr? 
     vector<double> position(3);
     vector<CelestialBody> bodies = generateBodies(bodynumber);
     calculateForce(bodies); //brute force
