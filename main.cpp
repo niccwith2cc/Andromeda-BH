@@ -29,7 +29,7 @@ vector<double> generateRandomPosition(){
     return position;
 };
 
-vector<vector<double>> calculateForce(vector<CelestialBody>& bodies){
+vector<vector<double>> calculateForce(vector<CelestialBody> bodies){
     //Initializing the forces total sum being a nx3 matrix
     vector<vector<double>> Fsum (bodies.size(), vector<double> (3,0));
 
@@ -39,12 +39,12 @@ vector<vector<double>> calculateForce(vector<CelestialBody>& bodies){
                 vector<double> comp =  bodies[i].CalcCompF(bodies[j]);
                 Fsum[i] = Fsum[i] + comp; 
             }
-        }    
+        }     
     }
     return Fsum;
 }
 
-vector<vector<double>> calculateAcceleration(vector<CelestialBody>& bodies){
+vector<vector<double>> calculateAcceleration(vector<CelestialBody> bodies){
     //Initializing the acceleration total sum being a nx3 matrix
     vector<vector<double>> Asum (bodies.size(), vector<double> (3,0));
 
@@ -60,7 +60,7 @@ vector<vector<double>> calculateAcceleration(vector<CelestialBody>& bodies){
 }
 
 
-    //Generating the bodies using the CelestialBody class and giving them random masses and positions
+//Generating the bodies using the CelestialBody class and giving them random masses and positions
 vector<CelestialBody> generateBodies(int bodynumber){
     vector<CelestialBody> bodies; 
     for (int i = 0; i < bodynumber; i++){
@@ -70,27 +70,13 @@ vector<CelestialBody> generateBodies(int bodynumber){
         bodies.push_back(body);
     }
     return bodies;
-}
-
-template <typename T> std::ostream& operator<<(std::ostream& os, const vector<T>& v) {
-    for (auto& elem: v){
-        os << elem << " ";
-    }
-    return os;
-} 
-
-// void printV (vector<double> &v){
-//     for (auto &elem : v){
-//         cout << elem << '\t';
-//     }
-//     cout << '\n';
-// }
+}   
     
 
 
 int main(){
 
-    int bodynumber =  2;
+    int bodynumber =  6;
     int mass;
     vector<double> position(3);
     vector<CelestialBody> bodies = generateBodies(bodynumber);
@@ -102,17 +88,10 @@ int main(){
     vector<vector<double>> F (bodies.size(), vector<double> (3,0));
     for (int i = 0; i < bodies.size(); i++) F[i] = tree.calculateForce(bodies[i], tree.root);
 
-    for (int i = 0; i < bodies.size(); i++){
-        cout << "Force Vector: " << '\n';
-        cout << "body number " << i+1 << '\n';
-        cout << F[i] << '\n';
-        cout << Asum[i] << '\n';
-        cout << '\n';
-    }
 
     vector<double> time;
     const double timeStep = 1.0 / 100.0; // Calculate the time step size    
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 1001; i++) {
             double currentTime = i * timeStep;
             time.push_back(currentTime);
         }
@@ -145,12 +124,7 @@ int main(){
                 }
                 vector<double> pos = bodies[i].getPosition();
                 bodies[i].setPosition(pos + Pint[i]);
-                cout << bodies[i].getPosition();
-                cout << '\n';
                 
-                //cout << "A " << Aint[i][0] << "\t" << Aint[i][1] << "\t" << Aint[i][2] << endl;
-                //cout << "V " << Vint[i][0] << "\t" << Vint[i][1] << "\t" << Vint[i][2] << endl;	
-                //cout << "P " << Pint[i][0] << "\t" << Pint[i][1] << "\t" << Pint[i][2] << endl;
             }
             //cout << "\n";
             for (int i = 0; i < bodies.size(); i++){
