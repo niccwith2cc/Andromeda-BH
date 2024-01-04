@@ -30,11 +30,11 @@ with open(FILENAME, newline='') as csvfile:
         for (x, y, z) in grouped(row, 3):
             positions[-1].append(Point(x, y, z))
 
-    for i in range(len(positions)):
-        for j in range(len(positions[0])):
-            positions[i][j].x += initial_positions[j].x
-            positions[i][j].y += initial_positions[j].y
-            positions[i][j].z += initial_positions[j].z
+    # for i in range(len(positions)):
+    #     for j in range(len(positions[0])):
+    #         positions[i][j].x += initial_positions[j].x
+    #         positions[i][j].y += initial_positions[j].y
+    #         positions[i][j].z += initial_positions[j].z
     positions = np.array(positions)
 
 
