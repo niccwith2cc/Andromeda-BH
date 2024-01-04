@@ -86,7 +86,7 @@ template < class T > inline std::ostream& operator << (std::ostream& os, const s
 
 int main(){
 
-    constexpr int bodynumber =  2;
+    constexpr int bodynumber =  6;
     
     int mass; //should mass be also constexpr? 
     array<double,3> position = {0.0,0.0,0.0};
@@ -130,25 +130,26 @@ int main(){
         filestream1 << '\n';
         filestream2 << '\n';
 
+        array<double,3> pos = bodies[0].getPosition();
         for (int t = 0; t < time.size(); t++){ //for every time step
             for (int i = 0; i < bodies.size(); i++){ //for every body
                 array<double,3> Aint = bodies[i].getAccel();
                 array<double,3> Vint = bodies[i].getVelo();
-                array<double,3> Pint = {0.0,0.0,0.0};
+                array<double,3> Pint = bodies[i].getPosition();
                 for (int j = 0; j < 3; j++){ //for every axis
                     double Vprev = Vint[j];
                     Vint[j] = Aint[j]*timeStep + Vint[j]; // V should increase linearly
-                    Pint[j] = Vint[j]*timeStep + Pint[j];
+                    Pint[j] = Vint[j]*timeStep + Pint[j]; // please work, se parakalo
                 }
+                bodies[i].setVelo(Vint);
+                bodies[i].setPosition(Pint);
 
-                array<double,3> pos = bodies[i].getPosition();
-                bodies[i].setPosition(pos + Pint);
-                filestream << Pint[0] << ", " << Pint[1] << ", " << Pint[2] << ", ";
+                filestream << Pint[0] << ", " << Pint[1] << ", " << Pint[2]<< ", ";
                 filestream1 << Vint[0] << ", " << Vint[1] << ", " << Vint[2] << ", ";
                 filestream2 << Aint[0] << ", " << Aint[1] << ", " << Aint[2] << ", ";
             }
             calculateForce(bodies);
-            //calculateAcceleration(bodies);
+            calculateAcceleration(bodies);
             filestream << '\n';
             filestream1 << '\n';
             filestream2 << '\n';
