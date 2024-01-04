@@ -4,7 +4,7 @@
 #include <random>
 #include <experimental/random>
 #include <fstream>
-#include "BarnesHut.cpp"
+#include "BarnesHut.h"
 #include "CelestialBody.h"
 
 using std::vector;
@@ -12,6 +12,7 @@ using std::cout;
 using std::endl;
 using std::experimental::randint;
 
+const double BOUNDARY = 1000000.0;
 // Hardcoding the Galaxy by taking a fixed number of bodies and generating their random positions and masses
 // Random number generation to use for the position of the bodies
 double generateRandomDouble(double min, double max) {
@@ -22,7 +23,7 @@ double generateRandomDouble(double min, double max) {
     };
 
 array<double,3> generateRandomPosition(){
-    array<double,3> position = {0.0,0.0,0.0}; ;
+    array<double,3> position = {0.0,0.0,0.0};
     for (int i = 0; i < 3; i++){
             position[i] = generateRandomDouble(-BOUNDARY, BOUNDARY);
         }   
@@ -76,8 +77,8 @@ vector<CelestialBody> generateBodies(int bodynumber){
     return bodies;
 }   
     
-template < class T > inline std::ostream& operator << (std::ostream& os, const std::vector<T>& v) {
-    for (auto &elem: v){
+template < class T > inline std::ostream& operator << (std::ostream& os, const std::array<T,3>& a) {
+    for (auto &elem: a){
         os << elem << " ";
     }
     return os;
@@ -111,39 +112,45 @@ int main(){
         // to calculate the velocity of each body. v = int[bounded](a* dt) + v_0 if there exists any previous velocity
         // to calculate the position of each body. p = int[bounded](v * dt) + p_0 = int[bounded](a * t * dt) + p_0
 
-        array<array<double,3>,bodynumber> Aint = {0.0,0.0,0.0};
-        array<array<double,3>,bodynumber> Vint = {0.0,0.0,0.0};
-        array<array<double,3>,bodynumber> Pint = {0.0,0.0,0.0};
 
         std::ofstream filestream ("pos.csv"); 
+        std::ofstream filestream1 ("vel.csv");
+        std::ofstream filestream2 ("acc.csv");
 
         for (int i = 0; i < bodies.size(); i++){
+
             array<double,3> pos = bodies[i].getPosition();
+            array<double,3> vel = bodies[i].getVelo();
+            array<double,3> acc = bodies[i].getAccel();
             filestream << pos[0] << ", " << pos[1] << ", " << pos[2] << ", ";
+            filestream1 << vel[0] << ", " << vel[1] << ", " << vel[2] << ", ";
+            filestream2 << acc[0] << ", " << acc[1] << ", " << acc[2] << ", ";
         }
         filestream << '\n';
+        filestream1 << '\n';
+        filestream2 << '\n';
 
         for (int t = 0; t < time.size(); t++){ //for every time step
             for (int i = 0; i < bodies.size(); i++){ //for every body
-                
-                bodies[i].setAccel(Aint[i]);
-                Aint[i] = bodies[i].getAccel();
-
+                array<double,3> Aint = bodies[i].getAccel();
+                array<double,3> Vint = bodies[i].getVelo();
+                array<double,3> Pint = {0.0,0.0,0.0};
                 for (int j = 0; j < 3; j++){ //for every axis
-                    double Vprev = Vint[i][j];
-                    Vint[i][j] = Aint[i][j]*timeStep + Vint[i][j];
-                    Pint[i][j] = 0.5*(Vint[i][j]+Vprev)*timeStep + Pint[i][j];
+                    double Vprev = Vint[j];
+                    Vint[j] = Aint[j]*timeStep + Vint[j]; // V should increase linearly
+                    Pint[j] = Vint[j]*timeStep + Pint[j];
                 }
 
                 array<double,3> pos = bodies[i].getPosition();
-                bodies[i].setPosition(pos + Pint[i]);
+                bodies[i].setPosition(pos + Pint);
+                filestream << Pint[0] << ", " << Pint[1] << ", " << Pint[2] << ", ";
+                filestream1 << Vint[0] << ", " << Vint[1] << ", " << Vint[2] << ", ";
+                filestream2 << Aint[0] << ", " << Aint[1] << ", " << Aint[2] << ", ";
             }
             calculateForce(bodies);
-            
-            //cout << "\n";
-            for (int i = 0; i < bodies.size(); i++){
-                filestream << Pint[i][0] << ", " << Pint[i][1] << ", " << Pint[i][2] << ", ";
-            }
+            //calculateAcceleration(bodies);
             filestream << '\n';
+            filestream1 << '\n';
+            filestream2 << '\n';
         }
 }

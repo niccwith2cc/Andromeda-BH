@@ -53,6 +53,10 @@ public:
 
     array<double,3> getPosition();
 
+    void setVelo(array<double,3>);
+
+    array <double,3> getVelo();
+
     void setAccel(array<double,3>);
 
     array<double,3> getAccel();

@@ -8,7 +8,7 @@ constexpr double BOUNDARY = 1000000.0;
 
 TreeNode::TreeNode(){}
 
-TreeNode::TreeNode(CelestialBody* ext, int d = 1){
+TreeNode::TreeNode(CelestialBody* ext, int d){
     external = ext;
     depth = d;
     centerOfMass = ext->getPosition();
