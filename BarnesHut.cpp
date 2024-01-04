@@ -1,45 +1,40 @@
-#include <vector>
+#include <array>
 #include <cmath>
 #include <iostream>
-#include "CelestialBody.cpp"
-#include "TreeNode.cpp"
+#include "CelestialBody.h"
+#include "BarnesHut.h"
 
-using std::cout;
+const double BOUNDARY = 1000000.0;
+
+
 using std::endl;
+using std::array;
 
-class BarnesHut{
-    private:
-        double theta;
 
-    public:
+BarnesHut::BarnesHut(CelestialBody* body, double th){
+    root = TreeNode(body);
+    theta = th;
+}
 
-        TreeNode root;
+void BarnesHut::insert(CelestialBody* body){
+    root.insertBody(body);
+}
 
-        BarnesHut(CelestialBody* body, double th = 0.5){
-            root = TreeNode(body);
-            theta = th;
-        }
+array<double, 3> BarnesHut::calculateForce(CelestialBody body, TreeNode node){ 
+    if (node.external) return body.CalcCompF(*node.external);
 
-        void insert(CelestialBody* body){
-            root.insertBody(body);
-        }
-
-        vector<double> calculateForce(CelestialBody body, TreeNode node){ 
-            if (node.external) return body.CalcCompF(*node.external);
-
-            double s = 2*BOUNDARY*pow(0.5, node.getDepth()-1);
-            CelestialBody tempBody = CelestialBody(node.getTotalMass(), node.centerOfMass, vector<double>(3), vector<double>(3), vector<double>(3));
-            double d = body.CalcR(tempBody);
-            //cout << s/d << endl;
-            if (s/d < theta){  //the body is sufficiently far away from the center of mass.
-                return body.CalcCompF(tempBody);
-            }
-            vector<double> force = vector<double>(3);
-            for (auto child: node.internal){
-                if(child){ //check if child is null
-                    force = force + calculateForce(body, *child);
-                } 
-            }
-            return force;
-        }
-};
+    double s = 2*BOUNDARY*pow(0.5, node.getDepth()-1);
+    CelestialBody tempBody = CelestialBody(node.getTotalMass(), node.centerOfMass, array<double,3>(), array<double,3>(), array<double,3>());
+    double d = body.CalcR(tempBody);
+    //cout << s/d << endl;
+    if (s/d < theta){  //the body is sufficiently far away from the center of mass.
+        return body.CalcCompF(tempBody);
+    }
+    array<double, 3> force;
+    for (auto child: node.internal){
+        if(child){ //check if child is null
+            force = force + calculateForce(body, *child);
+        } 
+    }
+    return force;
+}
