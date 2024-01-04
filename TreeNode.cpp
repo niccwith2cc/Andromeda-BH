@@ -1,7 +1,9 @@
 #include<vector>
 #include<cmath>
 #include<iostream>
+#include "CelestialBody.h"
 using std::vector;
+
 
 // Creating an Octree to place all the celestial bodies in them.
 constexpr double BOUNDARY = 1000000.0;
@@ -15,8 +17,8 @@ class TreeNode{
     public:
         CelestialBody* external;
         vector<TreeNode*> internal;
-        vector<double> centerOfMass = vector<double>(3);
-        vector<double> centerOfOctant = vector<double>(3);
+        array<double,3> centerOfMass = {0.0,0.0,0.0};
+        array<double,3> centerOfOctant = {0.0,0.0,0.0};
 
         TreeNode(){}
 
@@ -37,7 +39,7 @@ class TreeNode{
 
         //get octant
         int getOctant(CelestialBody* body){
-            vector<double> pos = body->getPosition();
+            array<double,3> pos = body->getPosition();
 
             int index = 0;
 
@@ -48,8 +50,8 @@ class TreeNode{
             
         }
 
-        vector<double> calculateCenterOfOctant(int octant){
-            vector<double> centerOfChild = vector<double>(3);
+        array<double,3> calculateCenterOfOctant(int octant){
+            array<double,3> centerOfChild = {0.0,0.0,0.0};
             for (int i = 0; i < 3; i++){
                 centerOfChild[i] = centerOfOctant[i]/1.0 + pow(0.5, depth + 1) * BOUNDARY * pow(-1, !(octant % 2)); 
                 octant /= 2;
@@ -58,8 +60,8 @@ class TreeNode{
         }
 
         void updateCenterOfMass(CelestialBody* body){
-            vector<double> newCenterOfMass(3);
-            vector<double> bodyPosition = body->getPosition();
+            array<double,3> newCenterOfMass = {0.0,0.0,0.0};
+            array<double,3> bodyPosition = body->getPosition();
             int bodyMass = body->getMass();
             for (int i = 0; i < 3; i++){
                 newCenterOfMass[i] = (centerOfMass[i]*totalMass + bodyPosition[i]*bodyMass) / (double)(totalMass + bodyMass); 

@@ -5,6 +5,7 @@
 #include <experimental/random>
 #include <fstream>
 #include "BarnesHut.cpp"
+#include "CelestialBody.h"
 
 using std::vector;
 using std::cout;
@@ -12,7 +13,6 @@ using std::endl;
 using std::experimental::randint;
 
 // Hardcoding the Galaxy by taking a fixed number of bodies and generating their random positions and masses
-
 // Random number generation to use for the position of the bodies
 double generateRandomDouble(double min, double max) {
         std::random_device rd;
@@ -21,23 +21,23 @@ double generateRandomDouble(double min, double max) {
         return dis(gen);
     };
 
-vector<double> generateRandomPosition(){
-    vector<double> position(3);
+array<double,3> generateRandomPosition(){
+    array<double,3> position = {0.0,0.0,0.0}; ;
     for (int i = 0; i < 3; i++){
             position[i] = generateRandomDouble(-BOUNDARY, BOUNDARY);
         }   
     return position;
 };
 
-void calculateForce(vector<CelestialBody> bodies){
+void calculateForce(vector<CelestialBody>& bodies){
     //Initializing the forces total sum being a nx3 matrix
-    vector<double> Fsum (3,0);
+    array<double,3> Fsum = {0.0,0.0,0.0};
 
     for (int i = 0; i < bodies.size(); i++){
-        Fsum = {0,0,0};
+        Fsum = {0.0,0.0,0.0};
         for (int j = 0; j < bodies.size(); j++){
             if (&bodies[i] != &bodies[j]){
-                vector<double> comp =  bodies[i].CalcCompF(bodies[j]);
+                array<double,3> comp =  bodies[i].CalcCompF(bodies[j]);
                 Fsum = Fsum + comp;
             }
         }
@@ -45,19 +45,20 @@ void calculateForce(vector<CelestialBody> bodies){
     }
 }
 
-vector<vector<double>> calculateAcceleration(vector<CelestialBody>& bodies){
+void calculateAcceleration(vector<CelestialBody>& bodies){
     //Initializing the acceleration total sum being a nx3 matrix
-    vector<vector<double>> Asum (bodies.size(), vector<double> (3,0));
+    array<double,3> Asum = {0.0,0.0,0.0};
 
     for (int i = 0; i < bodies.size(); i++){
+        Asum = {0.0,0.0,0.0};
         for (int j = 0; j < bodies.size(); j++){
             if (&bodies[i] != &bodies[j]){
-                vector<double> comp =  bodies[i].CalcCompA(bodies[j]);
-                Asum[i] = Asum[i] + comp; 
+                array<double,3> comp =  bodies[i].CalcCompA(bodies[j]);
+                Asum = Asum + comp; 
             }
-        }     
+        }
+        bodies[i].setAccel(Asum);
     }
-    return Asum;
 }
 
 
@@ -68,8 +69,8 @@ vector<CelestialBody> generateBodies(int bodynumber){
     constexpr int h_range = 1000000; 
     for (int i = 0; i < bodynumber; i++){
         int mass = std::experimental::randint(l_range,h_range);
-        vector<double> position = generateRandomPosition(); //check it out later
-        CelestialBody body = CelestialBody(mass, position, vector<double>(3), vector<double>(3), vector<double>(3));
+        array<double,3> position = generateRandomPosition(); //check it out later
+        CelestialBody body = CelestialBody(mass, position, {0.0,0.0,0.0}, {0.0,0.0,0.0}, {0.0,0.0,0.0});
         bodies.push_back(body);
     }
     return bodies;
@@ -85,15 +86,16 @@ template < class T > inline std::ostream& operator << (std::ostream& os, const s
 int main(){
 
     constexpr int bodynumber =  2;
+    
     int mass; //should mass be also constexpr? 
-    vector<double> position(3);
+    array<double,3> position = {0.0,0.0,0.0};
     vector<CelestialBody> bodies = generateBodies(bodynumber);
     calculateForce(bodies); //brute force
-    vector<vector<double>> Asum = calculateAcceleration(bodies);
+    calculateAcceleration(bodies);
 
     BarnesHut tree = BarnesHut(&bodies[0]);
     for (int i = 1; i < bodies.size(); i++) tree.insert(&bodies[i]);
-    vector<vector<double>> F (bodies.size(), vector<double> (3,0));
+    array<array<double,3>,bodynumber> F = {0.0,0.0,0.0};
     for (int i = 0; i < bodies.size(); i++) F[i] = tree.calculateForce(bodies[i], tree.root);
 
 
@@ -109,28 +111,31 @@ int main(){
         // to calculate the velocity of each body. v = int[bounded](a* dt) + v_0 if there exists any previous velocity
         // to calculate the position of each body. p = int[bounded](v * dt) + p_0 = int[bounded](a * t * dt) + p_0
 
-        vector<vector<double>> Aint (bodies.size(), vector<double> (3));
-        vector<vector<double>> Vint (bodies.size(), vector<double> (3));
-        vector<vector<double>> Pint (bodies.size(), vector<double> (3));
+        array<array<double,3>,bodynumber> Aint = {0.0,0.0,0.0};
+        array<array<double,3>,bodynumber> Vint = {0.0,0.0,0.0};
+        array<array<double,3>,bodynumber> Pint = {0.0,0.0,0.0};
 
         std::ofstream filestream ("pos.csv"); 
 
         for (int i = 0; i < bodies.size(); i++){
-            vector<double> pos = bodies[i].getPosition();
+            array<double,3> pos = bodies[i].getPosition();
             filestream << pos[0] << ", " << pos[1] << ", " << pos[2] << ", ";
         }
         filestream << '\n';
 
-        for (int t = 0; t < time.size(); t++){
-            for (int i = 0; i < bodies.size(); i++){
-                Aint[i] = Asum[i];
-                bodies[i].setAccel(Asum[i]);
-                for (int j = 0; j < 3; j++){
+        for (int t = 0; t < time.size(); t++){ //for every time step
+            for (int i = 0; i < bodies.size(); i++){ //for every body
+                
+                bodies[i].setAccel(Aint[i]);
+                Aint[i] = bodies[i].getAccel();
+
+                for (int j = 0; j < 3; j++){ //for every axis
                     double Vprev = Vint[i][j];
                     Vint[i][j] = Aint[i][j]*timeStep + Vint[i][j];
                     Pint[i][j] = 0.5*(Vint[i][j]+Vprev)*timeStep + Pint[i][j];
                 }
-                vector<double> pos = bodies[i].getPosition();
+
+                array<double,3> pos = bodies[i].getPosition();
                 bodies[i].setPosition(pos + Pint[i]);
             }
             calculateForce(bodies);
