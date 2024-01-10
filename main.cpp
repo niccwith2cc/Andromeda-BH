@@ -86,7 +86,7 @@ template < class T > inline std::ostream& operator << (std::ostream& os, const s
 
 int main(){
 
-    constexpr int bodynumber =  6;
+    constexpr int bodynumber =  90;
     
     int mass; //should mass be also constexpr? 
     array<double,3> position = {0.0,0.0,0.0};
@@ -94,10 +94,10 @@ int main(){
     calculateForce(bodies); //brute force
     calculateAcceleration(bodies);
 
-    BarnesHut tree = BarnesHut(&bodies[0]);
-    for (int i = 1; i < bodies.size(); i++) tree.insert(&bodies[i]);
-    array<array<double,3>,bodynumber> F = {0.0,0.0,0.0};
-    for (int i = 0; i < bodies.size(); i++) F[i] = tree.calculateForce(bodies[i], tree.root);
+    // BarnesHut tree = BarnesHut(&bodies[0]);
+    // for (int i = 1; i < bodies.size(); i++) tree.insert(&bodies[i]);
+    // array<array<double,3>,bodynumber> F = {0.0,0.0,0.0};
+    // for (int i = 0; i < bodies.size(); i++) F[i] = tree.calculateForce(bodies[i], tree.root);
 
 
     vector<double> time;
