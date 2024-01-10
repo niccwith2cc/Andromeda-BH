@@ -45,21 +45,26 @@ def iteration(frame):
         pos = positions[-1]
     x = []
     y = []
+    z = []
     for body in pos:
         x.append(body.x)
         y.append(body.y)
-    ln.set_data(x, y)
+        z.append(body.z)
+    ln.set_data_3d(x, y, z)
     return ln,
 
 def init():
-   ax.set_xlim(-BOUNDARY, BOUNDARY)
-   ax.set_ylim(-BOUNDARY, BOUNDARY)
-   return ln,
+    ax.set(xlim3d=(-BOUNDARY, BOUNDARY), xlabel='X')
+    ax.set(ylim3d=(-BOUNDARY, BOUNDARY), ylabel='Y')
+    ax.set(zlim3d=(-BOUNDARY, BOUNDARY), zlabel='Z')
+    return ln,
 
 
-fig, ax = plt.subplots()
-xdata, ydata = [], []
-ln, = plt.plot([], [], 'o')
+#fig, ax = plt.subplots()
+fig = plt.figure()
+ax = fig.add_subplot(projection="3d")
+xdata, ydata, zdata = [], [], []
+ln, = ax.plot([], [], [], "o")
 
 ani = FuncAnimation(fig, iteration, interval = 1, init_func=init, blit=True)
 plt.show()
