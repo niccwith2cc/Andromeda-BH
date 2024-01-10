@@ -11,13 +11,13 @@ class BarnesHut{
         double theta;
 
     public:
-        TreeNode root;
+        std::unique_ptr<TreeNode> root;
 
-        BarnesHut(CelestialBody* body, double th = 0.5);
+        BarnesHut(std::unique_ptr<CelestialBody> body, double th = 0.5);
 
-        void insert(CelestialBody* body);
+        void insert(std::unique_ptr<CelestialBody> body);
 
-        array<double, 3> calculateForce(CelestialBody body, TreeNode node);
+        array<double, 3> calculateForce(std::unique_ptr<CelestialBody>& body, std::unique_ptr<TreeNode>& node);
 };
 
 #endif

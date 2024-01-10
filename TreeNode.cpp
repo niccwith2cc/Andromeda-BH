@@ -8,23 +8,20 @@ constexpr double BOUNDARY = 1000000.0;
 
 TreeNode::TreeNode(){}
 
-TreeNode::TreeNode(CelestialBody* ext, int d){
-    external = ext;
-    depth = d;
-    centerOfMass = ext->getPosition();
-    totalMass = ext->getMass();
+TreeNode::TreeNode(std::unique_ptr<CelestialBody> ext, int d)
+    : external(std::move(ext)), depth(d), centerOfMass(external->getPosition()),totalMass(external->getMass()){
 }
 
-int TreeNode::getDepth(){
+int TreeNode::getDepth() const {
     return depth;
 }
 
-int TreeNode::getTotalMass(){
+int TreeNode::getTotalMass() const{
     return totalMass;
 }
 
 //get octant
-int TreeNode::getOctant(CelestialBody* body){
+int TreeNode::getOctant(const std::unique_ptr<CelestialBody>& body){
     array<double, 3> pos = body->getPosition();
 
     int index = 0;
@@ -45,7 +42,7 @@ array<double, 3> TreeNode::calculateCenterOfOctant(int octant){
     return centerOfChild;
 }
 
-void TreeNode::updateCenterOfMass(CelestialBody* body){
+void TreeNode::updateCenterOfMass(std::unique_ptr<CelestialBody>& body){
     array<double, 3> newCenterOfMass;
     array<double, 3> bodyPosition = body->getPosition();
     int bodyMass = body->getMass();
@@ -56,23 +53,23 @@ void TreeNode::updateCenterOfMass(CelestialBody* body){
 
 }
 
-void TreeNode::insertBody(CelestialBody* body){
+void TreeNode::insertBody(std::unique_ptr<CelestialBody>& body){
     if (external){
-        internal = array<TreeNode*, 8>();
+        internal = array<std::unique_ptr<TreeNode>, 8>();
 
         int octant = getOctant(external); 
-        TreeNode* newNode = new TreeNode(external, depth + 1);
+        std::unique_ptr<TreeNode> newNode = std::make_unique<TreeNode>(std::move(body), depth + 1); TreeNode(std::move(external), depth + 1);
         newNode->centerOfOctant = calculateCenterOfOctant(octant);
-        internal[octant] = newNode;
+        internal[octant] = std::move(newNode);
 
         octant = getOctant(body);
         if (internal[octant]) { 
             internal[octant]->insertBody(body); 
             }
         else {
-            newNode = new TreeNode(body, depth + 1);
+            newNode = std::make_unique<TreeNode>(std::move(body), depth + 1);
             newNode->centerOfOctant = calculateCenterOfOctant(octant);
-            internal[octant] = newNode;
+            internal[octant] = std::move(newNode);
         } 
         
         updateCenterOfMass(body);
@@ -82,19 +79,19 @@ void TreeNode::insertBody(CelestialBody* body){
     }
     else {
         int octant = getOctant(body);
-        TreeNode* octantNode = internal[octant];
+        std::unique_ptr<TreeNode> octantNode = std::move(internal[octant]);
         if (octantNode) octantNode->insertBody(body);
         else{
-            TreeNode* newNode = new TreeNode(body, depth + 1);
+            std::unique_ptr<TreeNode> newNode = std::make_unique<TreeNode>(std::move(body), depth + 1);
             newNode->centerOfOctant = calculateCenterOfOctant(octant);
-            internal[octant] = newNode;
+            internal[octant] = std::move(newNode);
         } 
         updateCenterOfMass(body);
         totalMass += body->getMass();
     }
 }
 
-void TreeNode::traverseTree(TreeNode* root){
+void TreeNode::traverseTree(std::unique_ptr<TreeNode>& root){
     if (root->external) std::cout << root->external->getMass() << " " << root->depth << std::endl;
     else if (root->internal.size()) {
         for (int i = 0; i < root->internal.size(); i++){
