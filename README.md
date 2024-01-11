@@ -21,12 +21,16 @@ a calculated ratio of s/d will be considered. S is the length of the octant of t
 
 quite easily you can build it using Cmake:
 
-mkdir build \n
-cd build \n
-cmake .. \n
-make \n
+mkdir build
 
-to run the code: \n
+cd build
+
+cmake ..
+
+make
+
+to run the code:
+
 ./49
 
 ## Expected Output
