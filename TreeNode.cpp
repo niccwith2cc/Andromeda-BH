@@ -2,7 +2,6 @@
 #include<cmath>
 #include"TreeNode.h"
 
-// Creating an Octree to place all the celestial bodies in them.
 constexpr double BOUNDARY = 1000000.0;
 
 
@@ -30,7 +29,7 @@ int TreeNode::getOctant(CelestialBody* body){
     int index = 0;
 
     for (int i = 0; i < 3; i++){
-        index += (pos[i] > centerOfOctant[i]) * pow(2, 2 - i); //
+        index += (pos[i] > centerOfOctant[i]) * pow(2, 2 - i); // used to map the body to its corresponding octant based on its position
     }
     return index;
     

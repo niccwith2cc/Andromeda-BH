@@ -5,6 +5,8 @@
 #include"CelestialBody.h"
 using std::array;
 
+// Represents the nodes of the octree 
+
 class TreeNode{
     private:
         int totalMass;
