@@ -4,7 +4,7 @@ from matplotlib.animation import FuncAnimation
 import matplotlib; matplotlib.use("TkAgg")
 import csv
 
-FILENAME = 'build/pos.csv'
+FILENAME = 'pos.csv'
 BOUNDARY = 1000000
 positions = []
 
@@ -57,6 +57,26 @@ def init():
     ax.set(xlim3d=(-BOUNDARY, BOUNDARY), xlabel='X')
     ax.set(ylim3d=(-BOUNDARY, BOUNDARY), ylabel='Y')
     ax.set(zlim3d=(-BOUNDARY, BOUNDARY), zlabel='Z')
+    ax.xaxis.pane.fill = False
+    ax.yaxis.pane.fill = False
+    ax.zaxis.pane.fill = False
+    
+    ax.xaxis.pane.set_edgecolor('w')
+    ax.yaxis.pane.set_edgecolor('w')
+    ax.zaxis.pane.set_edgecolor('w')
+    ax.set_facecolor('black')
+    ax.grid(False)
+    
+    ax.xaxis.label.set_color('white')        #setting up X-axis label color to yellow
+    ax.yaxis.label.set_color('white')        #setting up Y-axis label color to blue
+    ax.zaxis.label.set_color('white')
+
+    ax.tick_params(axis='x', colors='white')    #setting up X-axis tick color to red
+    ax.tick_params(axis='y', colors='white')    #setting up Y-axis tick color to black
+    ax.tick_params(axis='z', colors='white')
+
+    ax.spines['left'].set_color('white')       #setting up Y-axis tick color to red
+    ax.spines['top'].set_color('white')
     return ln,
 
 

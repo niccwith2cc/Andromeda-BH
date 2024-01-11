@@ -17,6 +17,22 @@ Once the tree is constructed and all the bodies are in their respective octants.
 But how does one define sufficiently close enough?
 a calculated ratio of s/d will be considered. S is the length of the octant of the internal node, D is the distance between the body and the node's center of mass. This ratio is compared with the threshold value θ, which indicates how fast the algorithm computes but also how inaccurate it may be. a θ = 0, the algorithm receeds to the brute force method as if the algorithm does nothing. If s/d > θ then the body is still sufficiently close enough to the center of mass, and more recursions are needed to divide the octant into its own grid.
 
+## How to Build and Run the code
+
+quite easily you can build it using Cmake:
+
+mkdir build
+cd build
+cmake ..
+make
+
+to run the code:
+./49
+
+## Expected Output
+
+the C++ project output a position csv (pos.csv) in the build folder that you create, this csv will be used to visualize the animation in the visualization.py
+
 ## Authors and acknowledgment
 Alexandra Apostolidou, Nicolas Hanna.
 

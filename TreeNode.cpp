@@ -30,7 +30,7 @@ int TreeNode::getOctant(CelestialBody* body){
     int index = 0;
 
     for (int i = 0; i < 3; i++){
-        index += (pos[i] > centerOfOctant[i]) * pow(2, 2 - i); //I dare you to remember why you did 2-i
+        index += (pos[i] > centerOfOctant[i]) * pow(2, 2 - i); //
     }
     return index;
     
@@ -105,4 +105,3 @@ void TreeNode::traverseTree(TreeNode* root){
         }
     }
 }
-
