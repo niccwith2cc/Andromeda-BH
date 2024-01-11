@@ -26,7 +26,6 @@ array<double, 3> BarnesHut::calculateForce(CelestialBody body, TreeNode node){
     double s = 2*BOUNDARY*pow(0.5, node.getDepth()-1);
     CelestialBody tempBody = CelestialBody(node.getTotalMass(), node.centerOfMass, array<double,3>(), array<double,3>(), array<double,3>());
     double d = body.CalcR(tempBody);
-    //cout << s/d << endl;
     if (s/d < theta){  //the body is sufficiently far away from the center of mass.
         return body.CalcCompF(tempBody);
     }

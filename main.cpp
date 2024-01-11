@@ -86,9 +86,8 @@ template < class T > inline std::ostream& operator << (std::ostream& os, const s
 
 int main(){
 
-    constexpr int bodynumber =  90;
+    constexpr int bodynumber =  5;
     
-    int mass; //should mass be also constexpr? 
     array<double,3> position = {0.0,0.0,0.0};
     vector<CelestialBody> bodies = generateBodies(bodynumber);
     calculateForce(bodies); //brute force
@@ -96,8 +95,7 @@ int main(){
 
     BarnesHut tree = BarnesHut(&bodies[0]);
     for (int i = 1; i < bodies.size(); i++) tree.insert(&bodies[i]);
-    array<array<double,3>,bodynumber> F = {0.0,0.0,0.0};
-    for (int i = 0; i < bodies.size(); i++) F[i] = tree.calculateForce(bodies[i], tree.root);
+    for (int i = 0; i < bodies.size(); i++)  bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
 
 
     vector<double> time;
@@ -114,8 +112,6 @@ int main(){
 
 
         std::ofstream filestream ("pos.csv"); 
-        std::ofstream filestream1 ("vel.csv");
-        std::ofstream filestream2 ("acc.csv");
 
         for (int i = 0; i < bodies.size(); i++){
 
@@ -123,12 +119,8 @@ int main(){
             array<double,3> vel = bodies[i].getVelo();
             array<double,3> acc = bodies[i].getAccel();
             filestream << pos[0] << ", " << pos[1] << ", " << pos[2] << ", ";
-            filestream1 << vel[0] << ", " << vel[1] << ", " << vel[2] << ", ";
-            filestream2 << acc[0] << ", " << acc[1] << ", " << acc[2] << ", ";
         }
         filestream << '\n';
-        filestream1 << '\n';
-        filestream2 << '\n';
 
         array<double,3> pos = bodies[0].getPosition();
         for (int t = 0; t < time.size(); t++){ //for every time step
@@ -138,19 +130,16 @@ int main(){
                 array<double,3> Pint = bodies[i].getPosition();
                 for (int j = 0; j < 3; j++){ //for every axis
                     Vint[j] = Aint[j]*timeStep + Vint[j]; // V should increase linearly
-                    Pint[j] = Vint[j]*timeStep + Pint[j]; // please work, se parakalo
+                    Pint[j] = Vint[j]*timeStep + Pint[j]; 
                 }
                 bodies[i].setVelo(Vint);
                 bodies[i].setPosition(Pint);
 
                 filestream << Pint[0] << ", " << Pint[1] << ", " << Pint[2]<< ", ";
-                filestream1 << Vint[0] << ", " << Vint[1] << ", " << Vint[2] << ", ";
-                filestream2 << Aint[0] << ", " << Aint[1] << ", " << Aint[2] << ", ";
             }
-            calculateForce(bodies);
+            //calculateForce(bodies);
+            for (int i = 0; i < bodies.size(); i++)  bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
             calculateAcceleration(bodies);
             filestream << '\n';
-            filestream1 << '\n';
-            filestream2 << '\n';
         }
 }
