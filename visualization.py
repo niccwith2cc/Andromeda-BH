@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.animation import FuncAnimation
+from matplotlib.animation import FuncAnimation, PillowWriter 
 import matplotlib; matplotlib.use("TkAgg")
 import csv
 
@@ -67,15 +67,15 @@ def init():
     ax.set_facecolor('black')
     ax.grid(False)
     
-    ax.xaxis.label.set_color('white')        #setting up X-axis label color to yellow
-    ax.yaxis.label.set_color('white')        #setting up Y-axis label color to blue
+    ax.xaxis.label.set_color('white')        
+    ax.yaxis.label.set_color('white')        
     ax.zaxis.label.set_color('white')
 
-    ax.tick_params(axis='x', colors='white')    #setting up X-axis tick color to red
-    ax.tick_params(axis='y', colors='white')    #setting up Y-axis tick color to black
+    ax.tick_params(axis='x', colors='white')    
+    ax.tick_params(axis='y', colors='white')    
     ax.tick_params(axis='z', colors='white')
 
-    ax.spines['left'].set_color('white')       #setting up Y-axis tick color to red
+    ax.spines['left'].set_color('white')
     ax.spines['top'].set_color('white')
     return ln,
 
