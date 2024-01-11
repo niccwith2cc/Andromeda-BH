@@ -137,7 +137,6 @@ int main(){
                 array<double,3> Vint = bodies[i].getVelo();
                 array<double,3> Pint = bodies[i].getPosition();
                 for (int j = 0; j < 3; j++){ //for every axis
-                    double Vprev = Vint[j];
                     Vint[j] = Aint[j]*timeStep + Vint[j]; // V should increase linearly
                     Pint[j] = Vint[j]*timeStep + Pint[j]; // please work, se parakalo
                 }
