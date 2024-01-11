@@ -4,7 +4,7 @@ from matplotlib.animation import FuncAnimation
 import matplotlib; matplotlib.use("TkAgg")
 import csv
 
-FILENAME = 'build/pos.csv'
+FILENAME = 'pos.csv'
 BOUNDARY = 1000000
 positions = []
 
