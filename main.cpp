@@ -86,7 +86,7 @@ template < class T > inline std::ostream& operator << (std::ostream& os, const s
 
 int main(){
 
-    constexpr int bodynumber =  6;
+    constexpr int bodynumber =  90;
     
     int mass; //should mass be also constexpr? 
     array<double,3> position = {0.0,0.0,0.0};
