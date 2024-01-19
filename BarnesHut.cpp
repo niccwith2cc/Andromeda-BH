@@ -29,7 +29,7 @@ array<double, 3> BarnesHut::calculateForce(CelestialBody body, TreeNode node){
     if (s/d < theta){  //the body is sufficiently far away from the center of mass.
         return body.CalcCompF(tempBody);
     }
-    array<double, 3> force;
+    array<double, 3> force = {0.0,0.0,0.0};
     for (auto child: node.internal){
         if(child){ //check if child is null
             force = force + calculateForce(body, *child);

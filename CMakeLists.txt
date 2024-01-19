@@ -10,3 +10,5 @@ project(49
 add_executable(49 main.cpp BarnesHut.cpp CelestialBody.cpp TreeNode.cpp)
 
 target_compile_options(49 PRIVATE -Wall)
+
+target_link_libraries(49 -fsanitize=address)
