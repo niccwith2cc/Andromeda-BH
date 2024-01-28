@@ -38,7 +38,7 @@ int TreeNode::getOctant(CelestialBody* body){
 array<double, 3> TreeNode::calculateCenterOfOctant(int octant){
     array<double, 3> centerOfChild;
     for (int i = 0; i < 3; i++){
-        centerOfChild[i] = centerOfOctant[i]/1.0 + pow(0.5, depth + 1) * BOUNDARY * pow(-1, !(octant % 2)); 
+        centerOfChild[i] = centerOfOctant[i]/1.0 + pow(0.5, depth) * BOUNDARY * pow(-1, !(octant % 2)); 
         octant /= 2;
     }
     return centerOfChild;
@@ -57,9 +57,13 @@ void TreeNode::updateCenterOfMass(CelestialBody* body){
 
 void TreeNode::insertBody(CelestialBody* body){
     if (external){
+        //std::cout << external->getPosition()[0] << " " << external->getPosition()[1] << " " << external->getPosition()[2] << " " << body->getPosition()[0] << " " << body->getPosition()[1] << " " << body->getPosition()[2] <<std::endl; 
+        //std::cout << depth <<std::endl;
+        
         internal = array<TreeNode*, 8>();
 
         int octant = getOctant(external); 
+        //std::cout << octant << std::endl;
         TreeNode* newNode = new TreeNode(external, depth + 1);
         newNode->centerOfOctant = calculateCenterOfOctant(octant);
         internal[octant] = newNode;

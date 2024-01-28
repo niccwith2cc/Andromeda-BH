@@ -86,14 +86,14 @@ template < class T > inline std::ostream& operator << (std::ostream& os, const s
 
 int main(){
 
-    constexpr int bodynumber =  5;
+    constexpr int bodynumber =  10;
     
     array<double,3> position = {0.0,0.0,0.0};
     vector<CelestialBody> bodies = generateBodies(bodynumber);
-    calculateForce(bodies); //brute force
-    calculateAcceleration(bodies);
+    // calculateForce(bodies); //brute force
+    // calculateAcceleration(bodies);
 
-    BarnesHut tree = BarnesHut(&bodies[0]);
+    BarnesHut tree = BarnesHut(&bodies[0]); //change this later
     for (int i = 1; i < bodies.size(); i++) tree.insert(&bodies[i]);
     for (int i = 0; i < bodies.size(); i++)  bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
 

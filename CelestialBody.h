@@ -61,13 +61,13 @@ public:
 
     array<double,3> getAccel();
 
-    double CalcR(CelestialBody& const);
+    double CalcR(CelestialBody&);
 
-    double CalcForce(CelestialBody& const);
+    double CalcForce(CelestialBody&);
     
-    array<double,3> CalcCompF(CelestialBody& const);
+    array<double,3> CalcCompF(CelestialBody&);
 
-    array<double,3> CalcCompA(CelestialBody& const);
+    array<double,3> CalcCompA(CelestialBody&);
 };
 
 #endif
