@@ -51,7 +51,7 @@ array<double, 3> CelestialBody::getAccel(){
     return _accel;
 }
 
-double CelestialBody::CalcR(CelestialBody body2){
+double CelestialBody::CalcR(CelestialBody& body2){
     array<double, 3> position2 = body2.getPosition();
     return sqrt(pow(position2[0]-_position[0],2)+pow(position2[1]-_position[1],2)+pow(position2[2]-_position[2],2));
 }
@@ -63,14 +63,14 @@ double CelestialBody::CalcR(CelestialBody body2){
 // on the that body.
 
 // Calculating the force between two bodies F = -G M1 M2 / (r^2) with r being the second norm of a 3D position array between M1 and M2 
-double CelestialBody::CalcForce(CelestialBody body2){
+double CelestialBody::CalcForce(CelestialBody& body2){
     //array<double> position2 = body2.getPosition();
     double instantForce = -G*_mass*body2.getMass()/(pow(CalcR(body2),2));
     return instantForce;
 }
 
 // Calculating the components of the force given by CalcForce, by taking the array dot product. F12*r21/|r21|.
-array<double, 3> CelestialBody::CalcCompF(CelestialBody body2){
+array<double, 3> CelestialBody::CalcCompF(CelestialBody& body2){
     array<double, 3> position2 = body2.getPosition();
     double r = CalcR(body2);
     double tol = 1e-4;
@@ -80,7 +80,7 @@ array<double, 3> CelestialBody::CalcCompF(CelestialBody body2){
 }
 
 // Calculating the components of the acceleration given by CalcCompF, by dividing by the mass of each body.
-array<double, 3> CelestialBody::CalcCompA(CelestialBody const body2){
+array<double, 3> CelestialBody::CalcCompA(CelestialBody& body2){
     array<double, 3> instantAcc = CalcCompF(body2)/_mass; //DivideVectorByScalar(CalcCompF(body2),mass);
     return instantAcc;
 }

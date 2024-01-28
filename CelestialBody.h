@@ -32,11 +32,11 @@ bool operator==(const std::array<T,N>& arr1, const std::array<T,N>& arr2) {
 
 class CelestialBody{
 private:
-    int _mass;
     array<double,3> _position = {0.0,0.0,0.0};
     array<double,3> _accel = {0.0,0.0,0.0};
     array<double,3> _velo = {0.0,0.0,0.0};
     array<double,3> _force = {0.0,0.0,0.0};
+    int _mass;
 
 public:
     CelestialBody(int, array<double,3>, array<double,3>, array<double,3>, array<double,3>);
@@ -61,13 +61,13 @@ public:
 
     array<double,3> getAccel();
 
-    double CalcR(CelestialBody);
+    double CalcR(CelestialBody& const);
 
-    double CalcForce(CelestialBody);
+    double CalcForce(CelestialBody& const);
     
-    array<double,3> CalcCompF(CelestialBody);
+    array<double,3> CalcCompF(CelestialBody& const);
 
-    array<double,3> CalcCompA(CelestialBody const);
+    array<double,3> CalcCompA(CelestialBody& const);
 };
 
 #endif
