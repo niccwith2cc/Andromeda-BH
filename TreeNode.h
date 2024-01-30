@@ -1,9 +1,11 @@
 #ifndef TREE_NODE
 #define TREE_NODE
 
-#include<array>
+#include <array>
+#include <memory>
 #include"CelestialBody.h"
 using std::array;
+using std::unique_ptr;
 
 // Represents the nodes of the octree 
 
@@ -14,28 +16,28 @@ class TreeNode{
 
 
     public:
-        CelestialBody* external;
-        array<TreeNode*, 8> internal;
+        unique_ptr<CelestialBody> external;
+        array<unique_ptr<TreeNode>, 8> internal;
         array<double, 3> centerOfMass = array<double,3>();
         array<double, 3> centerOfOctant = array<double,3>();
 
         TreeNode();
 
-        TreeNode(CelestialBody* ext, int d = 1);
+        TreeNode(unique_ptr<CelestialBody> ext, int d = 1);
 
         int getDepth();
 
         int getTotalMass();
 
-        int getOctant(CelestialBody* body);
+        int getOctant(const unique_ptr<CelestialBody>& body);
 
         array<double, 3> calculateCenterOfOctant(int octant);
 
-        void updateCenterOfMass(CelestialBody* body);
+        void updateCenterOfMass(const unique_ptr<CelestialBody>& body);
 
-        void insertBody(CelestialBody* body);
+        void insertBody(unique_ptr<CelestialBody> body);
 
-        void traverseTree(TreeNode* root);
+        void traverseTree(unique_ptr<TreeNode> root);
 };
 
 #endif

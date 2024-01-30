@@ -4,6 +4,7 @@
 #include <random>
 #include <experimental/random>
 #include <fstream>
+#include <memory>
 #include "BarnesHut.h"
 #include "CelestialBody.h"
 
@@ -86,15 +87,16 @@ template < class T > inline std::ostream& operator << (std::ostream& os, const s
 
 int main(){
 
-    constexpr int bodynumber =  10;
+    constexpr int bodynumber =  5;
     
     array<double,3> position = {0.0,0.0,0.0};
     vector<CelestialBody> bodies = generateBodies(bodynumber);
     // calculateForce(bodies); //brute force
     // calculateAcceleration(bodies);
+    
 
-    BarnesHut tree = BarnesHut(&bodies[0]); //change this later
-    for (int i = 1; i < bodies.size(); i++) tree.insert(&bodies[i]);
+    BarnesHut tree = BarnesHut(std::make_unique<CelestialBody>(bodies[0])); //change this later
+    for (int i = 1; i < bodies.size(); i++) tree.insert(std::make_unique<CelestialBody>(bodies[i]));
     for (int i = 0; i < bodies.size(); i++)  bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
 
 

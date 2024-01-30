@@ -5,19 +5,20 @@
 #include "TreeNode.h"
 
 using std::array;
+using std::unique_ptr;
 
 class BarnesHut{
     private:
         double theta;
 
     public:
-        TreeNode root;
+        unique_ptr<TreeNode> root; 
 
-        BarnesHut(CelestialBody* body, double th = 0.5);
+        BarnesHut(unique_ptr<CelestialBody> body, double th = 0.5);
 
-        void insert(CelestialBody* body);
+        void insert(unique_ptr<CelestialBody> body);
 
-        array<double, 3> calculateForce(CelestialBody body, TreeNode node);
+        array<double, 3> calculateForce(CelestialBody body, const unique_ptr<TreeNode>& node);
 };
 
 #endif
