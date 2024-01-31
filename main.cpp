@@ -98,13 +98,14 @@ int main(){
     const int MASS_MAX =  std::stoi(parser.config["mass_maximum"]);
     const int DURATION =  std::stoi(parser.config["duration"]);
     const bool BRUTEFORCE =  std::stoi(parser.config["bruteforce"]);
+    const bool THETA =  std::stoi(parser.config["theta"]);
     
     
     array<double,3> position = {0.0,0.0,0.0};
     vector<CelestialBody> bodies = generateBodies(NO_OF_BODIES, BOUNDARY, MASS_MIN, MASS_MAX);
-    BarnesHut tree = BarnesHut(std::make_unique<CelestialBody>(bodies[0])); 
+    BarnesHut tree = BarnesHut(std::make_unique<CelestialBody>(bodies[0]), THETA); 
 
-    if (BRUTEFORCE) {
+    if (BRUTEFORCE) { 
         calculateForce(bodies); 
     }
     else {
