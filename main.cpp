@@ -5,6 +5,7 @@
 #include <experimental/random>
 #include <fstream>
 #include <memory>
+#include <chrono>
 #include "BarnesHut.h"
 #include "CelestialBody.h"
 
@@ -12,6 +13,10 @@ using std::vector;
 using std::cout;
 using std::endl;
 using std::experimental::randint;
+using std::chrono::high_resolution_clock;
+using std::chrono::duration_cast;
+using std::chrono::duration;
+using std::chrono::milliseconds;
 
 const double BOUNDARY = 1000000.0;
 // Hardcoding the Galaxy by taking a fixed number of bodies and generating their random positions and masses
@@ -87,17 +92,34 @@ template < class T > inline std::ostream& operator << (std::ostream& os, const s
 
 int main(){
 
-    constexpr int bodynumber =  5;
+    constexpr int bodynumber =  500;
     
     array<double,3> position = {0.0,0.0,0.0};
-    vector<CelestialBody> bodies = generateBodies(bodynumber);
+
+    auto t1 = high_resolution_clock::now();
+        vector<CelestialBody> bodies = generateBodies(bodynumber);
+    auto t2 = high_resolution_clock::now();
     // calculateForce(bodies); //brute force
     // calculateAcceleration(bodies);
-    
 
-    BarnesHut tree = BarnesHut(std::make_unique<CelestialBody>(bodies[0])); //change this later
-    for (int i = 1; i < bodies.size(); i++) tree.insert(std::make_unique<CelestialBody>(bodies[i]));
-    for (int i = 0; i < bodies.size(); i++)  bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
+    /* Getting number of milliseconds as a double. */
+    duration<double, std::milli> ms_double = t2 - t1;
+        cout << "time taken to generate all bodies: "<< ms_double.count() << " ms" << endl;
+
+    auto t3 = high_resolution_clock::now();
+        BarnesHut tree = BarnesHut(std::make_unique<CelestialBody>(bodies[0])); //change this later
+        for (int i = 1; i < bodies.size(); i++) tree.insert(std::make_unique<CelestialBody>(bodies[i]));
+    auto t4 = high_resolution_clock::now();
+
+    duration<double, std::milli> ms_double2 = t4 - t3;
+        cout << "time taken to build the tree: "<< ms_double2.count() << " ms" << endl;
+
+    auto t5 = high_resolution_clock::now();
+        for (int i = 0; i < bodies.size(); i++)  bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
+    auto t6 = high_resolution_clock::now();
+
+    duration<double, std::milli> ms_double3 = t6 - t5;
+        cout << "time taken to calculate the force: "<< ms_double3.count() << " ms" << endl;
 
 
     vector<double> time;
@@ -115,6 +137,7 @@ int main(){
 
         std::ofstream filestream ("pos.csv"); 
 
+    auto t7 = high_resolution_clock::now();
         for (int i = 0; i < bodies.size(); i++){
 
             array<double,3> pos = bodies[i].getPosition();
@@ -144,4 +167,8 @@ int main(){
             calculateAcceleration(bodies);
             filestream << '\n';
         }
+    auto t8 = high_resolution_clock::now();
+
+    duration<double, std::milli> ms_double4 = t8 - t7;
+        cout << "time taken to calculate the algorithm: "<< ms_double4.count() << " ms" << endl;
 }
