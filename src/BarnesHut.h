@@ -14,6 +14,8 @@ class BarnesHut{
     public:
         unique_ptr<TreeNode> root; 
 
+        BarnesHut();
+
         BarnesHut(unique_ptr<CelestialBody> body, double th = 0.5);
 
         void insert(unique_ptr<CelestialBody> body);
