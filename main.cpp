@@ -79,7 +79,8 @@ vector<CelestialBody> generateBodies(int bodynumber, double boundary, int massMi
     }
     return bodies;
 }   
-    
+
+//Overloading the << operator to print the positions of the bodies
 template < class T > inline std::ostream& operator << (std::ostream& os, const std::array<T,3>& a) {
     for (auto &elem: a){
         os << elem << ", ";
@@ -89,6 +90,7 @@ template < class T > inline std::ostream& operator << (std::ostream& os, const s
 
 int main(){
 
+    //Parsing the config file and initializing constants
     ConfigParser parser = ConfigParser("../config.ini");
     
     const double BOUNDARY =  std::stod(parser.config["boundary"]);
@@ -100,11 +102,11 @@ int main(){
     const bool BRUTEFORCE =  std::stoi(parser.config["bruteforce"]);
     const bool THETA =  std::stoi(parser.config["theta"]);
     
-    
-    array<double,3> position = {0.0,0.0,0.0};
+    //Generating the bodies and initializing the Barnes-Hut algorithm
     vector<CelestialBody> bodies = generateBodies(NO_OF_BODIES, BOUNDARY, MASS_MIN, MASS_MAX);
     BarnesHut tree = BarnesHut(std::make_unique<CelestialBody>(bodies[0]), THETA); 
 
+    //Calculating the force and acceleration for each body either brute force or using the algorithm
     if (BRUTEFORCE) { 
         calculateForce(bodies); 
     }
@@ -114,29 +116,16 @@ int main(){
     }
     calculateAcceleration(bodies);
 
-    vector<double> time;    
-    for (int i = 0; i < DURATION; i++) {
-        double currentTime = i * TIMESTEP;
-        time.push_back(currentTime);
-    }
-
     // The way we can complete the calculations:
     // take an infinitesimally small time increment to integrate over, dt.
     // to calculate the velocity of each body. v = int[bounded](a* dt) + v_0 if there exists any previous velocity
     // to calculate the position of each body. p = int[bounded](v * dt) + p_0 = int[bounded](a * t * dt) + p_0
 
 
-    std::ofstream filestream ("pos.csv"); 
-
-    for (int i = 0; i < bodies.size(); i++){
-
-        array<double,3> pos = bodies[i].getPosition();
-        filestream << pos;
-    }
-    filestream << '\n';
+    std::ofstream filestream ("pos.csv"); //Filestream to write the positions of the bodies
 
     array<double,3> pos = bodies[0].getPosition();
-    for (int t = 0; t < time.size(); t++){ //for every time step
+    for (int t = 0; t < DURATION; t++){ //for every time step
         for (int i = 0; i < bodies.size(); i++){ //for every body
             array<double,3> Aint = bodies[i].getAccel();
             array<double,3> Vint = bodies[i].getVelo();
@@ -152,6 +141,7 @@ int main(){
         }
         filestream << '\n';
 
+        //Calculating the force and acceleration for each body for every time step
         if (BRUTEFORCE) calculateForce(bodies);
         else for (int i = 0; i < bodies.size(); i++) bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
         calculateAcceleration(bodies);
