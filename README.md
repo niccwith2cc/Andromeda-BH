@@ -22,21 +22,21 @@ a calculated ratio of s/d will be considered. S is the length of the octant of t
 quite easily you can build it using Cmake:
 
 ```
-$
-mkdir build
-
+$ mkdir build
 cd build
-
 cmake ..
-
 make
 ```
 
 to run the code:
-
+```
 ./49
+```
 
 ## Sprint Progress and Requirements
+
+### Sprint Progress
+End of Sprint 2
 
 ### Sprint 1 (basics)
 In this sprint we will implement the n-body problem and a basic Barnes-Hut approximation. The program will randomly generate initial conditions for testing and the result will be outputted for visualization. We will compare the result of the brute force "reference" solution with the Barnes-Hut algorithm.

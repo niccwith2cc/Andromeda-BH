@@ -14,6 +14,10 @@ using std::vector;
 using std::cout;
 using std::endl;
 using std::experimental::randint;
+using std::chrono::high_resolution_clock;
+using std::chrono::duration_cast;
+using std::chrono::duration;
+using std::chrono::milliseconds;
 
 
 // Hardcoding the Galaxy by taking a fixed number of bodies and generating their random positions and masses
@@ -106,18 +110,46 @@ int main(){
     TreeNode dummy;
     dummy.setBoundary(BOUNDARY);
     
-    //Generating the bodies and initializing the Barnes-Hut algorithm
-    vector<CelestialBody> bodies = generateBodies(NO_OF_BODIES, BOUNDARY, MASS_MIN, MASS_MAX);
+    //timing components of the code
+    auto t1 = high_resolution_clock::now();
+        //Generating the bodies and initializing the Barnes-Hut algorithm
+        vector<CelestialBody> bodies = generateBodies(NO_OF_BODIES, BOUNDARY, MASS_MIN, MASS_MAX);
+    auto t2 = high_resolution_clock::now();
+
+    /* Getting number of milliseconds as a double. */
+    duration<double, std::milli> ms_double = t2 - t1;
+        cout << "time to generate bodies: " << ms_double.count() << "ms" << endl;
+
     BarnesHut tree;  
+
 
     //Calculating the force and acceleration for each body either brute force or using the algorithm
     if (BRUTEFORCE) { 
-        calculateForce(bodies); 
+        t1 = high_resolution_clock::now();
+            calculateForce(bodies);
+        t2 = high_resolution_clock::now();
+
+        /* Getting number of milliseconds as a double. */
+        ms_double = t2 - t1;
+            cout << "time to calculate initial force using brute force: " << ms_double.count() << "ms" << endl; 
     }
     else {
-        tree = BarnesHut(std::make_unique<CelestialBody>(bodies[0]), THETA);
-        for (int i = 1; i < bodies.size(); i++) tree.insert(std::make_unique<CelestialBody>(bodies[i]));
-        for (int i = 0; i < bodies.size(); i++) bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
+        t1 = high_resolution_clock::now();
+            tree = BarnesHut(std::make_unique<CelestialBody>(bodies[0]), THETA);
+            for (int i = 1; i < bodies.size(); i++) tree.insert(std::make_unique<CelestialBody>(bodies[i]));
+        t2 = high_resolution_clock::now();
+
+        /* Getting number of milliseconds as a double. */
+        ms_double = t2 - t1;
+            cout << "time to build tree: " << ms_double.count() << "ms" << endl;
+
+        t1 = high_resolution_clock::now();
+            for (int i = 0; i < bodies.size(); i++) bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
+        t2 = high_resolution_clock::now();
+
+        /* Getting number of milliseconds as a double. */
+        ms_double = t2 - t1;
+            cout << "time to calculate initial force using algorithm: " << ms_double.count() << "ms" << endl;
     }
     calculateAcceleration(bodies);
 
@@ -128,6 +160,10 @@ int main(){
 
 
     std::ofstream filestream ("pos.csv"); //Filestream to write the positions of the bodies
+
+t1 = high_resolution_clock::now();
+
+t1 = high_resolution_clock::now();
 
     for (int t = 0; t < DURATION; t++){ //for every time step
         for (int i = 0; i < bodies.size(); i++){ //for every body
@@ -150,4 +186,9 @@ int main(){
         else for (int i = 0; i < bodies.size(); i++) bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
         calculateAcceleration(bodies);
     }
+t2 = high_resolution_clock::now();
+
+/* Getting number of milliseconds as a double. */
+ms_double = t2 - t1;
+    cout << "time to run simulation: " << ms_double.count() << "ms" << endl;
 }
