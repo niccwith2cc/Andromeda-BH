@@ -41,9 +41,9 @@ void calculateForce(vector<CelestialBody>& bodies){
     //Initializing the forces total sum being a nx3 matrix
     array<double,3> Fsum = {0.0,0.0,0.0};
 
-    for (int i = 0; i < bodies.size(); i++){
+    for (size_t i = 0; i < bodies.size(); i++){
         Fsum = {0.0,0.0,0.0};
-        for (int j = 0; j < bodies.size(); j++){
+        for (size_t j = 0; j < bodies.size(); j++){
             if (&bodies[i] != &bodies[j]){
                 array<double,3> comp =  bodies[i].CalcCompF(bodies[j]);
                 Fsum = Fsum + comp;
@@ -57,9 +57,9 @@ void calculateAcceleration(vector<CelestialBody>& bodies){
     //Initializing the acceleration total sum being a nx3 matrix
     array<double,3> Asum = {0.0,0.0,0.0};
 
-    for (int i = 0; i < bodies.size(); i++){
+    for (size_t i = 0; i < bodies.size(); i++){
         Asum = {0.0,0.0,0.0};
-        for (int j = 0; j < bodies.size(); j++){
+        for (size_t j = 0; j < bodies.size(); j++){
             if (&bodies[i] != &bodies[j]){
                 array<double,3> comp =  bodies[i].CalcCompA(bodies[j]);
                 Asum = Asum + comp; 
@@ -136,7 +136,7 @@ int main(){
     else {
         t1 = high_resolution_clock::now();
             tree = BarnesHut(std::make_unique<CelestialBody>(bodies[0]), THETA);
-            for (int i = 1; i < bodies.size(); i++) tree.insert(std::make_unique<CelestialBody>(bodies[i]));
+            for (size_t i = 1; i < bodies.size(); i++) tree.insert(std::make_unique<CelestialBody>(bodies[i]));
         t2 = high_resolution_clock::now();
 
         /* Getting number of milliseconds as a double. */
@@ -144,7 +144,7 @@ int main(){
             cout << "time to build tree: " << ms_double.count() << "ms" << endl;
 
         t1 = high_resolution_clock::now();
-            for (int i = 0; i < bodies.size(); i++) bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
+            for (size_t i = 0; i < bodies.size(); i++) bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
         t2 = high_resolution_clock::now();
 
         /* Getting number of milliseconds as a double. */
@@ -166,7 +166,7 @@ t1 = high_resolution_clock::now();
 t1 = high_resolution_clock::now();
 
     for (int t = 0; t < DURATION; t++){ //for every time step
-        for (int i = 0; i < bodies.size(); i++){ //for every body
+        for (size_t i = 0; i < bodies.size(); i++){ //for every body
             array<double,3> Aint = bodies[i].getAccel();
             array<double,3> Vint = bodies[i].getVelo();
             array<double,3> Pint = bodies[i].getPosition();
@@ -183,7 +183,7 @@ t1 = high_resolution_clock::now();
 
         //Calculating the force and acceleration for each body for every time step
         if (BRUTEFORCE) calculateForce(bodies);
-        else for (int i = 0; i < bodies.size(); i++) bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
+        else for (size_t i = 0; i < bodies.size(); i++) bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
         calculateAcceleration(bodies);
     }
 t2 = high_resolution_clock::now();
