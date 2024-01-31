@@ -97,18 +97,21 @@ int main(){
     const int MASS_MIN =  std::stoi(parser.config["mass_minimum"]);
     const int MASS_MAX =  std::stoi(parser.config["mass_maximum"]);
     const int DURATION =  std::stoi(parser.config["duration"]);
+    const bool BRUTEFORCE =  std::stoi(parser.config["bruteforce"]);
     
     
     array<double,3> position = {0.0,0.0,0.0};
     vector<CelestialBody> bodies = generateBodies(NO_OF_BODIES, BOUNDARY, MASS_MIN, MASS_MAX);
-    // calculateForce(bodies); //brute force
-    // calculateAcceleration(bodies);
-    
-
     BarnesHut tree = BarnesHut(std::make_unique<CelestialBody>(bodies[0])); 
-    for (int i = 1; i < bodies.size(); i++) tree.insert(std::make_unique<CelestialBody>(bodies[i]));
-    for (int i = 0; i < bodies.size(); i++)  bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
 
+    if (BRUTEFORCE) {
+        calculateForce(bodies); 
+    }
+    else {
+        for (int i = 1; i < bodies.size(); i++) tree.insert(std::make_unique<CelestialBody>(bodies[i]));
+        for (int i = 0; i < bodies.size(); i++) bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
+    }
+    calculateAcceleration(bodies);
 
     vector<double> time;    
     for (int i = 0; i < DURATION; i++) {
@@ -127,9 +130,7 @@ int main(){
     for (int i = 0; i < bodies.size(); i++){
 
         array<double,3> pos = bodies[i].getPosition();
-        array<double,3> vel = bodies[i].getVelo();
-        array<double,3> acc = bodies[i].getAccel();
-        filestream << pos[0] << ", " << pos[1] << ", " << pos[2] << ", ";
+        filestream << pos;
     }
     filestream << '\n';
 
@@ -148,9 +149,10 @@ int main(){
 
             filestream << Pint;
         }
-        //calculateForce(bodies);
-        for (int i = 0; i < bodies.size(); i++)  bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
-        calculateAcceleration(bodies);
         filestream << '\n';
+
+        if (BRUTEFORCE) calculateForce(bodies);
+        else for (int i = 0; i < bodies.size(); i++) bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
+        calculateAcceleration(bodies);
     }
 }
