@@ -11,6 +11,7 @@ using std::endl;
 using std::array;
 using std::unique_ptr;
 
+BarnesHut::BarnesHut(){}
 
 BarnesHut::BarnesHut(unique_ptr<CelestialBody> body, double th){
     root = std::make_unique<TreeNode>(TreeNode(std::move(body)));

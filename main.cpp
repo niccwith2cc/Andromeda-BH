@@ -108,13 +108,14 @@ int main(){
     
     //Generating the bodies and initializing the Barnes-Hut algorithm
     vector<CelestialBody> bodies = generateBodies(NO_OF_BODIES, BOUNDARY, MASS_MIN, MASS_MAX);
-    BarnesHut tree = BarnesHut(std::make_unique<CelestialBody>(bodies[0]), THETA); 
+    BarnesHut tree;  
 
     //Calculating the force and acceleration for each body either brute force or using the algorithm
     if (BRUTEFORCE) { 
         calculateForce(bodies); 
     }
     else {
+        tree = BarnesHut(std::make_unique<CelestialBody>(bodies[0]), THETA);
         for (int i = 1; i < bodies.size(); i++) tree.insert(std::make_unique<CelestialBody>(bodies[i]));
         for (int i = 0; i < bodies.size(); i++) bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
     }
