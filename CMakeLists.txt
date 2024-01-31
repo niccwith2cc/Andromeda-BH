@@ -7,7 +7,7 @@ project(49
         DESCRIPTION "Advanced Programming Project 49"
         LANGUAGES CXX)
 
-add_executable(49 main.cpp BarnesHut.cpp CelestialBody.cpp TreeNode.cpp)
+add_executable(49 main.cpp BarnesHut.cpp CelestialBody.cpp TreeNode.cpp ConfigParser.cpp)
 
 target_compile_options(49 PRIVATE -Wall -O2 -g -pg)
 
