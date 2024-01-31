@@ -6,9 +6,9 @@
 #include <fstream>
 #include <memory>
 #include <chrono>
-#include "BarnesHut.h"
-#include "CelestialBody.h"
-#include"ConfigParser.h"
+#include "src/BarnesHut.h"
+#include "src/CelestialBody.h"
+#include "src/ConfigParser.h"
 
 using std::vector;
 using std::cout;
