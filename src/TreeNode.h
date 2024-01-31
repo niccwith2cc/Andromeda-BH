@@ -13,7 +13,7 @@ class TreeNode{
     private:
         int totalMass;
         int depth;
-
+        static double BOUNDARY;
 
     public:
         unique_ptr<CelestialBody> external;
@@ -36,6 +36,8 @@ class TreeNode{
         void updateCenterOfMass(const unique_ptr<CelestialBody>& body);
 
         void insertBody(unique_ptr<CelestialBody> body);
+
+        void setBoundary(double boundary);
 
         void traverseTree(unique_ptr<TreeNode> root);
 };

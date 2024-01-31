@@ -2,8 +2,6 @@
 #include<cmath>
 #include"TreeNode.h"
 
-constexpr double BOUNDARY = 1000000.0;
-
 using std::make_unique;
 
 TreeNode::TreeNode(){}
@@ -13,6 +11,12 @@ TreeNode::TreeNode(unique_ptr<CelestialBody> ext, int d){
     depth = d;
     centerOfMass = external->getPosition();
     totalMass = external->getMass();
+}
+
+double TreeNode::BOUNDARY;
+
+void TreeNode::setBoundary(double boundary){
+    BOUNDARY = boundary;
 }
 
 int TreeNode::getDepth(){
@@ -96,6 +100,7 @@ void TreeNode::insertBody(unique_ptr<CelestialBody> body){
         } 
     }
 }
+
 
 // void TreeNode::traverseTree(unique_ptr<TreeNode> root){
 //     if (root->external) std::cout << root->external->getMass() << " " << root->depth << std::endl;

@@ -101,6 +101,10 @@ int main(){
     const int DURATION =  std::stoi(parser.config["duration"]);
     const bool BRUTEFORCE =  std::stoi(parser.config["bruteforce"]);
     const bool THETA =  std::stoi(parser.config["theta"]);
+
+    //Initializing the boundary for the TreeNode class
+    TreeNode dummy;
+    dummy.setBoundary(BOUNDARY);
     
     //Generating the bodies and initializing the Barnes-Hut algorithm
     vector<CelestialBody> bodies = generateBodies(NO_OF_BODIES, BOUNDARY, MASS_MIN, MASS_MAX);
@@ -125,7 +129,6 @@ int main(){
 
     std::ofstream filestream ("pos.csv"); //Filestream to write the positions of the bodies
 
-    array<double,3> pos = bodies[0].getPosition();
     for (int t = 0; t < DURATION; t++){ //for every time step
         for (int i = 0; i < bodies.size(); i++){ //for every body
             array<double,3> Aint = bodies[i].getAccel();
