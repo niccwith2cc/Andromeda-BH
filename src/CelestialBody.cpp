@@ -81,6 +81,8 @@ array<double, 3> CelestialBody::CalcCompF(CelestialBody& body2){
 
 // Calculating the components of the acceleration given by CalcCompF, by dividing by the mass of each body.
 array<double, 3> CelestialBody::CalcCompA(CelestialBody& body2){
-    array<double, 3> instantAcc = CalcCompF(body2)/_mass; //DivideVectorByScalar(CalcCompF(body2),mass);
-    return instantAcc;
+    // array<double, 3> instantAcc = CalcCompF(body2)/_mass; //DivideVectorByScalar(CalcCompF(body2),mass);
+    // return instantAcc;
+    array<double,3> Force = CalcCompF(body2);
+    return {Force[0]/_mass,Force[1]/_mass,Force[2]/_mass};
 }

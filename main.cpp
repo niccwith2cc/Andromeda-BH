@@ -29,20 +29,16 @@ double generateRandomDouble(double min, double max) {
         return dis(gen);
     };
 
-array<double,3> generateRandomPosition(double boundary){
+array<double,3> generateRandomPosition(double& boundary){
     array<double,3> position = {0.0,0.0,0.0};
-    for (int i = 0; i < 3; i++){
-            position[i] = generateRandomDouble(-boundary, boundary);
-        }   
+    position = {generateRandomDouble(-boundary, boundary),generateRandomDouble(-boundary, boundary),generateRandomDouble(-boundary, boundary)};
     return position;
 };
 
 void calculateForce(vector<CelestialBody>& bodies){
     //Initializing the forces total sum being a nx3 matrix
-    array<double,3> Fsum = {0.0,0.0,0.0};
-
     for (size_t i = 0; i < bodies.size(); i++){
-        Fsum = {0.0,0.0,0.0};
+        array<double,3> Fsum = {0.0,0.0,0.0};
         for (size_t j = 0; j < bodies.size(); j++){
             if (&bodies[i] != &bodies[j]){
                 array<double,3> comp =  bodies[i].CalcCompF(bodies[j]);
@@ -55,10 +51,8 @@ void calculateForce(vector<CelestialBody>& bodies){
 
 void calculateAcceleration(vector<CelestialBody>& bodies){
     //Initializing the acceleration total sum being a nx3 matrix
-    array<double,3> Asum = {0.0,0.0,0.0};
-
     for (size_t i = 0; i < bodies.size(); i++){
-        Asum = {0.0,0.0,0.0};
+        array<double,3> Asum = {0.0,0.0,0.0};
         for (size_t j = 0; j < bodies.size(); j++){
             if (&bodies[i] != &bodies[j]){
                 array<double,3> comp =  bodies[i].CalcCompA(bodies[j]);
@@ -160,8 +154,6 @@ int main(){
 
 
     std::ofstream filestream ("pos.csv"); //Filestream to write the positions of the bodies
-
-t1 = high_resolution_clock::now();
 
 t1 = high_resolution_clock::now();
 
