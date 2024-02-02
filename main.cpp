@@ -139,6 +139,9 @@ int main(){
             for (size_t i = 1; i < bodies.size(); i++) tree.insert(std::make_unique<CelestialBody>(bodies[i]));
         t2 = high_resolution_clock::now();
 
+        // cout << bodies.size() << " bodies" << endl;
+        // dummy.traverseTree(tree.root);
+
         /* Getting number of milliseconds as a double. */
         ms_double = t2 - t1;
             cout << "time to build tree: " << ms_double.count() << "ms" << endl;
@@ -161,34 +164,33 @@ int main(){
 
     std::ofstream filestream ("pos.csv"); //Filestream to write the positions of the bodies
 
-t1 = high_resolution_clock::now();
+    t1 = high_resolution_clock::now();
 
-t1 = high_resolution_clock::now();
+        for (int t = 0; t < DURATION; t++){ //for every time step
+            for (size_t i = 0; i < bodies.size(); i++){ //for every body
+                array<double,3> Aint = bodies[i].getAccel();
+                array<double,3> Vint = bodies[i].getVelo();
+                array<double,3> Pint = bodies[i].getPosition();
+                for (int j = 0; j < 3; j++){ //for every axis
+                    Vint[j] = Aint[j]*TIMESTEP + Vint[j]; // V should increase linearly
+                    Pint[j] = Vint[j]*TIMESTEP + Pint[j]; 
+                }
+                bodies[i].setVelo(Vint);
+                bodies[i].setPosition(Pint);
 
-    for (int t = 0; t < DURATION; t++){ //for every time step
-        for (size_t i = 0; i < bodies.size(); i++){ //for every body
-            array<double,3> Aint = bodies[i].getAccel();
-            array<double,3> Vint = bodies[i].getVelo();
-            array<double,3> Pint = bodies[i].getPosition();
-            for (int j = 0; j < 3; j++){ //for every axis
-                Vint[j] = Aint[j]*TIMESTEP + Vint[j]; // V should increase linearly
-                Pint[j] = Vint[j]*TIMESTEP + Pint[j]; 
+                filestream << Pint;
             }
-            bodies[i].setVelo(Vint);
-            bodies[i].setPosition(Pint);
+            filestream << '\n';
 
-            filestream << Pint;
+            //Calculating the force and acceleration for each body for every time step
+            if (BRUTEFORCE) calculateForce(bodies);
+            else for (size_t i = 0; i < bodies.size(); i++) bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
+            calculateAcceleration(bodies);
         }
-        filestream << '\n';
+    t2 = high_resolution_clock::now();
 
-        //Calculating the force and acceleration for each body for every time step
-        if (BRUTEFORCE) calculateForce(bodies);
-        else for (size_t i = 0; i < bodies.size(); i++) bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
-        calculateAcceleration(bodies);
-    }
-t2 = high_resolution_clock::now();
+    /* Getting number of milliseconds as a double. */
+    ms_double = t2 - t1;
+        cout << "time to run simulation: " << ms_double.count() << "ms" << endl;
 
-/* Getting number of milliseconds as a double. */
-ms_double = t2 - t1;
-    cout << "time to run simulation: " << ms_double.count() << "ms" << endl;
 }

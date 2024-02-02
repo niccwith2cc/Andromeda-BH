@@ -39,7 +39,7 @@ class TreeNode{
 
         void setBoundary(double boundary);
 
-        void traverseTree(unique_ptr<TreeNode> root);
+        void traverseTree(unique_ptr<TreeNode>& root);
 };
 
 #endif

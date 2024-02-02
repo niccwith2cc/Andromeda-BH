@@ -8,6 +8,7 @@ TreeNode::TreeNode(){}
 
 TreeNode::TreeNode(unique_ptr<CelestialBody> ext, int d){
     external = std::move(ext);
+    //std::cout << d << std::endl;
     depth = d;
     centerOfMass = external->getPosition();
     totalMass = external->getMass();
@@ -61,6 +62,10 @@ void TreeNode::updateCenterOfMass(const unique_ptr<CelestialBody>& body){
 }
 
 void TreeNode::insertBody(unique_ptr<CelestialBody> body){
+
+    updateCenterOfMass(body);
+    totalMass += body->getMass();
+
     if (external){
         //std::cout << external->getPosition()[0] << " " << external->getPosition()[1] << " " << external->getPosition()[2] << " " << body->getPosition()[0] << " " << body->getPosition()[1] << " " << body->getPosition()[2] <<std::endl; 
         //std::cout << depth <<std::endl;
@@ -72,9 +77,6 @@ void TreeNode::insertBody(unique_ptr<CelestialBody> body){
         unique_ptr<TreeNode> newNode(new TreeNode(std::move(external), depth + 1));
         newNode->centerOfOctant = calculateCenterOfOctant(octant);
         internal[octant] = std::move(newNode);
-
-        updateCenterOfMass(body);
-        totalMass += body->getMass();
 
         octant = getOctant(body);
         if (internal[octant]) { 
@@ -88,11 +90,8 @@ void TreeNode::insertBody(unique_ptr<CelestialBody> body){
         
     }
     else {
-        updateCenterOfMass(body);
-        totalMass += body->getMass();
         int octant = getOctant(body);
-        unique_ptr<TreeNode> octantNode = std::move(internal[octant]);
-        if (octantNode) octantNode->insertBody(std::move(body));
+        if (internal[octant]) internal[octant]->insertBody(std::move(body));
         else{
             unique_ptr<TreeNode> newNode(new TreeNode(std::move(body), depth + 1));
             newNode->centerOfOctant = calculateCenterOfOctant(octant);
@@ -102,14 +101,12 @@ void TreeNode::insertBody(unique_ptr<CelestialBody> body){
 }
 
 
-// void TreeNode::traverseTree(unique_ptr<TreeNode> root){
-//     if (root->external) std::cout << root->external->getMass() << " " << root->depth << std::endl;
-//     else if (root->internal.size()) {
-//         for (int i = 0; i < root->internal.size(); i++){
-//             if (root->internal[i]) {
-//                 //cout << centerOfMass[0] << " " << centerOfMass[1] << " " << centerOfMass[2] << " depth " << depth << endl;
-//                 traverseTree(root->internal[i]);
-//             }
-//         }
-//     }
-// }
+void TreeNode::traverseTree(unique_ptr<TreeNode>& root){
+    if (!root) return;
+    if (root->external) std::cout << root->depth << std::endl;
+    else {
+        for (int i = 0; i < root->internal.size(); i++){
+            traverseTree(root->internal[i]);
+        }
+    }
+}
