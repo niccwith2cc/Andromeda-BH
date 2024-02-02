@@ -81,7 +81,7 @@ def init():
 fig = plt.figure(figsize=(10, 10))
 ax = fig.add_subplot(projection="3d")
 xdata, ydata, zdata = [], [], []
-ln, = ax.plot([], [], [], c='red', marker="o", linestyle='')
+ln, = ax.plot([], [], [], c='red', marker="o", linestyle='', markersize='3')
 
 ani = FuncAnimation(fig, iteration, interval = 1, init_func=init, blit=True)
 plt.show()
