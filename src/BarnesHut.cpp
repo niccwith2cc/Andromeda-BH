@@ -4,19 +4,19 @@
 #include "CelestialBody.h"
 #include "BarnesHut.h"
 
-const double BOUNDARY = 1000000.0;
-
-
 using std::endl;
 using std::array;
 using std::unique_ptr;
 
 BarnesHut::BarnesHut(){}
 
-BarnesHut::BarnesHut(unique_ptr<CelestialBody> body, double th){
+BarnesHut::BarnesHut(unique_ptr<CelestialBody> body, double boundary, double th){
     root = std::make_unique<TreeNode>(TreeNode(std::move(body)));
+    BOUNDARY = boundary;
     theta = th;
 }
+
+double BarnesHut::BOUNDARY;
 
 void BarnesHut::insert(unique_ptr<CelestialBody> body){
     root->insertBody(std::move(body));
