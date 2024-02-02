@@ -1,6 +1,9 @@
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import matplotlib.colors as mcolors
 import numpy as np
-from matplotlib.animation import FuncAnimation, PillowWriter 
+from matplotlib.animation import FuncAnimation, PillowWriter
+from mpl_toolkits.mplot3d import Axes3D 
 import matplotlib; matplotlib.use("TkAgg")
 import csv
 
@@ -48,37 +51,37 @@ def iteration(frame):
     return ln,
 
 def init():
-    ax.set(xlim3d=(-BOUNDARY, BOUNDARY), xlabel='X')
-    ax.set(ylim3d=(-BOUNDARY, BOUNDARY), ylabel='Y')
-    ax.set(zlim3d=(-BOUNDARY, BOUNDARY), zlabel='Z')
+    ax.set(xlim3d=(-5*BOUNDARY, 5*BOUNDARY), xlabel='X')
+    ax.set(ylim3d=(-5*BOUNDARY, 5*BOUNDARY), ylabel='Y')
+    ax.set(zlim3d=(-5*BOUNDARY, 5*BOUNDARY), zlabel='Z')
     ax.xaxis.pane.fill = False
     ax.yaxis.pane.fill = False
     ax.zaxis.pane.fill = False
     
-    ax.xaxis.pane.set_edgecolor('w')
-    ax.yaxis.pane.set_edgecolor('w')
-    ax.zaxis.pane.set_edgecolor('w')
-    ax.set_facecolor('black')
-    ax.grid(False)
+    ax.xaxis.pane.set_edgecolor('black')
+    ax.yaxis.pane.set_edgecolor('black')
+    ax.zaxis.pane.set_edgecolor('black')
+    ax.set_facecolor('white')
+    ax.grid(True)
     
-    ax.xaxis.label.set_color('white')        
-    ax.yaxis.label.set_color('white')        
-    ax.zaxis.label.set_color('white')
+    ax.xaxis.label.set_color('black')        
+    ax.yaxis.label.set_color('black')        
+    ax.zaxis.label.set_color('black')
 
-    ax.tick_params(axis='x', colors='white')    
-    ax.tick_params(axis='y', colors='white')    
-    ax.tick_params(axis='z', colors='white')
+    ax.tick_params(axis='x', colors='black')    
+    ax.tick_params(axis='y', colors='black')    
+    ax.tick_params(axis='z', colors='black')
 
-    ax.spines['left'].set_color('white')
-    ax.spines['top'].set_color('white')
+    ax.spines['left'].set_color('black')
+    ax.spines['top'].set_color('black')
     return ln,
 
 
 #fig, ax = plt.subplots()
-fig = plt.figure()
+fig = plt.figure(figsize=(10, 10))
 ax = fig.add_subplot(projection="3d")
 xdata, ydata, zdata = [], [], []
-ln, = ax.plot([], [], [], "o")
+ln, = ax.plot([], [], [], c='red', marker="o", linestyle='')
 
 ani = FuncAnimation(fig, iteration, interval = 1, init_func=init, blit=True)
 plt.show()
