@@ -125,7 +125,6 @@ int main(){
         t1 = high_resolution_clock::now();
             calculateForce(bodies);
         t2 = high_resolution_clock::now();
-        cout << bodies[0].getForce() << endl;
 
         /* Getting number of milliseconds as a double. */
         ms_double = t2 - t1;
@@ -147,12 +146,11 @@ int main(){
         t1 = high_resolution_clock::now();
             for (size_t i = 0; i < bodies.size(); i++) bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
         t2 = high_resolution_clock::now();
-        cout << bodies[0].getForce() << endl;
 
         /* Getting number of milliseconds as a double. */
         ms_double = t2 - t1;
             cout << "time to calculate initial force using algorithm: " << ms_double.count() << "ms" << endl;
-   }
+    }
     calculateAcceleration(bodies);
 
     // The way we can complete the calculations:
