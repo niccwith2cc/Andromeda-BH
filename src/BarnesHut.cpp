@@ -12,6 +12,7 @@ BarnesHut::BarnesHut(){}
 
 BarnesHut::BarnesHut(unique_ptr<CelestialBody> body, double boundary, double th){
     root = std::make_unique<TreeNode>(TreeNode(std::move(body)));
+    root->setBoundary(boundary);
     BOUNDARY = boundary;
     theta = th;
 }
