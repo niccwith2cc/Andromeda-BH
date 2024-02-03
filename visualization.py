@@ -31,7 +31,7 @@ def grouped(iterable, n):
 
 
 def init():
-    size_factor = 3
+    size_factor = 1
     ax.set(xlim3d=(-size_factor*BOUNDARY, size_factor*BOUNDARY), xlabel='X')
     ax.set(ylim3d=(-size_factor*BOUNDARY, size_factor*BOUNDARY), ylabel='Y')
     ax.set(zlim3d=(-size_factor*BOUNDARY, size_factor*BOUNDARY), zlabel='Z')
@@ -102,6 +102,10 @@ z = [pos.z for pos in initial_positions]
 
 graph = ax.scatter(x, y, z, c='b', marker='o', s=normalized_masses)
 
-ani = matplotlib.animation.FuncAnimation(fig, update_graph, init_func=init, interval=1, blit=False, cache_frame_data=False)
+ani = matplotlib.animation.FuncAnimation(fig, update_graph, init_func=init, interval=1, blit=False, cache_frame_data=False, frames=len(positions))
 
 plt.show()
+
+writervideo = matplotlib.animation.FFMpegWriter(fps=60) 
+ani.save('animation.mp4', writer=writervideo) 
+plt.close() 
