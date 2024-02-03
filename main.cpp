@@ -8,6 +8,7 @@
 #include <chrono>
 #include <ctime>
 #include <iomanip>
+#include <sys/stat.h>
 #include "src/BarnesHut.h"
 #include "src/CelestialBody.h"
 #include "src/ConfigParser.h"
@@ -24,18 +25,21 @@ using std::chrono::milliseconds;
 
 // Hardcoding the Galaxy by taking a fixed number of bodies and generating their random positions and masses
 // Random number generation to use for the position of the bodies
-double generateRandomDouble(double min, double max) {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_real_distribution<double> dis(min, max);
-        return dis(gen);
-    };
+double generateRandomDouble(double min, double max, std::mt19937& gen) {
+    std::uniform_real_distribution<double> dis(min, max);
+    return dis(gen);
+}
 
-array<double,3> generateRandomPosition(double& boundary){
+int generateRandomInt(int min, int max, std::mt19937& gen) {
+    std::uniform_int_distribution<int> dis(min, max);
+    return dis(gen);
+}
+
+array<double,3> generateRandomPosition(double& boundary, std::mt19937& gen){
     array<double,3> position = {0.0,0.0,0.0};
-    position = {generateRandomDouble(-boundary, boundary),generateRandomDouble(-boundary, boundary),generateRandomDouble(-boundary, boundary)};
+    position = {generateRandomDouble(-boundary, boundary, gen),generateRandomDouble(-boundary, boundary, gen),generateRandomDouble(-boundary, boundary, gen)};
     return position;
-};
+}
 
 void calculateForce(vector<CelestialBody>& bodies){
     //Initializing the forces total sum being a nx3 matrix
@@ -72,9 +76,12 @@ vector<CelestialBody> generateBodies(int bodynumber, double boundary, int massMi
     const int l_range = massMin;
     const int h_range = massMax;
     std::ofstream output ("../output/mass.csv"); 
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    gen.seed(49);
     for (int i = 0; i < bodynumber; i++){
-        int mass = std::experimental::randint(l_range,h_range);
-        array<double,3> position = generateRandomPosition(boundary); 
+        int mass = generateRandomInt(l_range, h_range, gen);
+        array<double,3> position = generateRandomPosition(boundary, gen); 
         CelestialBody body = CelestialBody(mass, position, {0.0,0.0,0.0}, {0.0,0.0,0.0}, {0.0,0.0,0.0});
         output << mass << ","; 
         bodies.push_back(body);
@@ -102,7 +109,19 @@ inline std::string getCurrentDateTime( std::string s ){
     return  std::string(buf);
 };
 
+inline void createDirectory(const std::string& path) { 
+    if (mkdir(path.c_str(), 0777) == 0) { 
+        std::cout << "Directory created.\n"; 
+    } else { 
+        std::cout << "Directory already exists.\n";
+    } 
+} 
+
 int main(){
+
+    std::string folderName = "../output"; 
+ 
+    createDirectory(folderName);
 
     //logging files for checking the variables
     std::string filePath = "../output/"+getCurrentDateTime("now")+".txt";
