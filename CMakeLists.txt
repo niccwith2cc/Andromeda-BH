@@ -9,6 +9,6 @@ project(49
         DESCRIPTION "Advanced Programming Project 49"
         LANGUAGES CXX)
 
-add_executable(49 main.cpp src/BarnesHut.cpp src/CelestialBody.cpp src/TreeNode.cpp src/ConfigParser.cpp)
+add_executable(49 main.cpp src/BarnesHut.cpp src/CelestialBody.cpp src/TreeNode.cpp src/ConfigParser.cpp src/utils.cpp)
 
 target_link_libraries(49 -fsanitize=address)
