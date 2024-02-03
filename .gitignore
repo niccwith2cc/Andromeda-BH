@@ -3,3 +3,4 @@ main
 .idea
 .vscode
 build
+config.ini
