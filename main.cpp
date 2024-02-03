@@ -111,9 +111,9 @@ inline std::string getCurrentDateTime( std::string s ){
 
 inline void createDirectory(const std::string& path) { 
     if (mkdir(path.c_str(), 0777) == 0) { 
-        std::cout << "Directory created.\n"; 
+        std::cout << "Output directory created.\n"; 
     } else { 
-        std::cout << "Directory already exists.\n";
+        std::cout << "Output directory already exists.\n";
     } 
 } 
 
@@ -198,7 +198,7 @@ int main(){
     // to calculate the position of each body. p = int[bounded](v * dt) + p_0 = int[bounded](a * t * dt) + p_0
 
 
-    std::ofstream filestream ("pos.csv"); //Filestream to write the positions of the bodies
+    std::ofstream filestream ("../output/positions.csv"); //Filestream to write the positions of the bodies
 
     t1 = high_resolution_clock::now();
 

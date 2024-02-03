@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 config = configparser.ConfigParser()
 config.read_file(open(r'config.ini'))
 
-FILENAME = 'build/pos.csv'
+FILENAME = 'output/positions.csv'
 FILENAME2 = 'output/mass.csv'
 BOUNDARY = float(config.get('config', 'BOUNDARY'))
 mass_maximum = float(config.get('config', 'mass_maximum'))
@@ -31,7 +31,7 @@ def grouped(iterable, n):
 
 
 def init():
-    size_factor = 5
+    size_factor = 3
     ax.set(xlim3d=(-size_factor*BOUNDARY, size_factor*BOUNDARY), xlabel='X')
     ax.set(ylim3d=(-size_factor*BOUNDARY, size_factor*BOUNDARY), ylabel='Y')
     ax.set(zlim3d=(-size_factor*BOUNDARY, size_factor*BOUNDARY), zlabel='Z')
