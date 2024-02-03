@@ -9,6 +9,7 @@ import csv
 import configparser
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
+import random
 
 config = configparser.ConfigParser()
 config.read_file(open(r'config.ini'))
@@ -31,7 +32,7 @@ def grouped(iterable, n):
 
 
 def init():
-    size_factor = 5
+    size_factor = 1.5
     ax.set(xlim3d=(-size_factor*BOUNDARY, size_factor*BOUNDARY), xlabel='X')
     ax.set(ylim3d=(-size_factor*BOUNDARY, size_factor*BOUNDARY), ylabel='Y')
     ax.set(zlim3d=(-size_factor*BOUNDARY, size_factor*BOUNDARY), zlabel='Z')
@@ -100,8 +101,9 @@ x = [pos.x for pos in initial_positions]
 y = [pos.y for pos in initial_positions]
 z = [pos.z for pos in initial_positions]
 
-graph = ax.scatter(x, y, z, c='b', marker='o', s=normalized_masses)
 
-ani = matplotlib.animation.FuncAnimation(fig, update_graph, init_func=init, interval=1, blit=False, cache_frame_data=False)
+graph = ax.scatter(x, y, z, c='purple', marker='o', s=normalized_masses)
+
+ani = matplotlib.animation.FuncAnimation(fig, update_graph, init_func=init, interval=3, blit=False, cache_frame_data=False)
 
 plt.show()
