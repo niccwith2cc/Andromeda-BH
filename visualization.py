@@ -90,7 +90,7 @@ with open(FILENAME2, newline='') as csvfile:
     reader = csv.reader(csvfile, delimiter=',')
     masses = [float(mass) for mass in next(reader) if mass.strip()]
 
-mass_scale = 20
+mass_scale = 40
 normalized_masses = [((mass - mass_minimum) / (mass_maximum - mass_minimum))*mass_scale for mass in masses]
 
 fig = plt.figure(figsize=(10, 10))
@@ -108,6 +108,6 @@ ani = matplotlib.animation.FuncAnimation(fig, update_graph, init_func=init, inte
 
 plt.show()
 
-writervideo = matplotlib.animation.FFMpegWriter(fps=60) 
-ani.save('animation.mp4', writer=writervideo) 
+writervideo = matplotlib.animation.PillowWriter(fps=15, bitrate=1800)
+ani.save('output/animation.gif', writer=writervideo) 
 plt.close() 
