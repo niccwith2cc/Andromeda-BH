@@ -6,6 +6,8 @@
 #include <fstream>
 #include <memory>
 #include <chrono>
+#include <ctime>
+#include <iomanip>
 #include "src/BarnesHut.h"
 #include "src/CelestialBody.h"
 #include "src/ConfigParser.h"
@@ -68,11 +70,13 @@ void calculateAcceleration(vector<CelestialBody>& bodies){
 vector<CelestialBody> generateBodies(int bodynumber, double boundary, int massMin, int massMax){
     vector<CelestialBody> bodies; 
     const int l_range = massMin;
-    const int h_range = massMax; 
+    const int h_range = massMax;
+    std::ofstream output ("../output/mass.csv"); 
     for (int i = 0; i < bodynumber; i++){
         int mass = std::experimental::randint(l_range,h_range);
         array<double,3> position = generateRandomPosition(boundary); 
         CelestialBody body = CelestialBody(mass, position, {0.0,0.0,0.0}, {0.0,0.0,0.0}, {0.0,0.0,0.0});
+        output << mass << ","; 
         bodies.push_back(body);
     }
     return bodies;
@@ -86,7 +90,25 @@ template < class T > inline std::ostream& operator << (std::ostream& os, const s
     return os;
 }
 
+inline std::string getCurrentDateTime( std::string s ){
+    time_t now = time(0);
+    struct tm  tstruct;
+    char  buf[260];
+    tstruct = *localtime(&now);
+    if(s=="now")
+        strftime(buf, sizeof(buf), "%Y-%m-%d %X", &tstruct);
+    else if(s=="date")
+        strftime(buf, sizeof(buf), "%Y-%m-%d", &tstruct);
+    return  std::string(buf);
+};
+
 int main(){
+
+    //logging files for checking the variables
+    std::string filePath = "../output/"+getCurrentDateTime("now")+".txt";
+
+    // Create a file stream for writing to the new file
+    std::ofstream logFile(filePath);
 
     //Parsing the config file and initializing constants
     ConfigParser parser = ConfigParser("../config.ini");
@@ -100,6 +122,11 @@ int main(){
     const int DURATION =  std::stoi(parser.config["duration"]);
     const bool BRUTEFORCE =  std::stoi(parser.config["bruteforce"]);
 
+    logFile << "bodies: " << NO_OF_BODIES << endl;
+    logFile << "theta: " << THETA << endl;
+    logFile << "bruteforce: " << BRUTEFORCE << endl;
+    
+
     //Initializing the boundary for the TreeNode class
     TreeNode dummy;
     dummy.setBoundary(BOUNDARY);
@@ -112,7 +139,7 @@ int main(){
 
     /* Getting number of milliseconds as a double. */
     duration<double, std::milli> ms_double = t2 - t1;
-        cout << "time to generate bodies: " << ms_double.count() << "ms" << endl;
+        logFile << "time to generate bodies: " << ms_double.count() << "ms" << endl;
 
     BarnesHut tree;  
 
@@ -125,7 +152,7 @@ int main(){
 
         /* Getting number of milliseconds as a double. */
         ms_double = t2 - t1;
-            cout << "time to calculate initial force using brute force: " << ms_double.count() << "ms" << endl; 
+            logFile << "time to calculate initial force using brute force: " << ms_double.count() << "ms" << endl; 
     }
     else {
         t1 = high_resolution_clock::now();
@@ -138,7 +165,7 @@ int main(){
 
         /* Getting number of milliseconds as a double. */
         ms_double = t2 - t1;
-            cout << "time to build tree: " << ms_double.count() << "ms" << endl;
+            logFile << "time to build tree: " << ms_double.count() << "ms" << endl;
 
         t1 = high_resolution_clock::now();
             for (size_t i = 0; i < bodies.size(); i++) bodies[i].setForce(tree.calculateForce(bodies[i], tree.root));
@@ -146,7 +173,7 @@ int main(){
 
         /* Getting number of milliseconds as a double. */
         ms_double = t2 - t1;
-            cout << "time to calculate initial force using algorithm: " << ms_double.count() << "ms" << endl;
+            logFile << "time to calculate initial force using algorithm: " << ms_double.count() << "ms" << endl;
     }
     calculateAcceleration(bodies);
 
@@ -185,6 +212,6 @@ int main(){
 
     /* Getting number of milliseconds as a double. */
     ms_double = t2 - t1;
-        cout << "time to run simulation: " << ms_double.count() << "ms" << endl;
+        logFile << "time to run simulation: " << ms_double.count() << "ms" << endl;
 
 }
