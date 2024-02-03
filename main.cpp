@@ -126,10 +126,6 @@ int main(){
     logFile << "theta: " << THETA << endl;
     logFile << "bruteforce: " << BRUTEFORCE << endl;
     
-
-    //Initializing the boundary for the TreeNode class
-    TreeNode dummy;
-    dummy.setBoundary(BOUNDARY);
     
     //timing components of the code
     auto t1 = high_resolution_clock::now();
