@@ -44,10 +44,5 @@ inline std::string getCurrentDateTime( std::string s ){
 inline void createDirectory(const std::string& path) { 
     if (mkdir(path.c_str(), 0777) == 0) { 
         std::cout << "Output directory created.\n"; 
-    } else { 
-        std::cout << "Output directory already exists.\n";
     } 
 } 
-
-
-

@@ -93,7 +93,7 @@ with open(FILENAME2, newline='') as csvfile:
 mass_scale = 20
 normalized_masses = [((mass - mass_minimum) / (mass_maximum - mass_minimum))*mass_scale for mass in masses]
 
-fig = plt.figure()
+fig = plt.figure(figsize=(10, 10))
 ax = fig.add_subplot(111, projection='3d')
 
 initial_positions = positions[0]
