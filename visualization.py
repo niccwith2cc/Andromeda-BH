@@ -6,9 +6,16 @@ from matplotlib.animation import FuncAnimation, PillowWriter
 from mpl_toolkits.mplot3d import Axes3D 
 import matplotlib; matplotlib.use("TkAgg")
 import csv
+import configparser
+
+config = configparser.ConfigParser()
+config.read_file(open(r'config.ini'))
 
 FILENAME = 'build/pos.csv'
-BOUNDARY = 1000000
+FILENAME2 = 'output/mass.csv'
+BOUNDARY = float(config.get('config', 'BOUNDARY'))
+mass_maximum = float(config.get('config', 'mass_maximum'))
+mass_minimum = float(config.get('config', 'mass_minimum'))
 positions = []
 
 class Point:
@@ -33,7 +40,12 @@ with open(FILENAME, newline='') as csvfile:
         for (x, y, z) in grouped(row, 3):
             positions[-1].append(Point(x, y, z))
     positions = np.array(positions)
-
+    
+with open(FILENAME2, newline='') as csvfile:
+    reader = csv.reader(csvfile, delimiter=',')
+    masses = [float(mass) for mass in next(reader) if mass.strip()]
+    
+normalized_masses = [((mass - mass_minimum) / (mass_maximum - mass_minimum))*5 for mass in masses]
 
 def iteration(frame):
     if frame < len(positions):
@@ -81,7 +93,7 @@ def init():
 fig = plt.figure(figsize=(10, 10))
 ax = fig.add_subplot(projection="3d")
 xdata, ydata, zdata = [], [], []
-ln, = ax.plot([], [], [], c='red', marker="o", linestyle='', markersize='3')
+ln, = ax.plot([], [], [], c='red', marker="o", linestyle='', markersize=normalized_masses[0])
 
-ani = FuncAnimation(fig, iteration, interval = 1, init_func=init, blit=True)
+ani = FuncAnimation(fig, iteration, interval = 1, init_func=init, blit=True, cache_frame_data=False)
 plt.show()
