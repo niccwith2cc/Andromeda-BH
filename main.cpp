@@ -1,17 +1,9 @@
-#include <vector>
-#include <cmath>
-#include <iostream>
-#include <random>
 #include <experimental/random>
-#include <fstream>
-#include <memory>
 #include <chrono>
-#include <ctime>
-#include <iomanip>
-#include <sys/stat.h>
 #include "src/BarnesHut.h"
 #include "src/CelestialBody.h"
 #include "src/ConfigParser.h"
+#include "src/utils.h"
 
 using std::vector;
 using std::cout;
@@ -22,100 +14,6 @@ using std::chrono::duration_cast;
 using std::chrono::duration;
 using std::chrono::milliseconds;
 
-
-// Hardcoding the Galaxy by taking a fixed number of bodies and generating their random positions and masses
-// Random number generation to use for the position of the bodies
-double generateRandomDouble(double min, double max, std::mt19937& gen) {
-    std::uniform_real_distribution<double> dis(min, max);
-    return dis(gen);
-}
-
-int generateRandomInt(int min, int max, std::mt19937& gen) {
-    std::uniform_int_distribution<int> dis(min, max);
-    return dis(gen);
-}
-
-array<double,3> generateRandomPosition(double& boundary, std::mt19937& gen){
-    array<double,3> position = {0.0,0.0,0.0};
-    position = {generateRandomDouble(-boundary, boundary, gen),generateRandomDouble(-boundary, boundary, gen),generateRandomDouble(-boundary, boundary, gen)};
-    return position;
-}
-
-void calculateForce(vector<CelestialBody>& bodies){
-    //Initializing the forces total sum being a nx3 matrix
-    for (size_t i = 0; i < bodies.size(); i++){
-        array<double,3> Fsum = {0.0,0.0,0.0};
-        for (size_t j = 0; j < bodies.size(); j++){
-            if (&bodies[i] != &bodies[j]){
-                array<double,3> comp =  bodies[i].CalcCompF(bodies[j]);
-                Fsum = Fsum + comp;
-            }
-        }
-        bodies[i].setForce(Fsum);      
-    }
-}
-
-void calculateAcceleration(vector<CelestialBody>& bodies){
-    //Initializing the acceleration total sum being a nx3 matrix
-    for (size_t i = 0; i < bodies.size(); i++){
-        array<double,3> Asum = {0.0,0.0,0.0};
-        for (size_t j = 0; j < bodies.size(); j++){
-            if (&bodies[i] != &bodies[j]){
-                array<double,3> comp =  bodies[i].CalcCompA(bodies[j]);
-                Asum = Asum + comp; 
-            }
-        }
-        bodies[i].setAccel(Asum);
-    }
-}
-
-
-//Generating the bodies using the CelestialBody class and giving them random masses and positions
-vector<CelestialBody> generateBodies(int bodynumber, double boundary, int massMin, int massMax){
-    vector<CelestialBody> bodies; 
-    const int l_range = massMin;
-    const int h_range = massMax;
-    std::ofstream output ("../output/mass.csv"); 
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    gen.seed(49);
-    for (int i = 0; i < bodynumber; i++){
-        int mass = generateRandomInt(l_range, h_range, gen);
-        array<double,3> position = generateRandomPosition(boundary, gen); 
-        CelestialBody body = CelestialBody(mass, position, {0.0,0.0,0.0}, {0.0,0.0,0.0}, {0.0,0.0,0.0});
-        output << mass << ","; 
-        bodies.push_back(body);
-    }
-    return bodies;
-}   
-
-//Overloading the << operator to print the positions of the bodies
-template < class T > inline std::ostream& operator << (std::ostream& os, const std::array<T,3>& a) {
-    for (auto &elem: a){
-        os << elem << ", ";
-    }
-    return os;
-}
-
-inline std::string getCurrentDateTime( std::string s ){
-    time_t now = time(0);
-    struct tm  tstruct;
-    char  buf[260];
-    tstruct = *localtime(&now);
-    if(s=="now")
-        strftime(buf, sizeof(buf), "%Y-%m-%d %X", &tstruct);
-    else if(s=="date")
-        strftime(buf, sizeof(buf), "%Y-%m-%d", &tstruct);
-    return  std::string(buf);
-};
-
-inline void createDirectory(const std::string& path) { 
-    if (mkdir(path.c_str(), 0777) == 0) { 
-        std::cout << "Directory created.\n"; 
-    } else { 
-        std::cout << "Directory already exists.\n";
-    } 
-} 
 
 int main(){
 
@@ -158,7 +56,6 @@ int main(){
 
     BarnesHut tree;  
 
-
     //Calculating the force and acceleration for each body either brute force or using the algorithm
     if (BRUTEFORCE) { 
         t1 = high_resolution_clock::now();
@@ -198,7 +95,7 @@ int main(){
     // to calculate the position of each body. p = int[bounded](v * dt) + p_0 = int[bounded](a * t * dt) + p_0
 
 
-    std::ofstream filestream ("pos.csv"); //Filestream to write the positions of the bodies
+    std::ofstream filestream ("../output/positions.csv"); //Filestream to write the positions of the bodies
 
     t1 = high_resolution_clock::now();
 
