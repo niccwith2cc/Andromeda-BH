@@ -17,12 +17,14 @@ using std::chrono::milliseconds;
 
 int main(){
 
-    std::string folderName = "../output"; 
+    std::string outputFolderName = "../output"; 
+    std::string logsFolderName = "../output/logs";
  
-    createDirectory(folderName);
+    createDirectory(outputFolderName);
+    createDirectory(logsFolderName);
 
     //logging files for checking the variables
-    std::string filePath = "../output/"+getCurrentDateTime("now")+".txt";
+    std::string filePath = "../output/logs/"+getCurrentDateTime("now")+".txt";
 
     // Create a file stream for writing to the new file
     std::ofstream logFile(filePath);
