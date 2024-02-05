@@ -3,7 +3,8 @@
 ## Barnes Hut Algorithm
 
 ## Why Do We Need It?
-When simulating a rather large data points in space, such as the many celestial bodies that are found in a singular galaxy. Calculating the force of gravity of that each body exerts on the other, over a specified time interval with a small time step, can lead to a very high computational intense calculations. Hence, the Barnes Hut Algorithm takes some assumptions about the celestial bodies according to their relative positions to each other and their placement on the overall 3D space and decreases the amount of calculations to do. If celestial bodies are sufficiently close to one another, they are approximated as one body with its position being the center of mass of the cluster of bodies. Ofcourse, this does come with some accuracy issues as the algorithm only approximates the values and does not completely calculate them. However, the theoretical dimensional savings go from O(n^2) to O(n log(n)).
+
+When simulating a rather large data points in space, such as the many celestial bodies that are found in a singular galaxy. Calculating the force of gravity of that each body exerts on the other, over a specified time interval with a small time step, can lead to a very high computational intense calculations. Hence, the Barnes Hut Algorithm takes some assumptions about the celestial bodies according to their relative positions to each other and their placement on the overall 3D space and decreases the amount of calculations to do. If celestial bodies are sufficiently close to one another, they are approximated as one body with its position being the center of mass of the cluster of bodies. Ofcourse, this does come with some accuracy issues as the algorithm only approximates the values and does not completely calculate them. However, the theoretical dimensional savings go from O(n<sup>2</sup>) to O(n log(n)).
 
 ## How It Works?
 ### Constructing the Tree:
@@ -20,8 +21,8 @@ The Algorithm takes a 3D cubic space with (x, y, z) coordinates and splits it in
 ### Computing using the Algorithm:
 Once the tree is constructed and all the bodies are in their respective octants. The algorithm will now determine how to group sufficiently close bodies, this will create temporary bodies with a center of mass that can be used to compute the forces acting on bodies in neighboring octants.
 
-### But how does one define sufficiently close enough?
-A calculated ratio of s/d will be considered. S is the length of the octant of the internal node, D is the distance between the body and the node's center of mass. This ratio is compared with the threshold value θ, which indicates how fast the algorithm computes but also how inaccurate it may be. a θ = 0, the algorithm receeds to the brute force method as if the algorithm does nothing. If s/d > θ then the body is still sufficiently close enough to the center of mass, and more recursions are needed to divide the octant into its own grid.
+But how does one define sufficiently close enough?
+A calculated ratio of *s/d* will be considered. *s* is the length of the octant of the internal node, *d* is the distance between the body and the node's center of mass. This ratio is compared with the threshold value *θ*, which indicates how fast the algorithm computes but also how inaccurate it may be. a *θ* = 0, the algorithm receeds to the brute force method as if the algorithm does nothing. If *s/d > θ* then the body is still sufficiently close enough to the center of mass, and more recursions are needed.
 
 <p align="center" width="100%">
     <img width="40%" src="images/force-03.png">
@@ -88,7 +89,6 @@ This section provides details about the configuration file "config.ini" used in 
     *Default*: 0.5\
     *Usage*: Adjusts the Barnes-Hut parameter used in tree-based algorithms. Values between 0 and 1 are accepted. Using 0 is equal to running a brute force simulation as all bodies are takes into account for the calculations.
 
-
 ## How to Build and Run the code
 ### Algorithm
 Build the project using Cmake:
@@ -115,6 +115,12 @@ Run the python script in order to generate and save the visualization of the lat
 ```
 python visualization.py
 ```
+
+## Output and Logging
+After running the simulation multiple files are saved in the *output* directory.
+- **positions.csv**: The positions of the bodies at all timesteps. Each row consists of the coorinates of all bodies at a given timestep. This file gets overwritten at every run of the simulation.
+- **mass.csv**: Stores the mass of each body. This file also gets overwritten at every run of the simulation.
+- **logs**: This subdirectory stores a log file for every run, logging some basic parameters and the time it took for it to run.
 
 ## Sprint Progress and Requirements
 
