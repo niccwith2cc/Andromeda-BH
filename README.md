@@ -19,18 +19,78 @@ Once the tree is constructed and all the bodies are in their respective octants.
 But how does one define sufficiently close enough?
 a calculated ratio of s/d will be considered. S is the length of the octant of the internal node, D is the distance between the body and the node's center of mass. This ratio is compared with the threshold value θ, which indicates how fast the algorithm computes but also how inaccurate it may be. a θ = 0, the algorithm receeds to the brute force method as if the algorithm does nothing. If s/d > θ then the body is still sufficiently close enough to the center of mass, and more recursions are needed to divide the octant into its own grid.
 
+## Configuration
+
+This section provides details about the configuration file used in the project. The configuration file follows a simple key-value pair format under the \[config\] section. Each key represents a configurable parameter, and its corresponding value determines the behavior of the application.
+
+1. **bodynumber**
+
+    *Description*: Number of bodies in the simulation.
+    *Type*: Integer
+    *Default*: 50
+    *Usage*: Adjust this value to control the number of bodies generated in the simulation.
+
+1. **boundary**
+
+    *Description*: Simulation boundary size.
+    *Type*: Float
+    *Default*: 1000000.0
+    *Usage*: Set the size of the simulation boundary. This value determines the spatial limits within which the bodies will be initialized in.
+
+1. **mass_minimum**
+
+    *Description*: Minimum mass of a body.
+    *Type*: Integer
+    *Default*: 500000
+    *Usage*: Defines the minimum mass a body can have in the simulation.
+
+1. **mass_maximum**
+
+    *Description*: Maximum mass of a body.
+    *Type*: Integer
+    *Default*: 1000000
+    *Usage*: Defines the maximum mass a body can have in the simulation.
+
+1. **duration**
+
+    *Description*: Simulation duration in time units.
+    *Type*: Integer
+    *Default*: 1000
+    *Usage*: Determines the total duration of the simulation.
+
+1. **timestep**
+
+    *Description*: Size of the simulation timestep.
+    *Type*: Float
+    *Default*: 0.01
+    *Usage*: Adjusts the time increment for each step in the simulation.
+
+1. **bruteforce**
+
+    *Description*: Toggle for using brute force in calculations.
+    *Type*: Boolean (0 or 1)
+    *Default*: 0
+    *Usage*: Set to 1 to enable brute force calculations, otherwise set to 0 to calculate using the Barnes-Hut algorithm.
+
+1. **theta**
+
+    *Description*: Barnes-Hut parameter.
+    *Type*: Float
+    *Default*: 0.5
+    *Usage*: Adjusts the Barnes-Hut parameter used in tree-based algorithms. Values between 0 and 1 are accepted. Using 0 is equal to running a brute force simulation as all bodies are takes into account for the calculations.
+
 ## How to Build and Run the code
 
-quite easily you can build it using Cmake:
+Quite easily you can build it using Cmake:
 
 ```
-$ mkdir build
+mkdir build
 cd build
 cmake ..
 make
 ```
 
-to run the code:
+To run the code:
 ```
 ./49
 ```
