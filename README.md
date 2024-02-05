@@ -3,7 +3,6 @@
 ## Barnes Hut Algorithm
 
 ## Why Do We Need It?
-
 When simulating a rather large data points in space, such as the many celestial bodies that are found in a singular galaxy. Calculating the force of gravity of that each body exerts on the other, over a specified time interval with a small time step, can lead to a very high computational intense calculations. Hence, the Barnes Hut Algorithm takes some assumptions about the celestial bodies according to their relative positions to each other and their placement on the overall 3D space and decreases the amount of calculations to do. If celestial bodies are sufficiently close to one another, they are approximated as one body with its position being the center of mass of the cluster of bodies. Ofcourse, this does come with some accuracy issues as the algorithm only approximates the values and does not completely calculate them. However, the theoretical dimensional savings go from O(n^2) to O(n log(n)).
 
 ## How It Works?
@@ -15,8 +14,9 @@ The Algorithm takes a 3D cubic space with (x, y, z) coordinates and splits it in
     <img width="60%" src="images/image1.png">
 </p>
 
-<div align="center"> image 1: Octree Layout with 3D Cubic Space </div> \
+<div align="center"> image 1: Octree Layout with 3D Cubic Space </div>
 
+----------------------------------------------------------------------------------------------------------------------------------------------
 ### Computing using the Algorithm:
 Once the tree is constructed and all the bodies are in their respective octants. The algorithm will now determine how to group sufficiently close bodies, this will create temporary bodies with a center of mass that can be used to compute the forces acting on bodies in neighboring octants.
 
@@ -24,7 +24,6 @@ Once the tree is constructed and all the bodies are in their respective octants.
 A calculated ratio of s/d will be considered. S is the length of the octant of the internal node, D is the distance between the body and the node's center of mass. This ratio is compared with the threshold value θ, which indicates how fast the algorithm computes but also how inaccurate it may be. a θ = 0, the algorithm receeds to the brute force method as if the algorithm does nothing. If s/d > θ then the body is still sufficiently close enough to the center of mass, and more recursions are needed to divide the octant into its own grid.
 
 ## Configuration
-
 This section provides details about the configuration file "config.ini" used in the project. The configuration file follows a simple key-value pair format under the \[config\] section. Each key represents a configurable parameter, and its corresponding value determines the behavior of the application.
 
 1. **bodynumber**
@@ -85,9 +84,7 @@ This section provides details about the configuration file "config.ini" used in 
 
 
 ## How to Build and Run the code
-
 ### Algorithm
-
 Build the project using Cmake:
 
 ```
@@ -116,7 +113,7 @@ python visualization.py
 ## Sprint Progress and Requirements
 
 ### Sprint Progress
-End of Sprint 2
+End of Sprint 3
 
 ### Sprint 1 (basics)
 In this sprint we will implement the n-body problem and a basic Barnes-Hut approximation. The program will randomly generate initial conditions for testing and the result will be outputted for visualization. We will compare the result of the brute force "reference" solution with the Barnes-Hut algorithm.
@@ -153,7 +150,8 @@ At least one function should utilize vectorized instructions
 
 ## Expected Output
 
-the C++ project output a position csv (pos.csv) in the build folder that you create, this csv will be used to visualize the animation in the visualization.py
+This project outputs a "position.csv" with the positions of all the bodies at every time step which will be used in the python visualization.
+Moreover, a log file will be created which shows all the parameters you have inputed and display them, along with the time it required to execute each section of the code
 
 ## Authors and acknowledgment
 Alexandra Apostolidou, Nicolas Hanna.
