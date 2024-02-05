@@ -26,7 +26,7 @@ The Algorithm takes a 3D cubic space with (x, y, z) coordinates and splits it in
 ### Computing using the Algorithm:
 Once the tree is constructed and all the bodies are in their respective octants. The algorithm will now determine how to group sufficiently close bodies, this will create temporary bodies with a center of mass that can be used to compute the forces acting on bodies in neighboring octants.
 
-But how does one define sufficiently close enough?
+### But how does one define sufficiently close enough?
 A calculated ratio of *s/d* will be considered. *s* is the length of the octant of the internal node, *d* is the distance between the body and the node's center of mass. This ratio is compared with the threshold value *θ*, which indicates how fast the algorithm computes but also how inaccurate it may be. a *θ* = 0, the algorithm receeds to the brute force method as if the algorithm does nothing. If *s/d > θ* then the body is still sufficiently close enough to the center of mass, and more recursions are needed.
 
 <p align="center" width="100%">
@@ -99,7 +99,7 @@ This section provides details about the configuration file "config.ini" used in 
     *Description*: Save a gif of the generated simulation.\
     *Type*: Boolean (0 or 1)\
     *Default*: 0\
-    *Usage*: set to True to save a gif of the simulation in the output folder.
+    *Usage*: Set to 1 to save a gif of the simulation in the output folder.
 
 ## How to Build and Run the code
 ### Algorithm
