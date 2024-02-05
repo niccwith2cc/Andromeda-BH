@@ -83,7 +83,6 @@ This section provides details about the configuration file "config.ini" used in 
     *Default*: 0.5\
     *Usage*: Adjusts the Barnes-Hut parameter used in tree-based algorithms. Values between 0 and 1 are accepted. Using 0 is equal to running a brute force simulation as all bodies are takes into account for the calculations.
 
-
 ## How to Build and Run the code
 ### Algorithm
 Build the project using Cmake:
@@ -110,6 +109,12 @@ Run the python script in order to generate and save the visualization of the lat
 ```
 python visualization.py
 ```
+
+## Output and Logging
+After running the simulation multiple files are saved in the *output* directory.
+- **positions.csv**: The positions of the bodies at all timesteps. Each row consists of the coorinates of all bodies at a given timestep. This file gets overwritten at every run of the simulation.
+- **mass.csv**: Stores the mass of each body. This file also gets overwritten at every run of the simulation.
+- **logs**: This subdirectory stores a log file for every run, logging some basic parameters and the time it took for it to run.
 
 ## Sprint Progress and Requirements
 
