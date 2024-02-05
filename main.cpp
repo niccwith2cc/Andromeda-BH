@@ -128,5 +128,5 @@ int main(){
     ms_double = t2 - t1;
         logFile << "time to run simulation: " << ms_double.count() << "ms" << endl;
 
-    int vis = system("cd .. && python3 visualization/visualization.py");
+    int vis = system("cd .. && pip install -r visualization/requirements.txt && python3 visualization/visualization.py");
 }
