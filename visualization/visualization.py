@@ -14,6 +14,7 @@ FILENAME2 = 'output/mass.csv'
 BOUNDARY = float(config.get('config', 'BOUNDARY'))
 mass_maximum = float(config.get('config', 'mass_maximum'))
 mass_minimum = float(config.get('config', 'mass_minimum'))
+save_gif = bool(int(config.get('config', 'save_gif')))
 positions = []
 
 class Point:
@@ -102,7 +103,7 @@ frames = len(positions)
 ani = FuncAnimation(fig, update_graph, init_func=init, interval=1, blit=False, cache_frame_data=False, frames=frames)
 
 plt.show()
-
-writervideo = PillowWriter(fps=15, bitrate=1800)
-ani.save('output/animation.gif', writer=writervideo) 
+if save_gif:
+    writervideo = PillowWriter(fps=15, bitrate=1800)
+    ani.save('output/animation.gif', writer=writervideo) 
 plt.close() 
