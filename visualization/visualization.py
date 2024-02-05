@@ -79,7 +79,7 @@ with open(FILENAME, newline='') as csvfile:
         positions.append([])
         for (x, y, z) in grouped(row, 3):
             positions[-1].append(Point(x, y, z))
-    positions = np.array(positions)
+    positions = np.array(positions[:-1])
     
 with open(FILENAME2, newline='') as csvfile:
     reader = csv.reader(csvfile, delimiter=',')
@@ -98,8 +98,8 @@ z = [pos.z for pos in initial_positions]
 
 
 graph = ax.scatter(x, y, z, c='purple', marker='o', s=normalized_masses)
-
-ani = FuncAnimation(fig, update_graph, init_func=init, interval=1, blit=False, cache_frame_data=False, frames=len(positions))
+frames = len(positions)
+ani = FuncAnimation(fig, update_graph, init_func=init, interval=1, blit=False, cache_frame_data=False, frames=frames)
 
 plt.show()
 

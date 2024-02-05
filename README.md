@@ -1,6 +1,4 @@
-# Project 49: Andromeda
-
-## Barnes Hut Algorithm
+# Project 49: Andromeda - Barnes-Hut Algorithm
 
 ## Why Do We Need It?
 
