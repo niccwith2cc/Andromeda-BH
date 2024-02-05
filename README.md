@@ -11,7 +11,9 @@ When simulating a rather large data points in space, such as the many celestial 
 Constructing the Tree:
 The Algorithm takes a 3D cubic space with (x, y, z) coordinates and splits it into 8 octants of equal lengths, this corresponds to an octree of a main root with 8 children nodes. As the bodies are inserted into the root of the tree, they are placed into each octant depending on their position, however, no bodies can be within the same octant, in the octree meaning no bodies can exist within the same node. Hence if two or more bodies are close to each other the algorithm will continue to split each octant into another separate octant until the bodies are no longer in the same octant. In terms of the octree, each time a body is inserted into an already filled node, the occupied node will become a parent node with eight accompagning children node and the two or more bodies will be inserted into their respective nodes depending on their position. The algorithm will run this until no two bodies are in the same octant.
 
-![octree layout](images/octree_2x_d5ec086e-6563-4f2b-99a2-4e1762919c72.png)
+
+![octree layout](images/image1.png)
+<div align="center"> image 1: Octree Layout with 3D Cubic Space </div>
 
 Computing:
 Once the tree is constructed and all the bodies are in their respective octants. The algorithm will now determine how to group sufficiently close bodies, this will create temporary bodies with a center of mass that can be used to compute the forces acting on bodies in neighboring octants.
@@ -85,6 +87,10 @@ Acknowledgment to:
 http://arborjs.org/docs/barnes-hut
 
 https://en.wikipedia.org/wiki/Barnes%E2%80%93Hut_simulation
+
+Image Sources:
+
+https://developer.apple.com/documentation/gameplaykit/gkoctree
 
 ## Gitlab reminders
 
