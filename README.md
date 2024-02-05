@@ -14,7 +14,7 @@ The Algorithm takes a 3D cubic space with (x, y, z) coordinates and splits it in
     <img width="60%" src="images/image1.png">
 </p>
 
-<div align="center"> image 1: Octree Layout with 3D Cubic Space </div>
+<div align="center"> Image 1: Octree Layout with 3D Cubic Space </div>
 
 ----------------------------------------------------------------------------------------------------------------------------------------------
 ### Computing using the Algorithm:
@@ -22,6 +22,12 @@ Once the tree is constructed and all the bodies are in their respective octants.
 
 ### But how does one define sufficiently close enough?
 A calculated ratio of s/d will be considered. S is the length of the octant of the internal node, D is the distance between the body and the node's center of mass. This ratio is compared with the threshold value θ, which indicates how fast the algorithm computes but also how inaccurate it may be. a θ = 0, the algorithm receeds to the brute force method as if the algorithm does nothing. If s/d > θ then the body is still sufficiently close enough to the center of mass, and more recursions are needed to divide the octant into its own grid.
+
+<p align="center" width="100%">
+    <img width="40%" src="images/force-03.png">
+</p>
+
+<div align="center"> Image 2: Visualization of s/d for a quadrant </div>
 
 ## Configuration
 This section provides details about the configuration file "config.ini" used in the project. The configuration file follows a simple key-value pair format under the \[config\] section. Each key represents a configurable parameter, and its corresponding value determines the behavior of the application.
@@ -147,11 +153,6 @@ In this sprint, we will analyze and optimize the performance and computation tim
 Measure how much time is consumed during each section in the code
 Utilize at least three different optimization techniques and study its impact on total runtime
 At least one function should utilize vectorized instructions
-
-## Expected Output
-
-This project outputs a "position.csv" with the positions of all the bodies at every time step which will be used in the python visualization.
-Moreover, a log file will be created which shows all the parameters you have inputed and display them, along with the time it required to execute each section of the code
 
 ## Authors and acknowledgment
 Alexandra Apostolidou, Nicolas Hanna.
