@@ -1,8 +1,15 @@
 # Project 49: Andromeda - Barnes-Hut Algorithm
 
-## Why Do We Need It?
+## N-Body Problem and the Barnes-Hut Algorithm
+The N-body problem is a classic and fundamental challenge in astrophysics that involves predicting the motion of a system of celestial bodies interacting through gravitational forces. In this problem, each body in the system influences the motion of every other body, making it a complex and dynamic system to analyze. The gravitational interactions between bodies lead to intricate and chaotic trajectories, posing a challenge for precise long-term predictions. The N-body problem has applications in various fields, such as astrophysics, celestial mechanics, and computational physics. Researchers employ numerical methods, simulations, and advanced algorithms to model and understand the behavior of these systems, contributing to our comprehension of celestial phenomena and the broader understanding of gravitational interactions in the universe.
 
-When simulating a rather large data points in space, such as the many celestial bodies that are found in a singular galaxy. Calculating the force of gravity of that each body exerts on the other, over a specified time interval with a small time step, can lead to a very high computational intense calculations. Hence, the Barnes Hut Algorithm takes some assumptions about the celestial bodies according to their relative positions to each other and their placement on the overall 3D space and decreases the amount of calculations to do. If celestial bodies are sufficiently close to one another, they are approximated as one body with its position being the center of mass of the cluster of bodies. Ofcourse, this does come with some accuracy issues as the algorithm only approximates the values and does not completely calculate them. However, the theoretical dimensional savings go from O(n<sup>2</sup>) to O(n log(n)).
+<p align="center" width="100%">
+     <img width="30%" src="images/animation.gif">    <img width="30%" src="images/BarnesHut.gif">  
+</p>
+<div align="center"> GIF 1 & 2: Simulation of the interaction of 500 bodies using the Barnes-Hut Algorithm </div>
+
+When simulating a rather large amount of bodies in space, such as the many celestial bodies that are found in a singular galaxy, computing the force of gravity that each body exerts on the other over a specified time interval with a small time step can lead to a very high computationally intense workload. Hence, the Barnes-Hut Algorithm takes some assumptions about the celestial bodies according to their relative positions to each other and their placement on the overall 3D space and decreases the amount of calculations to do. If celestial bodies are sufficiently close to one another, they are approximated as one body with its position being the center of mass of the cluster of bodies. Ofcourse, this does come with some accuracy issues as the algorithm only approximates the values and does not completely calculate them. However, the theoretical dimensional savings go from O(n<sup>2</sup>) to O(n log(n)).
+
 
 ## How It Works?
 ### Constructing the Tree:
@@ -86,6 +93,13 @@ This section provides details about the configuration file "config.ini" used in 
     *Type*: Float\
     *Default*: 0.5\
     *Usage*: Adjusts the Barnes-Hut parameter used in tree-based algorithms. Values between 0 and 1 are accepted. Using 0 is equal to running a brute force simulation as all bodies are takes into account for the calculations.
+
+ 1. **save_gif**
+
+    *Description*: Save a gif of the generated simulation.\
+    *Type*: Boolean (0 or 1)\
+    *Default*: 0\
+    *Usage*: set to True to save a gif of the simulation in the output folder.
 
 ## How to Build and Run the code
 ### Algorithm
@@ -172,6 +186,8 @@ https://en.wikipedia.org/wiki/Barnes%E2%80%93Hut_simulation
 Image Sources:
 
 https://developer.apple.com/documentation/gameplaykit/gkoctree
+
+http://arborjs.org/docs/barnes-hut
 
 ## Gitlab reminders
 
