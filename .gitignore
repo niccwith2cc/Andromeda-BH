@@ -4,3 +4,4 @@ main
 output
 build
 config.ini
+CMakeLists.txt

@@ -65,26 +65,32 @@ double CelestialBody::CalcR(CelestialBody& body2){
 // on the that body.
 // Calculating the force between two bodies F = -G M1 M2 / (r^2) with r being the second norm of a 3D position array between M1 and M2 
 
-double CelestialBody::CalcForce(CelestialBody& body2){
-    //array<double> position2 = body2.getPosition();
-    double instantForce = -G*_mass*body2.getMass()/(pow(CalcR(body2),2));
-    return instantForce;
+double CelestialBody::CalcForce(CelestialBody& body2) {
+    double r2 = (_position[0]-body2._position[0]) * (_position[0]-body2._position[0])
+               + (_position[1]-body2._position[1]) * (_position[1]-body2._position[1])
+               + (_position[2]-body2._position[2]) * (_position[2]-body2._position[2]);
+    return -G * _mass * body2.getMass() / r2;
 }
 
 // Calculating the components of the force given by CalcForce, by taking the array dot product. F12*r21/|r21|.
 array<double, 3> CelestialBody::CalcCompF(CelestialBody& body2){
     array<double, 3> position2 = body2.getPosition();
-    double r = CalcR(body2);
+    double dx = _position[0] - position2[0];
+    double dy = _position[1] - position2[1];
+    double dz = _position[2] - position2[2];
+    double r = sqrt(dx*dx + dy*dy + dz*dz);
     double tol = 1e-4;
-    if (r < tol) return {0.0,0.0,0.0};
+    if (r < tol){
+        return {0.0,0.0,0.0};
+    }
     double FR = CalcForce(body2)/r;
-    return {(_position[0]-position2[0])*FR,(_position[1]-position2[1])*FR,(_position[2]-position2[2])*FR};
+    return {dx*FR,dy*FR,dz*FR};
 }
+
 
 // Calculating the components of the acceleration given by CalcCompF, by dividing by the mass of each body.
 array<double, 3> CelestialBody::CalcCompA(CelestialBody& body2){
-    // array<double, 3> instantAcc = CalcCompF(body2)/_mass; //DivideVectorByScalar(CalcCompF(body2),mass);
-    // return instantAcc;
+    double m = 1.0/_mass;
     array<double,3> Force = CalcCompF(body2);
-    return {Force[0]/_mass,Force[1]/_mass,Force[2]/_mass};
+    return {Force[0]*m,Force[1]*m,Force[2]*m};
 }
