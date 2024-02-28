@@ -52,8 +52,10 @@ array<double, 3> CelestialBody::getAccel(){
 }
 
 double CelestialBody::CalcR(CelestialBody& body2){
-    array<double, 3> position2 = body2.getPosition();
-    return sqrt(pow(position2[0]-_position[0],2)+pow(position2[1]-_position[1],2)+pow(position2[2]-_position[2],2));
+    double dx = _position[0] - body2._position[0];
+    double dy = _position[1] - body2._position[1];
+    double dz = _position[2] - body2._position[2];
+    return sqrt(dx*dx + dy*dy + dz*dz);
 }
 
 //note that whenever the planets are in the same plane as each other, 2 components will be 0 and cause the force to go to inf
@@ -61,8 +63,8 @@ double CelestialBody::CalcR(CelestialBody& body2){
 // an alternative solution would be to take the absolute norm between the two planets and calculate the total force between them
 // once the total force is calculated, the components can be extracted for use to calculate the summation force for all the bodies acting
 // on the that body.
-
 // Calculating the force between two bodies F = -G M1 M2 / (r^2) with r being the second norm of a 3D position array between M1 and M2 
+
 double CelestialBody::CalcForce(CelestialBody& body2){
     //array<double> position2 = body2.getPosition();
     double instantForce = -G*_mass*body2.getMass()/(pow(CalcR(body2),2));
