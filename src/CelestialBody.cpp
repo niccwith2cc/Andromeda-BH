@@ -74,12 +74,12 @@ double CelestialBody::CalcForce(CelestialBody& body2) {
 
 // Calculating the components of the force given by CalcForce, by taking the array dot product. F12*r21/|r21|.
 array<double, 3> CelestialBody::CalcCompF(CelestialBody& body2){
+    double tol = 1e-4;
     array<double, 3> position2 = body2.getPosition();
     double dx = _position[0] - position2[0];
     double dy = _position[1] - position2[1];
     double dz = _position[2] - position2[2];
     double r = sqrt(dx*dx + dy*dy + dz*dz);
-    double tol = 1e-4;
     if (r < tol){
         return {0.0,0.0,0.0};
     }

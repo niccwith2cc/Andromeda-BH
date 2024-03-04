@@ -24,7 +24,7 @@ int main(){
     createDirectory(logsFolderName);
 
     //logging files for checking the variables
-    std::string filePath = "../output/logs/"+getCurrentDateTime("now")+".txt";
+    std::string filePath = "../output/logs/" + getCurrentDateTime("now") + ".txt";
 
     // Create a file stream for writing to the new file
     std::ofstream logFile(filePath);
@@ -107,8 +107,8 @@ int main(){
                 array<double,3> Vint = bodies[i].getVelo();
                 array<double,3> Pint = bodies[i].getPosition();
                 for (int j = 0; j < 3; j++){ //for every axis
-                    Vint[j] = Aint[j]*TIMESTEP + Vint[j]; // V should increase linearly
-                    Pint[j] = Vint[j]*TIMESTEP + Pint[j]; 
+                    Vint[j] += Aint[j]*TIMESTEP; // V should increase linearly
+                    Pint[j] += Vint[j]*TIMESTEP; 
                 }
                 bodies[i].setVelo(Vint);
                 bodies[i].setPosition(Pint);
